@@ -1,17 +1,11 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import {
-  ComposableMap,
-  ZoomableGroup,
-  Geographies,
-  Geography,
-  Markers,
-  Marker,
-} from 'react-simple-maps';
 
 import Layout from '../components/Layout';
+import Map from '../components/Map';
 import BlogPostMeta from '../components/BlogPostMeta';
 import Loading from '../components/Loading';
+import MapHelper from '../components/MapHelper';
 import { Content } from '../styles';
 
 const topoPromise = import('../utils/topo.json');
@@ -41,59 +35,19 @@ const BlogPostTemplate = ({ data, location }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              height: '300px',
+              flexDirection: 'column',
               width: '100%',
               overflow: 'hidden',
             }}
           >
+            <h2>
+              Post location <span role="img">🗺</span>
+            </h2>
+            <MapHelper />
             {!topo ? (
               <Loading />
             ) : (
-              <ComposableMap>
-                <ZoomableGroup
-                  style={{ outline: 'none' }}
-                  center={Object.values(post.locations[0].coordinates)}
-                  zoom={5}
-                >
-                  <Geographies geography={topo}>
-                    {(geographies, projection) =>
-                      geographies.map(geography => (
-                        <Geography
-                          style={{
-                            pressed: { fill: '#141823', cursor: 'pointer' },
-                            hover: { fill: '#2b2f38', cursor: 'pointer' },
-                          }}
-                          key={geography.id}
-                          geography={geography}
-                          projection={projection}
-                        />
-                      ))
-                    }
-                  </Geographies>
-                  <Markers>
-                    {post.locations.map(({ coordinates, id, name }) => (
-                      <Marker
-                        key={id}
-                        style={{
-                          default: { fill: '#e1897c' },
-                          hover: { fill: '#fbada1', cursor: 'pointer' },
-                          pressed: { fill: '#fde5df', cursor: 'pointer' },
-                        }}
-                        marker={{ coordinates: Object.values(coordinates) }}
-                      >
-                        <circle cx={0} cy={0} r={10} />
-                        <text
-                          textAnchor="middle"
-                          y={30}
-                          style={{ fill: '#e1897c' }}
-                        >
-                          {name}
-                        </text>
-                      </Marker>
-                    ))}
-                  </Markers>
-                </ZoomableGroup>
-              </ComposableMap>
+              <Map locations={post.locations} topo={topo} />
             )}
           </div>
         )}
@@ -120,6 +74,10 @@ export const pageQuery = graphql`
       locations {
         name
         id
+        fields {
+          nameSlug
+          countrySlug
+        }
         coordinates {
           lon
           lat

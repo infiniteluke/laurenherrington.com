@@ -1,10 +1,12 @@
-const path = require(`path`);
+const path = require('path');
+const slugify = require('slugify');
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
 
   const BlogPost = path.resolve(`./src/templates/blog-post.js`);
   const Category = path.resolve(`./src/templates/category.js`);
+  const Place = path.resolve(`./src/templates/place.js`);
   return graphql(
     `
       {
@@ -24,6 +26,15 @@ exports.createPages = ({ graphql, actions }) => {
             }
           }
         }
+        allContentfulLocation(limit: 1000) {
+          locations: edges {
+            location: node {
+              id
+              name
+              country
+            }
+          }
+        }
       }
     `
   ).then(result => {
@@ -32,6 +43,7 @@ exports.createPages = ({ graphql, actions }) => {
     }
 
     // Create blog posts pages.
+    const { locations } = result.data.allContentfulLocation;
     const { posts } = result.data.allContentfulPost;
     const { categories } = result.data.allContentfulCategory;
     categories.forEach(({ category }, index) => {
@@ -42,6 +54,28 @@ exports.createPages = ({ graphql, actions }) => {
           slug: category.slug,
         },
       });
+    });
+    locations.forEach(({ location }, index) => {
+      if (location.name) {
+        const slug = slugify(location.name.toLocaleLowerCase());
+        createPage({
+          path: `place/name/${slug}`,
+          component: Place,
+          context: {
+            place: location.name,
+          },
+        });
+      }
+      if (location.country) {
+        const slug = slugify(location.country.toLocaleLowerCase());
+        createPage({
+          path: `place/country/${slug}`,
+          component: Place,
+          context: {
+            place: location.country,
+          },
+        });
+      }
     });
     posts.forEach(({ post }, index) => {
       const previous =
@@ -58,4 +92,20 @@ exports.createPages = ({ graphql, actions }) => {
       });
     });
   });
+};
+
+exports.onCreateNode = ({ node, actions, getNode }) => {
+  const { createNodeField } = actions;
+  if (node.internal.type === 'ContentfulLocation') {
+    createNodeField({
+      name: 'nameSlug',
+      node,
+      value: slugify(node.name.toLocaleLowerCase()),
+    });
+    createNodeField({
+      name: 'countrySlug',
+      node,
+      value: slugify(node.country.toLocaleLowerCase()),
+    });
+  }
 };
