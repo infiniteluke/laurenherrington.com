@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import Img from 'gatsby-image';
+import { Link } from 'gatsby';
 
 export const Content = styled.div`
   a {
@@ -35,5 +37,59 @@ export const Content = styled.div`
       content: close-quote;
       visibility: hidden;
     }
+  }
+`;
+
+export const CategoryContainer = styled(Link)`
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  padding: 0 15px 15px 15px;
+  @media (min-width: 300px) {
+    width: 50%;
+  }
+  @media (min-width: 550px) {
+    width: 33%;
+  }
+  @media (min-width: 1300px) {
+    width: 25%;
+  }
+`;
+
+export const CircleImage = styled(Img)`
+  border-radius: 50%;
+  img {
+    margin: 0;
+  }
+`;
+
+export const CategoryTitle = styled.h2`
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  color: ${({ theme }) => theme.bg};
+`;
+
+export const Circle = styled.div`
+  position: relative;
+  &:after {
+    content: '';
+    border-radius: 50%;
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+  }
+  &:hover:after {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
+    opacity: 1;
   }
 `;

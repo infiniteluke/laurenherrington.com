@@ -20,6 +20,11 @@ class RootIndex extends React.Component {
     const categories = this.props.data.allContentfulCategory.categories.map(
       p => p.category
     );
+    // Special "Categories" need these fields
+    const globe = {
+      squareImageLarge: this.props.data.globeImage,
+      title: 'Globe',
+    };
     return (
       <Layout
         location={this.props.location}
@@ -27,9 +32,18 @@ class RootIndex extends React.Component {
       >
         <Nav>
           <CategoryList>
-            {categories.map(category => {
-              return <CategoryCircle key={category.slug} category={category} />;
-            })}
+            <>
+              <CategoryCircle to="globe" category={globe} />
+              {categories.map(category => {
+                return (
+                  <CategoryCircle
+                    key={category.slug}
+                    category={category}
+                    to={category.slug}
+                  />
+                );
+              })}
+            </>
           </CategoryList>
         </Nav>
       </Layout>
@@ -46,15 +60,17 @@ export const pageQuery = graphql`
         title
       }
     }
+    globeImage: contentfulAsset(
+      id: { eq: "20caf6fa-18f2-59e8-a742-385190338ec5" }
+    ) {
+      ...squareImageLarge
+    }
     allContentfulCategory(limit: 1000) {
       categories: edges {
         category: node {
           id
           slug
           title
-          squareImageSmall: image {
-            ...squareImageSmall
-          }
           squareImageLarge: image {
             ...squareImageLarge
           }

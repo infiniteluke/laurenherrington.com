@@ -13,6 +13,9 @@ export default createGlobalStyle`
   body {
     background-color: ${theme.bg};
   }
+  p, article {
+    line-height: 1.2;
+  }
   @font-face {
     font-family: 'Quirk';
     font-style: normal;

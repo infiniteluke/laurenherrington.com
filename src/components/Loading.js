@@ -16,7 +16,7 @@ const LoadingIndicator = styled.div`
   position: absolute;
   width: 26px;
   height: 26px;
-  background: ${({ theme }) => theme.accentMuted};
+  background: ${({ theme }) => theme.compAccent};
   animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
   &:after,
   &:before {
@@ -25,7 +25,7 @@ const LoadingIndicator = styled.div`
     display: block;
     width: 26px;
     height: 26px;
-    background: ${({ theme }) => theme.accentMuted};
+    background: ${({ theme }) => theme.compAccent};
   }
   &:before {
     left: -17px;

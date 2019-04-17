@@ -6,9 +6,9 @@ import BlogPostMeta from './BlogPostMeta';
 import { Content } from '../styles';
 
 const PostTitle = styled(Link)`
-  color: ${({ theme }) => theme.darkMuted};
+  color: ${({ theme }) => theme.dark};
   &:hover {
-    color: ${({ theme }) => theme.accent};
+    color: ${({ theme }) => theme.darkMuted};
   }
 `;
 
