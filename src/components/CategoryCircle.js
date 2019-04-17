@@ -34,7 +34,7 @@ const CategoryTitle = styled.h2`
   top: 50%;
   left: 50%;
   margin: 0;
-  color: white;
+  color: ${({ theme }) => theme.bg};
 `;
 
 const Circle = styled.div`

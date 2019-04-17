@@ -2,11 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'gatsby';
 
-import BlogPostMeta from '../components/BlogPostMeta';
+import BlogPostMeta from './BlogPostMeta';
 import { Content } from '../styles';
 
 const PostTitle = styled(Link)`
-  color: ${({ theme }) => theme.accent};
+  color: ${({ theme }) => theme.darkMuted};
+  &:hover {
+    color: ${({ theme }) => theme.accent};
+  }
 `;
 
 const Article = styled.article`

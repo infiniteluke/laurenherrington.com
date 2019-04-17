@@ -16,6 +16,10 @@ const HeaderTitle = styled.h1`
     letter-spacing: -0.9rem;
   }
 
+  &:hover {
+    color: ${({ theme }) => theme.darkMuted};
+  }
+
   @media (min-width: 375px) {
     font-size: 4.75rem;
     line-height: 3rem;
@@ -32,7 +36,6 @@ const HeaderTitle = styled.h1`
   }
 
   @media (min-width: 1000px) {
-    order: 2;
     font-size: 6.5rem;
   }
 `;
@@ -54,10 +57,9 @@ const Header = styled('header')`
   padding: 30px;
   display: flex;
   flex-direction: column;
-  background-image: ${({ theme }) =>
-    `linear-gradient(${theme.bgLight}, ${theme.bg})`};
-
+  background-color: ${({ theme }) => theme.bg};
   @media (min-width: 768px) {
+    max-height: 195px;
     padding: 50px;
   }
 `;

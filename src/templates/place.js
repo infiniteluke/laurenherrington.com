@@ -32,7 +32,7 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
         <h1 style={{ textAlign: 'center' }}>{`Posts at "${
           pageContext.place
         }"`}</h1>
-        {topo && (
+        {locations && (
           <div
             style={{
               display: 'flex',
@@ -44,8 +44,10 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
             }}
           >
             <MapHelper />
-            {!locations ? (
-              <Loading />
+            {!topo ? (
+              <div style={{ margin: '118px 0' }}>
+                <Loading />
+              </div>
             ) : (
               <Map
                 zoom={5}

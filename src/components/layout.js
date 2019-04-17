@@ -1,12 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import Helmet from 'react-helmet';
 import { withPrefix } from 'gatsby';
 
 import Header from './Header';
 import GlobalStyle from '../styles/global';
 import theme from '../utils/theme';
-import { ThemeProvider } from 'styled-components';
 
 const Main = styled.main`
   max-width: 1000px;
@@ -17,7 +16,6 @@ const Main = styled.main`
 `;
 
 const PageWrapper = styled.div`
-  display: flex;
   height: 100%;
   flex-direction: column;
 `;
@@ -25,12 +23,12 @@ const PageWrapper = styled.div`
 const Footer = styled.footer`
   padding: 60px;
   text-align: center;
-  background-image: ${({ theme }) =>
-    `linear-gradient(${theme.bg}, ${theme.bgLight})`};
+  background-image: ${({ theme }) => theme.bg};
 `;
 
 const FooterItem = styled.li`
   list-style: none;
+  margin: 0;
 `;
 
 const Image = styled.img`
@@ -38,36 +36,28 @@ const Image = styled.img`
   height: 40px;
 `;
 
-class Layout extends React.Component {
-  render() {
-    const { title, children } = this.props;
-    return (
-      <ThemeProvider theme={theme}>
-        <PageWrapper>
-          <Helmet title={title} />
-          <GlobalStyle />
-          <Header title={title} />
-          <Main>{children}</Main>
-          <Footer>
-            <ul>
-              <FooterItem>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://www.instagram.com/lherrington/"
-                >
-                  <Image
-                    src={withPrefix('/img/instagram.svg')}
-                    alt="Instagram"
-                  />
-                </a>
-              </FooterItem>
-            </ul>
-          </Footer>
-        </PageWrapper>
-      </ThemeProvider>
-    );
-  }
-}
+const Layout = ({ title, children }) => (
+  <ThemeProvider theme={theme}>
+    <PageWrapper>
+      <Helmet title={title} />
+      <GlobalStyle />
+      <Header title={title} />
+      <Main>{children}</Main>
+      <Footer>
+        <ul style={{ margin: 0 }}>
+          <FooterItem>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.instagram.com/lherrington/"
+            >
+              <Image src={withPrefix('/img/instagram.svg')} alt="Instagram" />
+            </a>
+          </FooterItem>
+        </ul>
+      </Footer>
+    </PageWrapper>
+  </ThemeProvider>
+);
 
 export default Layout;

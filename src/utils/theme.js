@@ -1,8 +1,11 @@
-export default {
-  bgLight: '#fef2ef',
-  bg: '#fde5df', // https://www.color-hex.com/color/fde5df
-  dark: '#2b2f38',
-  accentMuted: '#fbada1',
-  accent: '#e1897c',
+const theme = {
+  bg: '#F4F5F0',
+  darkMuted: '#736355',
+  dark: '#52331B',
+  compAccent: '#e1897c',
+  accentMuted: '#b0edb8',
+  accent: '#7ce189',
   black: '#141823',
 };
+
+export default theme;

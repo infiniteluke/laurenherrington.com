@@ -24,7 +24,7 @@ export const Content = styled.div`
     p:before {
       font-size: 4rem;
       font-family: Georgia, serif;
-      color: ${({ theme }) => theme.accent};
+      color: ${({ theme }) => theme.darkMuted};
       content: open-quote;
       line-height: 0;
       margin-right: 0.15em;
