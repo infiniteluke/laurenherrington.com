@@ -86,7 +86,7 @@ export default ({ data, location }) => {
               width: '100%',
             }}
           >
-            <ZoomableGroup center={[0, 0]}>
+            <ZoomableGroup disablePanning center={[0, 0]}>
               <Geographies geography={topo}>
                 {(geographies, projection) =>
                   geographies.map((geography, i) => (

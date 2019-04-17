@@ -39,7 +39,7 @@ class RootIndex extends React.Component {
                   <CategoryCircle
                     key={category.slug}
                     category={category}
-                    to={category.slug}
+                    to={`tag/${category.slug}`}
                   />
                 );
               })}
