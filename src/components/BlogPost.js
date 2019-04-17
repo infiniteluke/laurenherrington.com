@@ -22,7 +22,7 @@ export default class BlogPost extends React.Component {
     return (
       <Article>
         <PostTitle to={`/post/${post.slug}`}>
-          <h1>{post.title}</h1>
+          <h2>{post.title}</h2>
         </PostTitle>
         <BlogPostMeta
           createdAt={post.createdAt}

@@ -8,6 +8,7 @@ class CategoryTemplate extends React.Component {
   render() {
     const pageContext = this.props.pageContext;
     const siteTitle = this.props.data.site.siteMetadata.title;
+    const category = this.props.data.contentfulCategory;
     const posts = this.props.data.allContentfulPost
       ? this.props.data.allContentfulPost.posts.map(p => p.post)
       : [];
@@ -19,7 +20,14 @@ class CategoryTemplate extends React.Component {
         <section>
           <Helmet title={siteTitle} />
           {posts.length ? (
-            posts.map(post => <BlogPost key={post.id} post={post} />)
+            <>
+              <h1 style={{ marginBottom: '40px', textAlign: 'center' }}>{`"${
+                category.title
+              }" posts`}</h1>
+              {posts.map(post => (
+                <BlogPost key={post.id} post={post} />
+              ))}
+            </>
           ) : (
             <h2 style={{ textAlign: 'center' }}>{`No "${
               pageContext.slug
@@ -39,6 +47,9 @@ export const pageQuery = graphql`
       siteMetadata {
         title
       }
+    }
+    contentfulCategory(slug: { eq: $slug }) {
+      title
     }
     allContentfulPost(
       limit: 1000

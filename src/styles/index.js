@@ -10,7 +10,7 @@ export const Content = styled.div`
 
   blockquote {
     max-width: 800px;
-    padding: 20px;
+    padding: 20px 15px;
     font-weight: 400;
     font-style: italic;
 
