@@ -30,13 +30,8 @@ const HeaderTitle = styled.h1`
     line-height: 4.25rem;
   }
 
-  @media (min-width: 768px) {
-    line-height: 4.75rem;
-    font-size: 8rem;
-  }
-
   @media (min-width: 1000px) {
-    font-size: 6.5rem;
+    font-size: 7rem;
   }
 `;
 
@@ -59,8 +54,10 @@ const Header = styled('header')`
   flex-direction: column;
   background-color: ${({ theme }) => theme.bg};
   @media (min-width: 768px) {
-    max-height: 195px;
     padding: 50px;
+  }
+  @media (min-width: 1000px) {
+    max-height: 195px;
   }
 `;
 
