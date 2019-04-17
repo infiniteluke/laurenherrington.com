@@ -56,8 +56,8 @@ const Header = styled('header')`
   @media (min-width: 768px) {
     padding: 50px;
   }
-  @media (min-width: 1000px) {
-    max-height: 195px;
+  @media (min-width: 826px) {
+    max-height: 185px;
   }
 `;
 
