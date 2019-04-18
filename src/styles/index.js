@@ -43,6 +43,7 @@ export const Content = styled.div`
 
 export const CategoryContainer = styled(Link)`
   position: relative;
+  border-radius: 50%;
   display: inline-block;
   width: 100%;
   padding: 0 15px 15px 15px;

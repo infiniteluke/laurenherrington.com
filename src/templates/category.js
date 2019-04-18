@@ -15,9 +15,9 @@ const CategoryTitle = styled.h1`
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: ${({ theme }) => theme.black};
+  color: ${({ theme }) => theme.bg};
   @media (min-width: 768px) {
-    font-size: 4rem;
+    font-size: 3.5rem;
   }
 `;
 
