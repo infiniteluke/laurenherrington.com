@@ -103,20 +103,20 @@ export const MarkerCircle = styled.circle`
   &:hover {
     fill: ${({ theme }) => theme.compAccentMuted};
     cursor: pointer;
-    r: ${({ r }) => r * 1.9};
+    r: ${({ r }) => r * 2};
   }
   &:active {
     cursor: pointer;
-    r: ${({ r }) => r * 2.1};
+    r: ${({ r }) => r * 2.2};
   }
 
   @media (min-width: 768px) {
     r: ${({ r }) => r};
     &:hover {
-      r: ${({ r }) => r * 1.3};
+      r: ${({ r }) => r * 1.5};
     }
     &:active {
-      r: ${({ r }) => r * 1.6};
+      r: ${({ r }) => r * 1.8};
     }
   }
 `;

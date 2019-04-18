@@ -1,5 +1,6 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+import styled from 'styled-components';
+import { graphql, Link } from 'gatsby';
 
 import Layout from '../components/Layout';
 import Map from '../components/Map';
@@ -10,7 +11,35 @@ import { Content } from '../styles';
 
 const topoPromise = import('../utils/topo.json');
 
-const BlogPostTemplate = ({ data, location }) => {
+const ArticleFooter = styled.footer`
+  display: grid;
+  grid-template-columns: [previous] 50% [next] 50%;
+  margin-top: 40px;
+`;
+
+const NextLink = styled(Link)`
+  justify-self: end;
+  grid-column-start: next;
+  color: ${({ theme }) => theme.dark};
+  &:visited {
+    color: ${({ theme }) => theme.darkMuted};
+  }
+`;
+
+const PreviousLink = styled(Link)`
+  justify-self: start;
+  grid-column-start: previous;
+  color: ${({ theme }) => theme.dark};
+  &:visited {
+    color: ${({ theme }) => theme.darkMuted};
+  }
+`;
+
+const BlogPostTemplate = ({
+  data,
+  location,
+  pageContext: { next, previous },
+}) => {
   const [topo, setTopo] = React.useState(null);
   React.useEffect(() => {
     topoPromise.then(data => setTopo(data.default));
@@ -51,6 +80,32 @@ const BlogPostTemplate = ({ data, location }) => {
             )}
           </div>
         )}
+        <ArticleFooter>
+          {previous ? (
+            <PreviousLink to={`/post/${previous.slug}`}>
+              <span
+                style={{ marginLeft: '3px' }}
+                role="img"
+                aria-label="forward arrow"
+              >
+                ⬅️
+              </span>
+              {previous.title}
+            </PreviousLink>
+          ) : null}
+          {next ? (
+            <NextLink to={`/post/${next.slug}`}>
+              {next.title}
+              <span
+                style={{ marginLeft: '6px' }}
+                role="img"
+                aria-label="forward arrow"
+              >
+                ➡️
+              </span>
+            </NextLink>
+          ) : null}
+        </ArticleFooter>
       </article>
     </Layout>
   );

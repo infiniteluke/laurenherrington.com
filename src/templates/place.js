@@ -89,6 +89,7 @@ export const pageQuery = graphql`
       locations: edges {
         location: node {
           name
+          id
           fields {
             nameSlug
             countrySlug
@@ -108,6 +109,7 @@ export const pageQuery = graphql`
       locations: edges {
         location: node {
           name
+          id
           fields {
             nameSlug
             countrySlug

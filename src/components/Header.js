@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Link from './Link';
+import { Link } from 'gatsby';
 
 const HeaderTitle = styled.h1`
   text-align: center;

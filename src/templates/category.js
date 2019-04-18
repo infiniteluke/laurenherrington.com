@@ -28,7 +28,7 @@ const Hero = styled.div`
   height: 100%;
   background-image: ${({ theme }) =>
     `linear-gradient(${theme.dark}, ${theme.darkMuted})`};
-  opacity: 0.4;
+  opacity: 0.5;
 `;
 
 class CategoryTemplate extends React.Component {
@@ -52,11 +52,18 @@ class CategoryTemplate extends React.Component {
                 style={{
                   position: 'relative',
                   marginBottom: '40px',
+                  overflow: 'hidden',
                 }}
               >
                 <Hero />
                 <CategoryTitle>{`"${category.title}" posts`}</CategoryTitle>
-                <Img alt={category.hero.title} fluid={category.hero.fluid} />
+                <Img
+                  style={{
+                    height: '400px',
+                  }}
+                  alt={category.hero.title}
+                  fluid={category.hero.fluid}
+                />
               </div>
               {posts.map(post => (
                 <BlogPost key={post.id} post={post} />

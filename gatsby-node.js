@@ -14,6 +14,7 @@ exports.createPages = ({ graphql, actions }) => {
           posts: edges {
             post: node {
               slug
+              title
               id
             }
           }
@@ -79,8 +80,8 @@ exports.createPages = ({ graphql, actions }) => {
     });
     posts.forEach(({ post }, index) => {
       const previous =
-        index === posts.length - 1 ? null : posts[index + 1].node;
-      const next = index === 0 ? null : posts[index - 1].node;
+        index === posts.length - 1 ? null : posts[index + 1].post;
+      const next = index === 0 ? null : posts[index - 1].post;
       createPage({
         path: `post/${post.slug}`,
         component: BlogPost,

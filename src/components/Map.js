@@ -15,7 +15,15 @@ import {
 } from '../styles';
 import slugify from 'slugify';
 
-export default ({ zoom = 10, center, locations, topo, markerSize = 14 }) => {
+export default ({
+  locations,
+  topo,
+  center = Object.values(locations[0].coordinates) || [0, 0],
+  zoom = 10,
+  markerSize = 14,
+  height = 900,
+  width = 900,
+}) => {
   const [zoomState, setZoom] = React.useState(zoom);
   return (
     <div
@@ -45,16 +53,17 @@ export default ({ zoom = 10, center, locations, topo, markerSize = 14 }) => {
           onChange={e => setZoom(e.target.value)}
         />
       </div>
-      <StyledComposableMap height={'900'} width={'900'}>
+      <StyledComposableMap height={height} width={width}>
         <ZoomableGroup
           style={{ outline: 'none' }}
-          center={center || Object.values(locations[0].coordinates)}
+          center={center}
           zoom={Number(zoomState)}
         >
           <Geographies geography={topo}>
             {(geographies, projection) =>
               geographies.map(geography => (
                 <Link
+                  key={geography.properties.NAME}
                   to={`/place/country/${slugify(
                     geography.properties.NAME.toLocaleLowerCase()
                   )}`}
@@ -65,7 +74,6 @@ export default ({ zoom = 10, center, locations, topo, markerSize = 14 }) => {
                       pressed: { fill: '#141823', cursor: 'pointer' },
                       hover: { fill: '#2b2f38', cursor: 'pointer' },
                     }}
-                    key={geography.id}
                     geography={geography}
                     projection={projection}
                   />
