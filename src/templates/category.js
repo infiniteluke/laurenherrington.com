@@ -1,8 +1,35 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import styled from 'styled-components';
+import Img from 'gatsby-image';
 import Helmet from 'react-helmet';
 import Layout from '../components/Layout';
 import BlogPost from '../components/BlogPost';
+
+const CategoryTitle = styled.h1`
+  font-size: 3rem;
+  margin-bottom: 40px;
+  text-align: center;
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: ${({ theme }) => theme.black};
+  @media (min-width: 768px) {
+    font-size: 4rem;
+  }
+`;
+
+const Hero = styled.div`
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background-image: ${({ theme }) =>
+    `linear-gradient(${theme.dark}, ${theme.darkMuted})`};
+  opacity: 0.4;
+`;
 
 class CategoryTemplate extends React.Component {
   render() {
@@ -21,9 +48,16 @@ class CategoryTemplate extends React.Component {
           <Helmet title={siteTitle} />
           {posts.length ? (
             <>
-              <h1 style={{ marginBottom: '40px', textAlign: 'center' }}>{`"${
-                category.title
-              }" posts`}</h1>
+              <div
+                style={{
+                  position: 'relative',
+                  marginBottom: '40px',
+                }}
+              >
+                <Hero />
+                <CategoryTitle>{`"${category.title}" posts`}</CategoryTitle>
+                <Img alt={category.hero.title} fluid={category.hero.fluid} />
+              </div>
               {posts.map(post => (
                 <BlogPost key={post.id} post={post} />
               ))}
@@ -50,6 +84,9 @@ export const pageQuery = graphql`
     }
     contentfulCategory(slug: { eq: $slug }) {
       title
+      hero: image {
+        ...squareImageLarge
+      }
     }
     allContentfulPost(
       limit: 1000
@@ -74,6 +111,12 @@ export const pageQuery = graphql`
           }
         }
       }
+    }
+  }
+  fragment hero on ContentfulAsset {
+    title
+    fluid(maxWidth: 1200, maxHeight: 600) {
+      ...GatsbyContentfulFluid_withWebp
     }
   }
 `;

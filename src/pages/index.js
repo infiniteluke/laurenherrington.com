@@ -79,12 +79,6 @@ export const pageQuery = graphql`
     }
   }
 
-  fragment squareImageSmall on ContentfulAsset {
-    title
-    fluid {
-      ...GatsbyContentfulFluid_withWebp
-    }
-  }
   fragment squareImageLarge on ContentfulAsset {
     title
     fluid(maxWidth: 600, maxHeight: 600) {
