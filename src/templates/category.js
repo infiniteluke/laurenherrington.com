@@ -7,7 +7,7 @@ import Layout from '../components/Layout';
 import BlogPost from '../components/BlogPost';
 
 const CategoryTitle = styled.h1`
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 40px;
   text-align: center;
   position: absolute;

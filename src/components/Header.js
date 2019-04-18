@@ -21,12 +21,12 @@ const HeaderTitle = styled.h1`
   }
 
   @media (min-width: 375px) {
-    font-size: 4.75rem;
+    font-size: 4.25rem;
     line-height: 3rem;
   }
 
   @media (min-width: 550px) {
-    font-size: 6.5rem;
+    font-size: 7rem;
     line-height: 4.25rem;
   }
 
@@ -36,22 +36,13 @@ const HeaderTitle = styled.h1`
 `;
 
 const HeaderLink = styled(Link)`
+  display: block;
   border-bottom: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-decoration: none;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    justify-content: center;
-  }
 `;
 
-const Header = styled('header')`
+const Header = styled.header`
   padding: 30px;
-  display: flex;
-  flex-direction: column;
   background-color: ${({ theme }) => theme.bg};
   @media (min-width: 768px) {
     padding: 50px;
