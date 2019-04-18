@@ -25,8 +25,8 @@ const HeaderTitle = styled.h1`
     line-height: 3rem;
   }
 
-  @media (min-width: 550px) {
-    font-size: 7rem;
+  @media (min-width: 510px) {
+    font-size: 6rem;
     line-height: 4.25rem;
   }
 

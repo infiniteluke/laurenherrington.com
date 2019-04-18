@@ -46,8 +46,10 @@ export const CategoryContainer = styled(Link)`
   border-radius: 50%;
   display: inline-block;
   width: 100%;
-  padding: 0 5px 5px 5px;
-  @media (min-width: 300px) {
+  padding: 0 30px 30px 30px;
+
+  @media (min-width: 380px) {
+    padding: 0 5px 5px 5px;
     width: 50%;
   }
   @media (min-width: 550px) {
