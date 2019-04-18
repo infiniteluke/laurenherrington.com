@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Img from 'gatsby-image';
 import { Link } from 'gatsby';
+import { ComposableMap } from 'react-simple-maps';
 
 export const Content = styled.div`
   a {
@@ -12,7 +13,7 @@ export const Content = styled.div`
 
   blockquote {
     max-width: 800px;
-    padding: 20px 15px;
+    padding: 20px 10px;
     font-weight: 400;
     font-style: italic;
 
@@ -91,5 +92,61 @@ export const Circle = styled.div`
   &:hover:after {
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
     opacity: 1;
+  }
+`;
+
+export const MarkerCircle = styled.circle`
+  fill: ${({ theme }) => theme.compAccent};
+  transition: all 0.2s ease;
+  r: ${({ r }) => r * 1.6};
+  &:hover {
+    fill: ${({ theme }) => theme.compAccentMuted};
+    cursor: pointer;
+    r: ${({ r }) => r * 1.9};
+  }
+  &:active {
+    cursor: pointer;
+    r: ${({ r }) => r * 2.1};
+  }
+
+  @media (min-width: 768px) {
+    r: ${({ r }) => r};
+    &:hover {
+      r: ${({ r }) => r * 1.3};
+    }
+    &:active {
+      r: ${({ r }) => r * 1.6};
+    }
+  }
+`;
+
+export const MarkerText = styled.text`
+  fill: ${({ theme }) => theme.compAccent};
+  font-size: 2rem;
+  &:hover {
+    fill: ${({ theme }) => theme.compAccentMuted};
+    cursor: pointer;
+  }
+  &:active {
+    cursor: pointer;
+  }
+
+  @media (min-width: 768px) {
+    height: 400px;
+  }
+`;
+
+export const MapLabel = styled.label`
+  color: ${({ theme }) => theme.compAccent};
+  font-size: 0.8rem;
+  padding-right: 10px;
+`;
+
+export const StyledComposableMap = styled(ComposableMap)`
+  width: 100%;
+  height: auto;
+
+  @media (min-width: 768px) {
+    height: 400px;
   }
 `;

@@ -1,78 +1,52 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link } from 'gatsby';
 import {
-  ComposableMap,
   ZoomableGroup,
   Geographies,
   Geography,
   Markers,
   Marker,
 } from 'react-simple-maps';
+import {
+  MapLabel,
+  StyledComposableMap,
+  MarkerCircle,
+  MarkerText,
+} from '../styles';
 import slugify from 'slugify';
 
-const MarkerCircle = styled.circle`
-  fill: ${({ theme }) => theme.compAccent};
-  transition: all 0.2s ease;
-  &:hover {
-    fill: ${({ theme }) => theme.compAccentMuted};
-    cursor: pointer;
-    r: ${({ r }) => r * 1.3};
-  }
-  &:active {
-    cursor: pointer;
-    r: ${({ r }) => r * 1.6};
-  }
-`;
-
-const MarkerText = styled.text`
-  fill: ${({ theme }) => theme.compAccent};
-  font-size: 1.2rem;
-  &:hover {
-    fill: ${({ theme }) => theme.compAccentMuted};
-    cursor: pointer;
-  }
-  &:active {
-    cursor: pointer;
-  }
-`;
-
-const Label = styled.label`
-  color: ${({ theme }) => theme.compAccent};
-  font-size: 0.8rem;
-  padding-right: 10px;
-`;
-
-export default ({ zoom = 10, center, locations, topo, markerSize = 12 }) => {
+export default ({ zoom = 10, center, locations, topo, markerSize = 14 }) => {
   const [zoomState, setZoom] = React.useState(zoom);
   return (
-    <div style={{ position: 'relative' }}>
+    <div
+      style={{
+        position: 'relative',
+        height: 'auto',
+        width: '100%',
+      }}
+    >
       <div
         style={{
           position: 'absolute',
+          display: 'flex',
           right: 0,
           paddingRight: '10px',
           paddingTop: '10px',
         }}
       >
-        <Label htmlFor="zoom">Zoom</Label>
+        <MapLabel htmlFor="zoom">Zoom</MapLabel>
         <input
           type="range"
           id="start"
           name="zoom"
-          min="1"
-          max="20"
+          min="3"
+          max="40"
           value={zoomState}
           onChange={e => setZoom(e.target.value)}
         />
       </div>
-      <ComposableMap
-        height={'300'}
-        width={'900'}
-        style={{ width: '100%', height: 'auto' }}
-      >
+      <StyledComposableMap height={'900'} width={'900'}>
         <ZoomableGroup
-          disablePanning
           style={{ outline: 'none' }}
           center={center || Object.values(locations[0].coordinates)}
           zoom={Number(zoomState)}
@@ -108,7 +82,7 @@ export default ({ zoom = 10, center, locations, topo, markerSize = 12 }) => {
                 >
                   <Link to={`/place/name/${nameSlug}`}>
                     <MarkerCircle cx={0} cy={0} r={markerSize} />
-                    <MarkerText textAnchor="middle" y={40}>
+                    <MarkerText textAnchor="middle" y={50}>
                       {name}
                     </MarkerText>
                   </Link>
@@ -117,7 +91,7 @@ export default ({ zoom = 10, center, locations, topo, markerSize = 12 }) => {
             )}
           </Markers>
         </ZoomableGroup>
-      </ComposableMap>
+      </StyledComposableMap>
     </div>
   );
 };

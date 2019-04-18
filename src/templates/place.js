@@ -51,7 +51,6 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
             ) : (
               <Map
                 zoom={5}
-                markerSize={7}
                 locations={locations.map(l => l.location)}
                 topo={topo}
               />

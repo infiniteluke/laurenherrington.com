@@ -12,6 +12,7 @@ import {
 } from 'react-simple-maps';
 import Helmet from 'react-helmet';
 
+import { MarkerCircle } from '../styles';
 import Layout from '../components/Layout';
 import MapHelper from '../components/MapHelper';
 
@@ -20,25 +21,9 @@ const GlobeHelpText = styled.div`
   margin-bottom: 30px;
 `;
 
-const topoPromise = import('../utils/topo.json');
-
-const MarkerCircle = styled.circle`
-  fill: ${({ theme }) => theme.compAccent};
-  transition: all 0.2s ease;
-  &:hover {
-    fill: ${({ theme }) => theme.compAccentMuted};
-    cursor: pointer;
-    r: ${({ r }) => r * 1.3};
-  }
-  &:active {
-    cursor: pointer;
-    r: ${({ r }) => r * 1.6};
-  }
-`;
-
 const MarkerText = styled.text`
   fill: ${({ theme }) => theme.compAccent};
-  font-size: 1rem;
+  font-size: 1.3rem;
   &:hover {
     fill: ${({ theme }) => theme.compAccentMuted};
     cursor: pointer;
@@ -46,7 +31,13 @@ const MarkerText = styled.text`
   &:active {
     cursor: pointer;
   }
+
+  @media (min-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
+
+const topoPromise = import('../utils/topo.json');
 
 export default ({ data, location }) => {
   const [topo, setTopo] = React.useState(null);
@@ -73,20 +64,27 @@ export default ({ data, location }) => {
         <div
           style={{
             width: '100%',
-            maxWidth: 980,
             margin: '0 auto',
           }}
         >
           <ComposableMap
+            height={'700'}
+            width={'900'}
             projectionConfig={{
               scale: 205,
               rotation: [0, 0, 0],
             }}
             style={{
               width: '100%',
+              height: 'auto',
             }}
           >
-            <ZoomableGroup disablePanning center={[0, 0]}>
+            <ZoomableGroup
+              style={{ outline: 'none' }}
+              disablePanning
+              zoom="1.1"
+              center={[0, 0]}
+            >
               <Geographies geography={topo}>
                 {(geographies, projection) =>
                   geographies.map((geography, i) => (
@@ -116,7 +114,7 @@ export default ({ data, location }) => {
                       marker={{ coordinates: Object.values(coordinates) }}
                     >
                       <Link to={`/place/name/${nameSlug}`}>
-                        <MarkerCircle cx={0} cy={0} r={5} />
+                        <MarkerCircle cx={0} cy={0} r={6} />
                         <MarkerText textAnchor="middle" y={30}>
                           {name}
                         </MarkerText>
