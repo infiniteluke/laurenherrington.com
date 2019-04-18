@@ -37,9 +37,9 @@ const Image = styled.img`
   height: 40px;
 `;
 
-const Layout = ({ title, children }) => (
+const Layout = ({ title, children, category = 'no' }) => (
   <ThemeProvider theme={theme}>
-    <PageWrapper>
+    <PageWrapper className={`${category}-category`}>
       <Helmet title={title} />
       <GlobalStyle />
       <Header title={title} />

@@ -27,4 +27,10 @@ export default createGlobalStyle`
   .rsm-geography:focus {
     outline: none;
   }
+
+  /* special styles for articles on a notes page */
+  .notes-category article header,
+  .notes-category article div {
+    text-align: center;
+  }
 `;

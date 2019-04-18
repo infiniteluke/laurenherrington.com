@@ -4,6 +4,8 @@ import { Link } from 'gatsby';
 import { ComposableMap } from 'react-simple-maps';
 
 export const Content = styled.div`
+  white-space: pre-line;
+
   a {
     color: ${({ theme }) => theme.accent};
     &:visited {

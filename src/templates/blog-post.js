@@ -7,6 +7,7 @@ import Map from '../components/Map';
 import BlogPostMeta from '../components/BlogPostMeta';
 import Loading from '../components/Loading';
 import MapHelper from '../components/MapHelper';
+import Heart from '../components/Heart';
 import { Content } from '../styles';
 
 const topoPromise = import('../utils/topo.json');
@@ -46,18 +47,27 @@ const BlogPostTemplate = ({
   }, [topoPromise]);
   const post = data.contentfulPost;
   return (
-    <Layout location={location} {...data.site.siteMetadata}>
+    <Layout
+      location={location}
+      {...data.site.siteMetadata}
+      category={post.category.slug}
+    >
       <article>
-        <h1 className="section-headline">{post.title}</h1>
-        <BlogPostMeta
-          createdAt={post.createdAt}
-          timeToRead={post.body.childMarkdownRemark.timeToRead}
-        />
+        <header>
+          <h1 className="section-headline">{post.title}</h1>
+          <BlogPostMeta
+            createdAt={post.createdAt}
+            timeToRead={post.body.childMarkdownRemark.timeToRead}
+          />
+        </header>
         <Content
           dangerouslySetInnerHTML={{
             __html: post.body.childMarkdownRemark.html,
           }}
         />
+        <div style={{ margin: '100px 0', textAlign: 'center' }}>
+          <Heart />
+        </div>
         {post.locations && (
           <div
             style={{
