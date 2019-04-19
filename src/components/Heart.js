@@ -12,7 +12,7 @@ const HeartWrapper = styled.div`
 
 const Heart = styled.div`
   top: 23px;
-  left: 19px;
+  left: 22px;
   position: absolute;
   width: 26px;
   height: 26px;

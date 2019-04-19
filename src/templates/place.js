@@ -135,7 +135,7 @@ export const pageQuery = graphql`
           body {
             childMarkdownRemark {
               timeToRead
-              excerpt(pruneLength: 140)
+              excerpt(pruneLength: 100)
               html
             }
           }
@@ -155,7 +155,7 @@ export const pageQuery = graphql`
           body {
             childMarkdownRemark {
               timeToRead
-              excerpt(pruneLength: 140)
+              excerpt(pruneLength: 100)
               html
             }
           }
