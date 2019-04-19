@@ -86,7 +86,7 @@ const BlogPostTemplate = ({
             {!topo ? (
               <Loading />
             ) : (
-              <Map locations={post.locations} topo={topo} />
+              <Map locations={post.locations} topo={topo} zoom={30} />
             )}
           </div>
         )}
