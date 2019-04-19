@@ -25,6 +25,10 @@ export default ({
   width = 900,
 }) => {
   const [zoomState, setZoom] = React.useState(zoom);
+  React.useEffect(() => {
+    setZoom(zoom);
+  }, [zoom]);
+
   return (
     <div
       style={{
