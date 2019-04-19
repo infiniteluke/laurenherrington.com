@@ -1,5 +1,4 @@
 const dotenv = require('dotenv');
-const theme = require('./src/utils/theme');
 
 dotenv.config({
   path: `.env`,
@@ -64,8 +63,8 @@ module.exports = {
         short_name: `Lauren Blog`,
         icon: 'lauren.jpg',
         start_url: `/`,
-        background_color: theme.bg,
-        theme_color: theme.dark,
+        background_color: '#F4F5F0',
+        theme_color: '#52331B',
         display: `minimal-ui`,
       },
     },
