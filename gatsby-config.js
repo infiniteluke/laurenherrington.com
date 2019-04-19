@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const theme = require('src/utils/theme');
 
 dotenv.config({
   path: `.env`,
@@ -9,7 +10,7 @@ module.exports = {
     title: `Lauren Herrington`,
     author: `Lauren Herrington`,
     description: `Lauren Herrington's personal blog.`,
-    siteUrl: `https://affectionate-bose-009344.netlify.com`,
+    siteUrl: `https://laurenherrington.com`,
   },
   plugins: [
     'gatsby-plugin-styled-components',
@@ -57,20 +58,21 @@ module.exports = {
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        //trackingId: `ADD YOUR TRACKING ID HERE`,
-      },
-    },
-    {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: `Lauren Herrington Blog`,
         short_name: `Lauren Blog`,
+        icon: 'lauren.jpg',
         start_url: `/`,
-        background_color: `#ffffff`,
-        theme_color: `#663399`,
+        background_color: theme.bg,
+        theme_color: theme.dark,
         display: `minimal-ui`,
+      },
+    },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: process.env.GOOGLE_ANALYTICS_TRACKING_ID,
       },
     },
     `gatsby-plugin-offline`,
