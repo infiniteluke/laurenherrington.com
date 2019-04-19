@@ -28,6 +28,7 @@ const Article = styled.article`
 const FadeTeaser = styled.div`
   position: relative;
   height: 3.6em;
+  overflow: hidden;
 
   &:after {
     content: '';
