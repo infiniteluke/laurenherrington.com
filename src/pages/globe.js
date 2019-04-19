@@ -15,6 +15,7 @@ const GlobeHelpText = styled.div`
 const topoPromise = import('../utils/topo.json');
 
 export default ({ data, location }) => {
+  const [zoom, setZoom] = React.useState(2);
   const [topo, setTopo] = React.useState(null);
   React.useEffect(() => {
     topoPromise.then(data => setTopo(data.default));
@@ -47,7 +48,8 @@ export default ({ data, location }) => {
             topo={topo}
             height={900}
             width={1000}
-            zoom={2}
+            zoom={zoom}
+            setZoom={setZoom}
             markerSize={9}
             center={[0, 10]}
           />

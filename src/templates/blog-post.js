@@ -41,6 +41,7 @@ const BlogPostTemplate = ({
   location,
   pageContext: { next, previous },
 }) => {
+  const [zoom, setZoom] = React.useState(10);
   const [topo, setTopo] = React.useState(null);
   React.useEffect(() => {
     topoPromise.then(data => setTopo(data.default));
@@ -86,7 +87,12 @@ const BlogPostTemplate = ({
             {!topo ? (
               <Loading />
             ) : (
-              <Map locations={post.locations} topo={topo} />
+              <Map
+                zoom={zoom}
+                setZoom={setZoom}
+                locations={post.locations}
+                topo={topo}
+              />
             )}
           </div>
         )}
