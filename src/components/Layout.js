@@ -23,13 +23,19 @@ const PageWrapper = styled.div`
 
 const Footer = styled.footer`
   padding: 60px;
-  text-align: center;
   background-image: ${({ theme }) => theme.bg};
+`;
+
+const FooterList = styled.ul`
+  display: flex;
+  margin: 0;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 const FooterItem = styled.li`
   list-style: none;
-  margin: 0;
+  margin: 0 10px;
 `;
 
 const Image = styled.img`
@@ -45,7 +51,7 @@ const Layout = ({ title, children, category = 'no' }) => (
       <Header title={title} />
       <Main>{children}</Main>
       <Footer>
-        <ul style={{ margin: 0 }}>
+        <FooterList>
           <FooterItem>
             <a
               target="_blank"
@@ -55,7 +61,16 @@ const Layout = ({ title, children, category = 'no' }) => (
               <Image src={withPrefix('/img/instagram.svg')} alt="Instagram" />
             </a>
           </FooterItem>
-        </ul>
+          <FooterItem>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://tinyletter.com/laurenherrington/"
+            >
+              <Image src={withPrefix('/img/envelope.svg')} alt="Newsletter" />
+            </a>
+          </FooterItem>
+        </FooterList>
       </Footer>
     </PageWrapper>
   </ThemeProvider>

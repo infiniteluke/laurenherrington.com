@@ -54,7 +54,7 @@ const BlogPostTemplate = ({
       category={post.category.slug}
     >
       <article>
-        <header>
+        <header style={{ marginBottom: '40px' }}>
           <h1 className="section-headline">{post.title}</h1>
           <BlogPostMeta
             createdAt={post.createdAt}
