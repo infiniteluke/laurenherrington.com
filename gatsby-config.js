@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const theme = require('src/utils/theme');
+const theme = require('./src/utils/theme');
 
 dotenv.config({
   path: `.env`,
