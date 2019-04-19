@@ -19,12 +19,12 @@ export default ({
   locations,
   topo,
   center = Object.values(locations[0].coordinates) || [0, 0],
-  zoom,
-  setZoom,
+  zoom = 10,
   markerSize = 14,
   height = 900,
   width = 900,
 }) => {
+  const [zoomState, setZoom] = React.useState(zoom);
   return (
     <div
       style={{
@@ -49,7 +49,7 @@ export default ({
           name="zoom"
           min="3"
           max="40"
-          value={zoom}
+          value={zoomState}
           onChange={e => setZoom(e.target.value)}
         />
       </div>
@@ -57,7 +57,7 @@ export default ({
         <ZoomableGroup
           style={{ outline: 'none' }}
           center={center}
-          zoom={Number(zoom)}
+          zoom={Number(zoomState)}
         >
           <Geographies geography={topo}>
             {(geographies, projection) =>
