@@ -66,7 +66,11 @@ export const CategoryContainer = styled(Link)`
 export const CircleImage = styled(Img)`
   border-radius: 50%;
   img {
+    border-radius: 50%;
     margin: 0;
+  }
+  picture {
+    border-radius: 50%;
   }
 `;
 
