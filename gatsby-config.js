@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const shared = require('./src/utils/shared');
 
 dotenv.config({
   path: `.env`,
@@ -63,8 +64,8 @@ module.exports = {
         short_name: `Lauren Blog`,
         icon: 'lauren.jpg',
         start_url: `/`,
-        background_color: '#F4F5F0',
-        theme_color: '#52331B',
+        background_color: shared.theme.bg,
+        theme_color: shared.theme.dark,
         display: `minimal-ui`,
       },
     },
