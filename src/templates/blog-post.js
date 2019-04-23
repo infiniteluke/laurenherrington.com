@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import { graphql, Link } from 'gatsby';
 
 import Layout from '../components/Layout';
-import Map from '../components/Map';
 import BlogPostMeta from '../components/BlogPostMeta';
 import Loading from '../components/Loading';
 import MapHelper from '../components/MapHelper';
 import Heart from '../components/Heart';
 import { Content } from '../styles';
 
-const topoPromise = import('../utils/topo.json');
+const Map = React.lazy(() => import('../components/Map'));
 
 const ArticleFooter = styled.footer`
   display: grid;
@@ -41,10 +40,6 @@ const BlogPostTemplate = ({
   location,
   pageContext: { next, previous },
 }) => {
-  const [topo, setTopo] = React.useState(null);
-  React.useEffect(() => {
-    topoPromise.then(data => setTopo(data.default));
-  }, [topoPromise]);
   const post = data.contentfulPost;
   return (
     <Layout
@@ -83,10 +78,16 @@ const BlogPostTemplate = ({
               Post location <span role="img">🗺</span>
             </h2>
             <MapHelper />
-            {!topo ? (
-              <Loading />
-            ) : (
-              <Map locations={post.locations} topo={topo} zoom={30} />
+            {typeof window !== 'undefined' && (
+              <React.Suspense
+                fallback={
+                  <div style={{ margin: '118px 0', textAlign: 'center' }}>
+                    <Loading />
+                  </div>
+                }
+              >
+                <Map locations={post.locations} zoom={30} />
+              </React.Suspense>
             )}
           </div>
         )}

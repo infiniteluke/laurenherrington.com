@@ -13,6 +13,12 @@ module.exports = {
     siteUrl: `https://laurenherrington.com`,
   },
   plugins: [
+    {
+      resolve: 'gatsby-plugin-webpack-bundle-analyzer',
+      options: {
+        production: true,
+      },
+    },
     'gatsby-plugin-styled-components',
     {
       resolve: `gatsby-source-contentful`,

@@ -1,23 +1,31 @@
 import React from 'react';
 import { Link } from 'gatsby';
+import styled from 'styled-components';
 import {
   ZoomableGroup,
+  ComposableMap,
   Geographies,
   Geography,
   Markers,
   Marker,
 } from 'react-simple-maps';
-import {
-  MapLabel,
-  StyledComposableMap,
-  MarkerCircle,
-  MarkerText,
-} from '../styles';
+import Loading from '../components/Loading';
+import { MapLabel, MarkerCircle, MarkerText } from '../styles';
 import slugify from 'slugify';
+
+const StyledComposableMap = styled(ComposableMap)`
+  width: 100%;
+  height: auto;
+
+  @media (min-width: 768px) {
+    height: 400px;
+  }
+`;
+
+const topoPromise = import('../utils/topo.json');
 
 export default ({
   locations,
-  topo,
   showLabelOnHover = false,
   center = Object.values(locations[0].coordinates) || [0, 0],
   zoom = 10,
@@ -27,11 +35,16 @@ export default ({
 }) => {
   const [zoomState, setZoom] = React.useState(zoom);
   const [hovering, setHover] = React.useState(null);
+  const [topo, setTopo] = React.useState(null);
+
   React.useEffect(() => {
     setZoom(zoom);
   }, [zoom]);
+  React.useEffect(() => {
+    topoPromise.then(data => setTopo(data.default));
+  }, [topoPromise]);
 
-  return (
+  return topo ? (
     <div
       style={{
         position: 'relative',
@@ -122,6 +135,10 @@ export default ({
           </Markers>
         </ZoomableGroup>
       </StyledComposableMap>
+    </div>
+  ) : (
+    <div style={{ margin: '118px 0', textAlign: 'center' }}>
+      <Loading />
     </div>
   );
 };

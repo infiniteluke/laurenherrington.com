@@ -4,21 +4,18 @@ import styled from 'styled-components';
 import Helmet from 'react-helmet';
 
 import Layout from '../components/Layout';
-import Map from '../components/Map';
 import MapHelper from '../components/MapHelper';
+import Loading from '../components/Loading';
 
 const GlobeHelpText = styled.div`
   text-align: center;
   margin-bottom: 30px;
 `;
 
-const topoPromise = import('../utils/topo.json');
+const Map = React.lazy(() => import('../components/Map'));
 
 export default ({ data, location }) => {
   const [topo, setTopo] = React.useState(null);
-  React.useEffect(() => {
-    topoPromise.then(data => setTopo(data.default));
-  }, [topoPromise]);
   const siteTitle = data.site.siteMetadata.title;
   const locations = data.allContentfulLocation.locations.length
     ? data.allContentfulLocation.locations.map(l => l.location)
@@ -42,16 +39,25 @@ export default ({ data, location }) => {
             margin: '0 auto',
           }}
         >
-          <Map
-            locations={locations}
-            topo={topo}
-            showLabelOnHover={true}
-            height={900}
-            width={1000}
-            zoom={1.7}
-            markerSize={10}
-            center={[0, 10]}
-          />
+          {typeof window !== 'undefined' && (
+            <React.Suspense
+              fallback={
+                <div style={{ margin: '118px 0', textAlign: 'center' }}>
+                  <Loading />
+                </div>
+              }
+            >
+              <Map
+                locations={locations}
+                showLabelOnHover={true}
+                height={900}
+                width={1000}
+                zoom={1.7}
+                markerSize={10}
+                center={[0, 10]}
+              />
+            </React.Suspense>
+          )}
         </div>
       </section>
     </Layout>

@@ -3,17 +3,12 @@ import { graphql } from 'gatsby';
 import Helmet from 'react-helmet';
 import Layout from '../components/Layout';
 import BlogPost from '../components/BlogPost';
-import Map from '../components/Map';
 import Loading from '../components/Loading';
 import MapHelper from '../components/MapHelper';
 
-const topoPromise = import('../utils/topo.json');
+const Map = React.lazy(() => import('../components/Map'));
 
 const PlaceTemplate = ({ pageContext, location, data }) => {
-  const [topo, setTopo] = React.useState(null);
-  React.useEffect(() => {
-    topoPromise.then(data => setTopo(data.default));
-  }, [topoPromise]);
   const siteTitle = data.site.siteMetadata.title;
   const locationKey = data.placesByCountry.locations.length
     ? 'country'
@@ -47,17 +42,20 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
             }}
           >
             <MapHelper />
-            {!topo ? (
-              <div style={{ margin: '118px 0' }}>
-                <Loading />
-              </div>
-            ) : (
-              <Map
-                zoom={locationKey === 'country' ? 11 : 30}
-                showLabelOnHover={locationKey === 'country'}
-                locations={locations.map(l => l.location)}
-                topo={topo}
-              />
+            {typeof window !== 'undefined' && (
+              <React.Suspense
+                fallback={
+                  <div style={{ margin: '118px 0', textAlign: 'center' }}>
+                    <Loading />
+                  </div>
+                }
+              >
+                <Map
+                  zoom={locationKey === 'country' ? 11 : 30}
+                  showLabelOnHover={locationKey === 'country'}
+                  locations={locations.map(l => l.location)}
+                />
+              </React.Suspense>
             )}
           </div>
         )}

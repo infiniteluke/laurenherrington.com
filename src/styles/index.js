@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import Img from 'gatsby-image';
 import { Link } from 'gatsby';
-import { ComposableMap } from 'react-simple-maps';
 
 export const Content = styled.div`
   white-space: pre-line;
@@ -151,13 +150,4 @@ export const MapLabel = styled.label`
   color: ${({ theme }) => theme.compAccent};
   font-size: 0.8rem;
   padding-right: 10px;
-`;
-
-export const StyledComposableMap = styled(ComposableMap)`
-  width: 100%;
-  height: auto;
-
-  @media (min-width: 768px) {
-    height: 400px;
-  }
 `;
