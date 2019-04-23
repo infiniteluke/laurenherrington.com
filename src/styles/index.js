@@ -15,6 +15,7 @@ export const Content = styled.div`
 
   blockquote {
     max-width: 800px;
+    margin: 0 auto;
     padding: 20px 10px;
     font-weight: 400;
     font-style: italic;
