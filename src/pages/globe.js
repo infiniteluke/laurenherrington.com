@@ -45,9 +45,10 @@ export default ({ data, location }) => {
           <Map
             locations={locations}
             topo={topo}
+            showLabelOnHover={true}
             height={900}
             width={1000}
-            zoom={2}
+            zoom={3}
             markerSize={9}
             center={[0, 10]}
           />

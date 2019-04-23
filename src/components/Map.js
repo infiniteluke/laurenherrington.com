@@ -18,6 +18,7 @@ import slugify from 'slugify';
 export default ({
   locations,
   topo,
+  showLabelOnHover = false,
   center = Object.values(locations[0].coordinates) || [0, 0],
   zoom = 10,
   markerSize = 14,
@@ -25,6 +26,7 @@ export default ({
   width = 900,
 }) => {
   const [zoomState, setZoom] = React.useState(zoom);
+  const [hovering, setHover] = React.useState(null);
   React.useEffect(() => {
     setZoom(zoom);
   }, [zoom]);
@@ -52,7 +54,7 @@ export default ({
           id="start"
           name="zoom"
           min="3"
-          max="40"
+          max="90"
           value={zoomState}
           onChange={e => setZoom(e.target.value)}
         />
@@ -93,10 +95,24 @@ export default ({
                   marker={{ coordinates: Object.values(coordinates) }}
                 >
                   <Link to={`/place/name/${nameSlug}`}>
-                    <MarkerCircle cx={0} cy={0} r={markerSize} />
-                    <MarkerText textAnchor="middle" y={50}>
-                      {name}
-                    </MarkerText>
+                    <MarkerCircle
+                      cx={0}
+                      cy={0}
+                      r={markerSize}
+                      onMouseEnter={() => setHover(nameSlug)}
+                      onMouseLeave={() => setHover(null)}
+                    />
+                    {showLabelOnHover ? (
+                      hovering === nameSlug ? (
+                        <MarkerText textAnchor="middle" y={50}>
+                          {name}
+                        </MarkerText>
+                      ) : null
+                    ) : (
+                      <MarkerText textAnchor="middle" y={50}>
+                        {name}
+                      </MarkerText>
+                    )}
                   </Link>
                 </Marker>
               )

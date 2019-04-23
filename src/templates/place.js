@@ -15,6 +15,9 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
     topoPromise.then(data => setTopo(data.default));
   }, [topoPromise]);
   const siteTitle = data.site.siteMetadata.title;
+  const locationKey = data.placesByCountry.locations.length
+    ? 'country'
+    : 'name';
   const locations = data.placesByCountry.locations.length
     ? data.placesByCountry.locations
     : data.placesByName.locations.length
@@ -50,7 +53,8 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
               </div>
             ) : (
               <Map
-                zoom={5}
+                zoom={locationKey === 'country' ? 11 : 30}
+                showLabelOnHover={locationKey === 'country'}
                 locations={locations.map(l => l.location)}
                 topo={topo}
               />
