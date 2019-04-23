@@ -3,7 +3,7 @@
  */
 
 export function formatReadingTime(minutes) {
-  let flowers = Math.round(minutes / 5);
+  let flowers = Math.round(minutes / 3);
   if (flowers > 5) {
     return `${new Array(Math.round(flowers / Math.E))
       .fill('💐')
