@@ -51,6 +51,7 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
                 }
               >
                 <Map
+                  markerSize={20}
                   zoom={locationKey === 'country' ? 11 : 30}
                   showLabelOnHover={locationKey === 'country'}
                   locations={locations.map(l => l.location)}
