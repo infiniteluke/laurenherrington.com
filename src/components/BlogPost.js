@@ -46,27 +46,22 @@ const FadeTeaser = styled.div`
   }
 `;
 
-export default class BlogPost extends React.Component {
-  render() {
-    const post = this.props.post;
-    return (
-      <Article>
-        <PostTitle to={`/post/${post.slug}`}>
-          <h2>{post.title}</h2>
-        </PostTitle>
-        <BlogPostMeta
-          createdAt={post.createdAt}
-          timeToRead={post.body.childMarkdownRemark.timeToRead}
-        />
-        <FadeTeaser>
-          <Content
-            dangerouslySetInnerHTML={{
-              __html: post.body.childMarkdownRemark.excerpt,
-            }}
-          />
-        </FadeTeaser>
-        <ReadMoreLink to={`/post/${post.slug}`}>Read more</ReadMoreLink>
-      </Article>
-    );
-  }
-}
+export default ({ post }) => (
+  <Article>
+    <PostTitle to={`/post/${post.slug}`}>
+      <h2>{post.title}</h2>
+    </PostTitle>
+    <BlogPostMeta
+      postedAt={post.fields.postedAt}
+      timeToRead={post.body.childMarkdownRemark.timeToRead}
+    />
+    <FadeTeaser>
+      <Content
+        dangerouslySetInnerHTML={{
+          __html: post.body.childMarkdownRemark.excerpt,
+        }}
+      />
+    </FadeTeaser>
+    <ReadMoreLink to={`/post/${post.slug}`}>Read more</ReadMoreLink>
+  </Article>
+);

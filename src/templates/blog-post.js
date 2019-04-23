@@ -56,7 +56,7 @@ const BlogPostTemplate = ({
         <header style={{ marginBottom: '40px' }}>
           <h1 className="section-headline">{post.title}</h1>
           <BlogPostMeta
-            createdAt={post.createdAt}
+            postedAt={post.fields.postedAt}
             timeToRead={post.body.childMarkdownRemark.timeToRead}
           />
         </header>
@@ -134,7 +134,9 @@ export const pageQuery = graphql`
         title
       }
       id
-      createdAt
+      fields {
+        postedAt
+      }
       title
       locations {
         name

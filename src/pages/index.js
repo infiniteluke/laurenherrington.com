@@ -65,7 +65,7 @@ export const pageQuery = graphql`
     ) {
       ...squareImageLarge
     }
-    allContentfulCategory(limit: 1000) {
+    allContentfulCategory(limit: 1000, sort: { fields: weight }) {
       categories: edges {
         category: node {
           id

@@ -98,6 +98,7 @@ export const pageQuery = graphql`
     allContentfulPost(
       limit: 1000
       filter: { category: { slug: { eq: $slug } } }
+      sort: { fields: fields___postedAt, order: DESC }
     ) {
       posts: edges {
         post: node {
@@ -107,7 +108,9 @@ export const pageQuery = graphql`
           }
           slug
           id
-          createdAt
+          fields {
+            postedAt
+          }
           title
           body {
             childMarkdownRemark {

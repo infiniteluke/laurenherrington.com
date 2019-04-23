@@ -129,12 +129,15 @@ export const pageQuery = graphql`
     postsByLocationName: allContentfulPost(
       limit: 1000
       filter: { locations: { elemMatch: { name: { eq: $place } } } }
+      sort: { fields: fields___postedAt, order: DESC }
     ) {
       posts: edges {
         post: node {
           slug
           id
-          createdAt
+          fields {
+            postedAt
+          }
           title
           body {
             childMarkdownRemark {
@@ -149,12 +152,15 @@ export const pageQuery = graphql`
     postsByLocationCountry: allContentfulPost(
       limit: 1000
       filter: { locations: { elemMatch: { country: { eq: $place } } } }
+      sort: { fields: fields___postedAt, order: DESC }
     ) {
       posts: edges {
         post: node {
           slug
           id
-          createdAt
+          fields {
+            postedAt
+          }
           title
           body {
             childMarkdownRemark {

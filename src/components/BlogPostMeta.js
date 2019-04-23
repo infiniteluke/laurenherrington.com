@@ -1,9 +1,9 @@
 import React from 'react';
-import { formatPostDate, formatReadingTime } from '../utils/helpers';
+import { formatpostDate, formatReadingTime } from '../utils/helpers';
 
-export default ({ createdAt, timeToRead }) => (
+export default ({ postedAt, timeToRead }) => (
   <p>
-    {formatPostDate(createdAt)}
+    {formatpostDate(postedAt)}
     {` • ${formatReadingTime(timeToRead)}`}
   </p>
 );

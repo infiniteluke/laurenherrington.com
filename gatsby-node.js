@@ -15,6 +15,8 @@ exports.createPages = ({ graphql, actions }) => {
             post: node {
               slug
               title
+              postDate
+              createdAt
               id
             }
           }
@@ -107,6 +109,13 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       name: 'countrySlug',
       node,
       value: slugify(node.country.toLocaleLowerCase()),
+    });
+  }
+  if (node.internal.type === 'ContentfulPost') {
+    createNodeField({
+      name: 'postedAt',
+      node,
+      value: node.postDate ? `${node.postDate}T16:00:00.000Z` : node.createdAt,
     });
   }
 };
