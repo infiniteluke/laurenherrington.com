@@ -133,7 +133,7 @@ export const MarkerCircle = styled.circle`
 
 export const MarkerText = styled.text`
   fill: ${({ theme }) => theme.compAccent};
-  font-size: 2rem;
+  font-size: 2.4rem;
   &:hover {
     fill: ${({ theme }) => theme.compAccentMuted};
     cursor: pointer;
@@ -143,7 +143,7 @@ export const MarkerText = styled.text`
   }
 
   @media (min-width: 768px) {
-    height: 400px;
+    font-size: 2rem;
   }
 `;
 

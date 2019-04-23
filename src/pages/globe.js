@@ -48,8 +48,8 @@ export default ({ data, location }) => {
             showLabelOnHover={true}
             height={900}
             width={1000}
-            zoom={2}
-            markerSize={9}
+            zoom={1.7}
+            markerSize={10}
             center={[0, 10]}
           />
         </div>
