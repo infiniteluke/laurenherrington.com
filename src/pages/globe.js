@@ -48,7 +48,7 @@ export default ({ data, location }) => {
             showLabelOnHover={true}
             height={900}
             width={1000}
-            zoom={3}
+            zoom={2}
             markerSize={9}
             center={[0, 10]}
           />

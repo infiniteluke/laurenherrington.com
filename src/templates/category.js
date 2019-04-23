@@ -47,7 +47,7 @@ class CategoryTemplate extends React.Component {
         <section>
           <Helmet title={siteTitle} />
           {posts.length ? (
-            <>
+            <React.Fragment>
               <div
                 style={{
                   position: 'relative',
@@ -68,7 +68,7 @@ class CategoryTemplate extends React.Component {
               {posts.map(post => (
                 <BlogPost key={post.id} post={post} />
               ))}
-            </>
+            </React.Fragment>
           ) : (
             <h2 style={{ textAlign: 'center' }}>{`No "${
               pageContext.slug

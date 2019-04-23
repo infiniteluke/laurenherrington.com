@@ -32,7 +32,7 @@ class RootIndex extends React.Component {
       >
         <Nav>
           <CategoryList>
-            <>
+            <React.Fragment>
               <CategoryCircle to="globe" category={globe} />
               {categories.map(category => {
                 return (
@@ -43,7 +43,7 @@ class RootIndex extends React.Component {
                   />
                 );
               })}
-            </>
+            </React.Fragment>
           </CategoryList>
         </Nav>
       </Layout>

@@ -101,15 +101,17 @@ export default ({
                       r={markerSize}
                       onMouseEnter={() => setHover(nameSlug)}
                       onMouseLeave={() => setHover(null)}
+                      onTouchStart={() => setHover(nameSlug)}
+                      onTouchEnd={() => setHover(null)}
                     />
                     {showLabelOnHover ? (
                       hovering === nameSlug ? (
-                        <MarkerText textAnchor="middle" y={50}>
+                        <MarkerText textAnchor="middle" y={-40}>
                           {name}
                         </MarkerText>
                       ) : null
                     ) : (
-                      <MarkerText textAnchor="middle" y={50}>
+                      <MarkerText textAnchor="middle" y={-40}>
                         {name}
                       </MarkerText>
                     )}
