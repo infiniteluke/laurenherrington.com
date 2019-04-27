@@ -66,8 +66,8 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Lauren Herrington Blog`,
-        short_name: `Lauren Blog`,
+        name: `Lauren Herrington's Blog`,
+        short_name: `Lauren's Blog`,
         icon: 'lauren.jpg',
         start_url: `/`,
         background_color: shared.theme.bg,
