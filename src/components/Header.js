@@ -16,10 +16,6 @@ const HeaderTitle = styled.h1`
     letter-spacing: -0.9rem;
   }
 
-  &:hover {
-    color: ${({ theme }) => theme.darkMuted};
-  }
-
   @media (min-width: 375px) {
     font-size: 4.25rem;
     line-height: 3rem;
