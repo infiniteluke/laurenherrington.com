@@ -102,7 +102,7 @@ export const pageQuery = graphql`
         title
       }
     }
-    allContentfulCategory {
+    allContentfulCategory(sort: { fields: weight }) {
       categories: edges {
         category: node {
           id
