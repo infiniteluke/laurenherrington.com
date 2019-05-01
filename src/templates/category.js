@@ -40,7 +40,8 @@ const Hero = styled.div`
   width: 100vw;
   position: relative;
   left: 50%;
-  margin-left: -50vw;
+  transform: translate(-50%);
+  max-width: 1200px;
 `;
 
 class CategoryTemplate extends React.Component {
