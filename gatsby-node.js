@@ -25,6 +25,7 @@ exports.createPages = ({ graphql, actions }) => {
           categories: edges {
             category: node {
               slug
+              directLink
               id
             }
           }
@@ -50,13 +51,14 @@ exports.createPages = ({ graphql, actions }) => {
     const { posts } = result.data.allContentfulPost;
     const { categories } = result.data.allContentfulCategory;
     categories.forEach(({ category }, index) => {
-      createPage({
-        path: `tag/${category.slug}`,
-        component: Category,
-        context: {
-          slug: category.slug,
-        },
-      });
+      !category.directLink &&
+        createPage({
+          path: `tag/${category.slug}`,
+          component: Category,
+          context: {
+            slug: category.slug,
+          },
+        });
     });
     locations.forEach(({ location }, index) => {
       if (location.name) {

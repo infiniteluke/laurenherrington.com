@@ -5,6 +5,9 @@ import Img from 'gatsby-image';
 import Helmet from 'react-helmet';
 import Layout from '../components/Layout';
 import BlogPost from '../components/BlogPost';
+import StoryCircle from '../components/StoryCircle';
+
+import { Stories } from '../styles';
 
 const CategoryTitle = styled.h1`
   font-size: 2.5rem;
@@ -21,7 +24,7 @@ const CategoryTitle = styled.h1`
   }
 `;
 
-const Hero = styled.div`
+const ImageFilter = styled.div`
   position: absolute;
   z-index: 1;
   width: 100%;
@@ -31,10 +34,20 @@ const Hero = styled.div`
   opacity: 0.5;
 `;
 
+const Hero = styled.div`
+  position: relative;
+  margin-bottom: 40px;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+`;
+
 class CategoryTemplate extends React.Component {
   render() {
     const pageContext = this.props.pageContext;
     const siteTitle = this.props.data.site.siteMetadata.title;
+    const categories = this.props.data.allContentfulCategory.categories;
     const category = this.props.data.contentfulCategory;
     const posts = this.props.data.allContentfulPost
       ? this.props.data.allContentfulPost.posts.map(p => p.post)
@@ -48,14 +61,20 @@ class CategoryTemplate extends React.Component {
           <Helmet title={siteTitle} />
           {posts.length ? (
             <React.Fragment>
-              <div
-                style={{
-                  position: 'relative',
-                  marginBottom: '40px',
-                  overflow: 'hidden',
-                }}
-              >
-                <Hero />
+              <Stories>
+                {categories.map(
+                  ({ category: { id, title, image, slug, directLink } }) => (
+                    <StoryCircle
+                      key={id}
+                      title={title}
+                      image={image}
+                      to={directLink ? slug : `tag/${slug}`}
+                    />
+                  )
+                )}
+              </Stories>
+              <Hero>
+                <ImageFilter />
                 <CategoryTitle>{`"${category.title}" posts`}</CategoryTitle>
                 <Img
                   style={{
@@ -64,7 +83,7 @@ class CategoryTemplate extends React.Component {
                   alt={category.hero.title}
                   fluid={category.hero.fluid}
                 />
-              </div>
+              </Hero>
               {posts.map(post => (
                 <BlogPost key={post.id} post={post} />
               ))}
@@ -87,6 +106,19 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+      }
+    }
+    allContentfulCategory {
+      categories: edges {
+        category: node {
+          id
+          slug
+          title
+          directLink
+          image {
+            ...squareImageSmall
+          }
+        }
       }
     }
     contentfulCategory(slug: { eq: $slug }) {

@@ -14,17 +14,14 @@ const CategoryList = styled.ul`
 
 const Nav = styled.nav`
   width: 100%;
+  margin-top: 15px;
 `;
+
 class RootIndex extends React.Component {
   render() {
     const categories = this.props.data.allContentfulCategory.categories.map(
       p => p.category
     );
-    // Special "Categories" need these fields
-    const globe = {
-      squareImageLarge: this.props.data.globeImage,
-      title: 'Globe',
-    };
     return (
       <Layout
         location={this.props.location}
@@ -33,13 +30,16 @@ class RootIndex extends React.Component {
         <Nav>
           <CategoryList>
             <React.Fragment>
-              <CategoryCircle to="globe" category={globe} />
               {categories.map(category => {
                 return (
                   <CategoryCircle
                     key={category.slug}
                     category={category}
-                    to={`tag/${category.slug}`}
+                    to={
+                      category.directLink
+                        ? category.slug
+                        : `tag/${category.slug}`
+                    }
                   />
                 );
               })}
@@ -71,11 +71,19 @@ export const pageQuery = graphql`
           id
           slug
           title
+          directLink
           squareImageLarge: image {
             ...squareImageLarge
           }
         }
       }
+    }
+  }
+
+  fragment squareImageSmall on ContentfulAsset {
+    title
+    fluid(maxWidth: 200, maxHeight: 200) {
+      ...GatsbyContentfulFluid_withWebp
     }
   }
 

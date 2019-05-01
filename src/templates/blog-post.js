@@ -7,7 +7,8 @@ import BlogPostMeta from '../components/BlogPostMeta';
 import Loading from '../components/Loading';
 import MapHelper from '../components/MapHelper';
 import Heart from '../components/Heart';
-import { Content } from '../styles';
+import StoryCircle from '../components/StoryCircle';
+import { Content, Stories } from '../styles';
 
 const Map = React.lazy(() => import('../components/Map'));
 
@@ -41,12 +42,25 @@ const BlogPostTemplate = ({
   pageContext: { next, previous },
 }) => {
   const post = data.contentfulPost;
+  const categories = data.allContentfulCategory.categories;
   return (
     <Layout
       location={location}
       {...data.site.siteMetadata}
       category={post.category.slug}
     >
+      <Stories>
+        {categories.map(
+          ({ category: { id, title, image, slug, directLink } }) => (
+            <StoryCircle
+              key={id}
+              title={title}
+              image={image}
+              to={directLink ? slug : `tag/${slug}`}
+            />
+          )
+        )}
+      </Stories>
       <article>
         <header style={{ marginBottom: '40px' }}>
           <h1 className="section-headline">{post.title}</h1>
@@ -127,6 +141,19 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+      }
+    }
+    allContentfulCategory {
+      categories: edges {
+        category: node {
+          id
+          slug
+          title
+          directLink
+          image {
+            ...squareImageSmall
+          }
+        }
       }
     }
     contentfulPost(slug: { eq: $slug }) {

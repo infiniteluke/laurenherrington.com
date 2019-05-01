@@ -34,4 +34,8 @@ export default createGlobalStyle`
   .notes-category article div {
     text-align: center;
   }
+
+  .story-category--current .story-category-title {
+    text-decoration: underline;
+  }
 `;

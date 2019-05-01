@@ -12,7 +12,7 @@ const Main = styled.main`
   width: 100%;
   flex-grow: 1;
   padding: 0 30px;
-  margin: 30px auto 0 auto;
+  margin: 15px auto 0 auto;
 `;
 
 const PageWrapper = styled.div`

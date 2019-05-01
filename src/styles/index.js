@@ -63,6 +63,22 @@ export const CategoryContainer = styled(Link)`
   }
 `;
 
+export const Stories = styled.nav`
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  margin-left: -50vw;
+  margin-bottom: 45px;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: row;
+
+  @media (min-width: 769px) {
+    justify-content: center;
+  }
+`;
+
 export const CircleImage = styled(Img)`
   border-radius: 50%;
   img {

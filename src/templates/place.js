@@ -5,6 +5,9 @@ import Layout from '../components/Layout';
 import BlogPost from '../components/BlogPost';
 import Loading from '../components/Loading';
 import MapHelper from '../components/MapHelper';
+import StoryCircle from '../components/StoryCircle';
+
+import { Stories } from '../styles';
 
 const Map = React.lazy(() => import('../components/Map'));
 
@@ -23,8 +26,22 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
     : data.postsByLocationName.posts.length
     ? data.postsByLocationName.posts
     : [];
+  const categories = data.allContentfulCategory.categories;
+
   return (
     <Layout location={location} {...data.site.siteMetadata}>
+      <Stories>
+        {categories.map(
+          ({ category: { id, title, image, slug, directLink } }) => (
+            <StoryCircle
+              key={id}
+              title={title}
+              image={image}
+              to={directLink ? slug : `tag/${slug}`}
+            />
+          )
+        )}
+      </Stories>
       <section>
         <Helmet title={siteTitle} />
         <h1 style={{ textAlign: 'center' }}>{`Posts at "${
@@ -83,6 +100,19 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+      }
+    }
+    allContentfulCategory {
+      categories: edges {
+        category: node {
+          id
+          slug
+          title
+          directLink
+          image {
+            ...squareImageSmall
+          }
+        }
       }
     }
     placesByName: allContentfulLocation(
