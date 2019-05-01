@@ -59,20 +59,20 @@ class CategoryTemplate extends React.Component {
       >
         <section>
           <Helmet title={siteTitle} />
+          <Stories>
+            {categories.map(
+              ({ category: { id, title, image, slug, directLink } }) => (
+                <StoryCircle
+                  key={id}
+                  title={title}
+                  image={image}
+                  to={directLink ? slug : `tag/${slug}`}
+                />
+              )
+            )}
+          </Stories>
           {posts.length ? (
             <React.Fragment>
-              <Stories>
-                {categories.map(
-                  ({ category: { id, title, image, slug, directLink } }) => (
-                    <StoryCircle
-                      key={id}
-                      title={title}
-                      image={image}
-                      to={directLink ? slug : `tag/${slug}`}
-                    />
-                  )
-                )}
-              </Stories>
               <Hero>
                 <ImageFilter />
                 <CategoryTitle>{`"${category.title}" posts`}</CategoryTitle>
