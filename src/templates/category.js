@@ -39,7 +39,7 @@ class CategoryTemplate extends React.Component {
           {posts.length ? (
             <React.Fragment>
               <HeroImage
-                title={`"${category.title} posts"`}
+                title={`"${category.title}" posts`}
                 image={category.hero}
               />
               {posts.map(post => (
