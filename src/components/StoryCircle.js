@@ -19,7 +19,7 @@ const StoryImage = styled.div`
   border: 2px solid ${({ theme }) => theme.bg};
   border-radius: 50%;
   margin: 0 5px;
-  box-shadow: 0 0 0 1px #cec9c6;
+  box-shadow: 0 0 0 2px #cec9c6;
 
   .story-category--current & {
     box-shadow: none;
@@ -43,8 +43,7 @@ const StoryImage = styled.div`
     transition: opacity 0.3s ease-in-out;
     opacity: 0;
   }
-  &:hover:after,
-  .story-category--current &:after {
+  &:hover:after {
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.4));
     opacity: 1;
   }
