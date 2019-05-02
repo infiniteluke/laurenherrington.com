@@ -90,6 +90,16 @@ export default ({
                   <Geography
                     style={{
                       pointerEvents: 'none',
+                      default: {
+                        fill: locations.some(
+                          loc =>
+                            console.log(loc, geography.properties) ||
+                            loc.country === geography.properties.NAME
+                        )
+                          ? '#2b2f38'
+                          : 'black',
+                        cursor: 'pointer',
+                      },
                       pressed: { fill: '#141823', cursor: 'pointer' },
                       hover: { fill: '#2b2f38', cursor: 'pointer' },
                     }}

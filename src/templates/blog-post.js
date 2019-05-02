@@ -169,6 +169,7 @@ export const pageQuery = graphql`
       locations {
         name
         id
+        country
         fields {
           nameSlug
           countrySlug

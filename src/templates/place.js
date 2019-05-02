@@ -123,6 +123,7 @@ export const pageQuery = graphql`
         location: node {
           name
           id
+          country
           fields {
             nameSlug
             countrySlug
@@ -143,6 +144,7 @@ export const pageQuery = graphql`
         location: node {
           name
           id
+          country
           fields {
             nameSlug
             countrySlug

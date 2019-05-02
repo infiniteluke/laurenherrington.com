@@ -50,7 +50,7 @@ const Layout = ({ title, children, category = 'no' }) => (
         <script
           async
           src="//cdn.embedly.com/widgets/platform.js"
-          charset="UTF-8"
+          charSet="UTF-8"
         />
       </Helmet>
       <GlobalStyle />
