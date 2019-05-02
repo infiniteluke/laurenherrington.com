@@ -92,9 +92,7 @@ export default ({
                       pointerEvents: 'none',
                       default: {
                         fill: locations.some(
-                          loc =>
-                            console.log(loc, geography.properties) ||
-                            loc.country === geography.properties.NAME
+                          loc => loc.country === geography.properties.NAME
                         )
                           ? '#2b2f38'
                           : 'black',

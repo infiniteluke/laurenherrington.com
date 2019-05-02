@@ -37,8 +37,8 @@ class RootIndex extends React.Component {
                     category={category}
                     to={
                       category.directLink
-                        ? category.slug
-                        : `tag/${category.slug}`
+                        ? `/${category.slug}`
+                        : `/tag/${category.slug}`
                     }
                   />
                 );

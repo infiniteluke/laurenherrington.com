@@ -46,13 +46,7 @@ const Image = styled.img`
 const Layout = ({ title, children, category = 'no' }) => (
   <ThemeProvider theme={theme}>
     <PageWrapper className={`${category}-category`}>
-      <Helmet title={title}>
-        <script
-          async
-          src="//cdn.embedly.com/widgets/platform.js"
-          charSet="UTF-8"
-        />
-      </Helmet>
+      <Helmet title={title} />
       <GlobalStyle />
       <Header title={title} />
       <Main>{children}</Main>

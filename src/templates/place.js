@@ -37,7 +37,7 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
               key={id}
               title={title}
               image={image}
-              to={directLink ? slug : `tag/${slug}`}
+              to={directLink ? `/${slug}` : `/tag/${slug}`}
             />
           )
         )}

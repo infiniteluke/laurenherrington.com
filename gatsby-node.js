@@ -25,6 +25,7 @@ exports.createPages = ({ graphql, actions }) => {
           categories: edges {
             category: node {
               slug
+              title
               directLink
               id
             }
@@ -56,6 +57,7 @@ exports.createPages = ({ graphql, actions }) => {
           path: `tag/${category.slug}`,
           component: Category,
           context: {
+            title: category.title,
             slug: category.slug,
           },
         });

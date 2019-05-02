@@ -20,7 +20,7 @@ class NotFoundPage extends React.Component {
                 key={id}
                 title={title}
                 image={image}
-                to={directLink ? slug : `tag/${slug}`}
+                to={directLink ? `/${slug}` : `/tag/${slug}`}
               />
             )
           )}

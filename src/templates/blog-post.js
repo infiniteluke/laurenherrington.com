@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { graphql, Link } from 'gatsby';
+import Helmet from 'react-helmet';
 
 import Layout from '../components/Layout';
 import BlogPostMeta from '../components/BlogPostMeta';
@@ -56,7 +57,7 @@ const BlogPostTemplate = ({
               key={id}
               title={title}
               image={image}
-              to={directLink ? slug : `tag/${slug}`}
+              to={directLink ? `/${slug}` : `/tag/${slug}`}
             />
           )
         )}
@@ -132,6 +133,14 @@ const BlogPostTemplate = ({
           ) : null}
         </ArticleFooter>
       </article>
+      <Helmet>
+        <script
+          async
+          defer
+          src="//cdn.embedly.com/widgets/platform.js"
+          charSet="UTF-8"
+        />
+      </Helmet>
     </Layout>
   );
 };
