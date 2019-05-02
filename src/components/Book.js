@@ -13,6 +13,15 @@ const BookDetails = styled.div`
   flex-direction: row;
 `;
 
+const ReadMoreLink = styled.a`
+  padding-top: 10px;
+  display: block;
+  color: ${({ theme }) => theme.dark};
+  &:hover {
+    color: ${({ theme }) => theme.darkMuted};
+  }
+`;
+
 export default ({ className, book }) => {
   const Image = <BookImage alt={book.image.title} fluid={book.image.fluid} />;
   return (
@@ -34,13 +43,13 @@ export default ({ className, book }) => {
             }}
           />
           {book.affliateLink ? (
-            <a
+            <ReadMoreLink
               href={book.affliateLink}
               target="_blank"
               rel="noopener noreferrer"
             >
               More about this book
-            </a>
+            </ReadMoreLink>
           ) : null}
         </div>
       </BookDetails>
