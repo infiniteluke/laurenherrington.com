@@ -71,6 +71,10 @@ export const Stories = styled.nav`
   margin-bottom: 45px;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
   display: flex;
   flex-direction: row;
 
