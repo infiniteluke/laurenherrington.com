@@ -17,11 +17,6 @@ const BookGrid = styled.section`
 const BookItem = styled(Book)`
   padding: 30px 0;
   width: 100%;
-
-  @media (min-width: 725px) {
-    padding: 40px 25px;
-    width: 50%;
-  }
 `;
 
 class Books extends React.Component {
@@ -84,7 +79,10 @@ export const pageQuery = graphql`
           title
           createdAt
           image {
-            ...bookImage
+            title
+            fluid(maxWidth: 350) {
+              ...GatsbyContentfulFluid
+            }
           }
           body {
             childMarkdownRemark {
@@ -107,13 +105,6 @@ export const pageQuery = graphql`
           }
         }
       }
-    }
-  }
-
-  fragment bookImage on ContentfulAsset {
-    title
-    fluid(maxWidth: 500) {
-      ...GatsbyContentfulFluid_withWebp
     }
   }
 `;

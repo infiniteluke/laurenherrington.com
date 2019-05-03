@@ -12,6 +12,7 @@ const HeroTitle = styled.h1`
   top: 50%;
   transform: translate(-50%, -50%);
   color: ${({ theme }) => theme.bg};
+
   @media (min-width: 768px) {
     font-size: 3.5rem;
   }
@@ -45,6 +46,8 @@ export default ({ title, image }) => (
       style={{
         height: '400px',
       }}
+      objectFit="cover"
+      objectPosition="50% 50%"
       alt={image.title}
       fluid={image.fluid}
     />
