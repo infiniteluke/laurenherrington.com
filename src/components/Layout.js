@@ -46,7 +46,12 @@ const Image = styled.img`
 const Layout = ({ title, children, category = 'no' }) => (
   <ThemeProvider theme={theme}>
     <PageWrapper className={`${category}-category`}>
-      <Helmet title={title} />
+      <Helmet title={title}>
+        <meta
+          property="og:image"
+          content="https://laurenherrington.com/lauren-share.png"
+        />
+      </Helmet>
       <GlobalStyle />
       <Header title={title} />
       <Main>{children}</Main>
