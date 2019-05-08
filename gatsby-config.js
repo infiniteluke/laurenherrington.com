@@ -1,9 +1,9 @@
 const dotenv = require('dotenv');
 const shared = require('./src/utils/shared');
 
-dotenv.config({
-  path: `.env`,
-});
+// dotenv.config({
+// path: `.env`,
+// });
 
 const siteMetadata = {
   title: `Lauren Herrington`,
