@@ -1,9 +1,11 @@
 const dotenv = require('dotenv');
 const shared = require('./src/utils/shared');
 
-// dotenv.config({
-// path: `.env`,
-// });
+if (process.env.IS_GATSBY_PREVIEW !== 'true') {
+  dotenv.config({
+    path: `.env`,
+  });
+}
 
 const siteMetadata = {
   title: `Lauren Herrington`,
@@ -82,7 +84,10 @@ const plugins = [
   `gatsby-plugin-react-helmet`,
 ];
 
-if (process.env.RUN_WEBPACK_BUNDLE_ANALYZER === 'true') {
+if (
+  process.env.RUN_WEBPACK_BUNDLE_ANALYZER === 'true' &&
+  process.env.IS_GATSBY_PREVIEW !== 'true'
+) {
   plugins.push({
     resolve: 'gatsby-plugin-webpack-bundle-analyzer',
     options: {
