@@ -7,6 +7,8 @@ if (process.env.IS_GATSBY_PREVIEW !== 'true') {
   });
 }
 
+console.log(process.env);
+
 const siteMetadata = {
   title: `Lauren Herrington`,
   author: `Lauren Herrington`,
