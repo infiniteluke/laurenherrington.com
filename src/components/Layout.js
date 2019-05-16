@@ -170,6 +170,13 @@ const siteDataQuery = graphql`
 const OFFSET = 12;
 
 const positionHelp = (triggerRect, tooltipRect) => {
+  if (typeof window !== 'undefined') {
+    return {
+      left: `50%`,
+      top: `50%`,
+      transform: 'translate(-50%, -50%)',
+    };
+  }
   const collisions = {
     top: triggerRect.top - tooltipRect.height < 0,
     bottom:
