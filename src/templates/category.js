@@ -1,17 +1,13 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import Helmet from 'react-helmet';
+
 import Layout from '../components/Layout';
 import BlogPost from '../components/BlogPost';
-import StoryCircle from '../components/StoryCircle';
 import HeroImage from '../components/HeroImage';
-
-import { Stories } from '../styles';
 
 class CategoryTemplate extends React.Component {
   render() {
     const pageContext = this.props.pageContext;
-    const siteTitle = this.props.data.site.siteMetadata.title;
     const categories = this.props.data.allContentfulCategory.categories;
     const category = this.props.data.contentfulCategory;
     const posts = this.props.data.allContentfulPost
@@ -20,22 +16,10 @@ class CategoryTemplate extends React.Component {
     return (
       <Layout
         location={this.props.location}
-        {...this.props.data.site.siteMetadata}
+        categories={categories}
+        title={category.title}
       >
         <section>
-          <Helmet title={siteTitle} />
-          <Stories>
-            {categories.map(
-              ({ category: { id, title, image, slug, directLink } }) => (
-                <StoryCircle
-                  key={id}
-                  title={title}
-                  image={image}
-                  to={directLink ? `/${slug}` : `/tag/${slug}`}
-                />
-              )
-            )}
-          </Stories>
           {posts.length ? (
             <React.Fragment>
               <HeroImage
@@ -61,11 +45,6 @@ export default CategoryTemplate;
 
 export const pageQuery = graphql`
   query CategoryPostsQuery($slug: String) {
-    site {
-      siteMetadata {
-        title
-      }
-    }
     allContentfulCategory(sort: { fields: weight }) {
       categories: edges {
         category: node {

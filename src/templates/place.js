@@ -1,18 +1,14 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import Helmet from 'react-helmet';
+
 import Layout from '../components/Layout';
 import BlogPost from '../components/BlogPost';
 import Loading from '../components/Loading';
 import MapHelper from '../components/MapHelper';
-import StoryCircle from '../components/StoryCircle';
-
-import { Stories } from '../styles';
 
 const Map = React.lazy(() => import('../components/Map'));
 
 const PlaceTemplate = ({ pageContext, location, data }) => {
-  const siteTitle = data.site.siteMetadata.title;
   const locationKey = data.placesByCountry.locations.length
     ? 'country'
     : 'name';
@@ -29,21 +25,12 @@ const PlaceTemplate = ({ pageContext, location, data }) => {
   const categories = data.allContentfulCategory.categories;
 
   return (
-    <Layout location={location} {...data.site.siteMetadata}>
-      <Stories>
-        {categories.map(
-          ({ category: { id, title, image, slug, directLink } }) => (
-            <StoryCircle
-              key={id}
-              title={title}
-              image={image}
-              to={directLink ? `/${slug}` : `/tag/${slug}`}
-            />
-          )
-        )}
-      </Stories>
+    <Layout
+      location={location}
+      categories={categories}
+      title={pageContext.place}
+    >
       <section>
-        <Helmet title={siteTitle} />
         <h1 style={{ textAlign: 'center' }}>{`Posts at "${
           pageContext.place
         }"`}</h1>
@@ -97,11 +84,6 @@ export default PlaceTemplate;
 
 export const pageQuery = graphql`
   query PlacePostQuery($place: String) {
-    site {
-      siteMetadata {
-        title
-      }
-    }
     allContentfulCategory(sort: { fields: weight }) {
       categories: edges {
         category: node {

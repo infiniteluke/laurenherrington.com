@@ -15,7 +15,7 @@ const StoryTitle = styled.div`
 
 const StoryImage = styled.div`
   position: relative;
-  width: 65px;
+  width: 80px;
   border: 2px solid ${({ theme }) => theme.bg};
   border-radius: 50%;
   margin: 0 5px;

@@ -25,7 +25,9 @@ class RootIndex extends React.Component {
     return (
       <Layout
         location={this.props.location}
-        {...this.props.data.site.siteMetadata}
+        title="🏠"
+        categories={this.props.data.allContentfulCategory.categories}
+        showStories={false}
       >
         <Nav>
           <CategoryList>
@@ -55,11 +57,6 @@ export default RootIndex;
 
 export const pageQuery = graphql`
   query HomeQuery {
-    site {
-      siteMetadata {
-        title
-      }
-    }
     globeImage: contentfulAsset(
       id: { eq: "20caf6fa-18f2-59e8-a742-385190338ec5" }
     ) {

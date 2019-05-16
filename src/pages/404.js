@@ -8,11 +8,10 @@ import { Stories } from '../styles';
 class NotFoundPage extends React.Component {
   render() {
     const { data } = this.props;
-    const siteTitle = data.site.siteMetadata.title;
     const categories = data.allContentfulCategory.categories;
 
     return (
-      <Layout location={this.props.location} title={siteTitle}>
+      <Layout location={this.props.location} categories={categories} title="❔">
         <Stories>
           {categories.map(
             ({ category: { id, title, image, slug, directLink } }) => (
@@ -36,11 +35,6 @@ export default NotFoundPage;
 
 export const pageQuery = graphql`
   query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
     allContentfulCategory(sort: { fields: weight }) {
       categories: edges {
         category: node {

@@ -171,3 +171,13 @@ export const MapLabel = styled.label`
   font-size: 0.8rem;
   padding-right: 10px;
 `;
+
+export const HelpBox = styled.div`
+  background: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  color: white;
+  border-radius: 10px;
+`;

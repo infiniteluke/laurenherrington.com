@@ -22,24 +22,11 @@ const BookItem = styled(Book)`
 class Books extends React.Component {
   render() {
     const { data } = this.props;
-    const siteTitle = data.site.siteMetadata.title;
     const { categories } = data.allContentfulCategory;
     const { books } = data.allContentfulBook;
     const category = data.contentfulCategory;
     return (
-      <Layout location={this.props.location} title={siteTitle}>
-        <Stories>
-          {categories.map(
-            ({ category: { id, title, image, slug, directLink } }) => (
-              <StoryCircle
-                key={id}
-                title={title}
-                image={image}
-                to={directLink ? `/${slug}` : `/tag/${slug}`}
-              />
-            )
-          )}
-        </Stories>
+      <Layout location={this.props.location} categories={categories} title="📖">
         <HeroImage title="Books" image={category.hero} />
         {books.length ? (
           <BookGrid>
@@ -61,11 +48,6 @@ export default Books;
 
 export const pageQuery = graphql`
   query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
     contentfulCategory(id: { eq: "9236b5f7-28fe-5fd5-9d1c-f235f8bb852f" }) {
       title
       hero: image {

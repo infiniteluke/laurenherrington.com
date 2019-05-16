@@ -11,6 +11,11 @@ export default createGlobalStyle`
     height: 100%;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
   }
+
+  :root {
+    --help: 1;
+  }
+
   body {
     background-color: ${theme.bg};
   }

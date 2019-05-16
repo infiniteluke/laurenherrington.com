@@ -8,8 +8,7 @@ import BlogPostMeta from '../components/BlogPostMeta';
 import Loading from '../components/Loading';
 import MapHelper from '../components/MapHelper';
 import Heart from '../components/Heart';
-import StoryCircle from '../components/StoryCircle';
-import { Content, Stories } from '../styles';
+import { Content } from '../styles';
 
 const Map = React.lazy(() => import('../components/Map'));
 
@@ -47,21 +46,10 @@ const BlogPostTemplate = ({
   return (
     <Layout
       location={location}
-      {...data.site.siteMetadata}
+      title={post.title}
+      categories={categories}
       category={post.category.slug}
     >
-      <Stories>
-        {categories.map(
-          ({ category: { id, title, image, slug, directLink } }) => (
-            <StoryCircle
-              key={id}
-              title={title}
-              image={image}
-              to={directLink ? `/${slug}` : `/tag/${slug}`}
-            />
-          )
-        )}
-      </Stories>
       <article>
         <header style={{ marginBottom: '40px' }}>
           <h1 className="section-headline">{post.title}</h1>
@@ -147,11 +135,6 @@ const BlogPostTemplate = ({
 
 export const pageQuery = graphql`
   query PostQuery($slug: String) {
-    site {
-      siteMetadata {
-        title
-      }
-    }
     allContentfulCategory(sort: { fields: weight }) {
       categories: edges {
         category: node {

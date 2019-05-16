@@ -7,10 +7,9 @@ if (process.env.IS_GATSBY_PREVIEW !== 'true') {
   });
 }
 
-console.log(process.env);
-
 const siteMetadata = {
-  title: `Lauren Herrington`,
+  title: `Lauren`,
+  headerTitle: `Lauren Herrington`,
   author: `Lauren Herrington`,
   description: `Lauren Herrington's personal blog.`,
   siteUrl: `https://laurenherrington.com`,

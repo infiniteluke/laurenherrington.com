@@ -1,10 +1,16 @@
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import Helmet from 'react-helmet';
+import { StaticQuery, graphql } from 'gatsby';
 import { withPrefix } from 'gatsby';
+import VisuallyHidden from '@reach/visually-hidden';
 
 import Header from './Header';
+import Swipe from './Swipe';
+import StoryCircle from './StoryCircle';
+import Help from './Help';
+import SEO from './SEO';
 import GlobalStyle from '../styles/global';
+import { Stories, HelpBox } from '../styles';
 import theme from '../utils/theme';
 
 const Main = styled.main`
@@ -43,18 +49,88 @@ const Image = styled.img`
   height: 40px;
 `;
 
-const Layout = ({ title, children, category = 'no' }) => (
+const StoryHelpContent = ({ dismiss }) => (
+  <HelpBox>
+    <button
+      style={{
+        border: 'none',
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        background: 'none',
+        color: 'white',
+        cursor: 'pointer',
+        marginTop: '10px',
+      }}
+      onClick={() => dismiss()}
+    >
+      <VisuallyHidden>Close</VisuallyHidden>
+      <span style={{ padding: '10px' }} aria-hidden>
+        ✖
+      </span>
+    </button>
+    <h3 style={{ marginTop: '10px', textAlign: 'center', margin: 0 }}>
+      Swipe to see more
+    </h3>
+    <Swipe style={{ marginTop: '25px' }} />
+  </HelpBox>
+);
+
+const Layout = ({
+  title,
+  children,
+  showStories = true,
+  categories = [],
+  category = 'no',
+}) => (
   <ThemeProvider theme={theme}>
     <PageWrapper className={`${category}-category`}>
-      <Helmet title={title}>
-        <meta
-          property="og:image"
-          content="https://laurenherrington.com/lauren-share.png"
-        />
-      </Helmet>
+      <SEO
+        title={title}
+        meta={[
+          {
+            property: 'og:image',
+            content: 'https://laurenherrington.com/lauren-share.png',
+          },
+        ]}
+      />
       <GlobalStyle />
-      <Header title={title} />
-      <Main>{children}</Main>
+      <StaticQuery
+        query={siteDataQuery}
+        render={data => <Header title={data.site.siteMetadata.headerTitle} />}
+      />
+      <Main>
+        {showStories && categories.length ? (
+          <Help
+            position={positionHelp}
+            style={{
+              zIndex: 1,
+              position: 'absolute',
+              padding: 0,
+              maxWidth: '80%',
+              whiteSpace: 'nowrap',
+              border: 'none',
+            }}
+            ariaLabel="Help with stories menu"
+            mobileMediaQuery="(max-width: 750px)"
+            render={StoryHelpContent}
+          >
+            <Stories>
+              {categories.map(
+                ({ category: { id, title, image, slug, directLink } }) => (
+                  <StoryCircle
+                    key={id}
+                    title={title}
+                    image={image}
+                    to={directLink ? `/${slug}` : `/tag/${slug}`}
+                  />
+                )
+              )}
+            </Stories>
+          </Help>
+        ) : null}
+        {children}
+      </Main>
       <Footer>
         <FooterList>
           <FooterItem>
@@ -80,5 +156,35 @@ const Layout = ({ title, children, category = 'no' }) => (
     </PageWrapper>
   </ThemeProvider>
 );
+
+const siteDataQuery = graphql`
+  query LayoutSiteTitle {
+    site {
+      siteMetadata {
+        headerTitle
+      }
+    }
+  }
+`;
+
+const OFFSET = 12;
+
+const positionHelp = (triggerRect, tooltipRect) => {
+  const collisions = {
+    top: triggerRect.top - tooltipRect.height < 0,
+    bottom:
+      window.innerHeight < triggerRect.bottom + tooltipRect.height + OFFSET,
+  };
+
+  const directionUp = collisions.bottom && !collisions.top;
+
+  return {
+    left: `50%`,
+    transform: 'translateX(-50%)',
+    top: directionUp
+      ? `${triggerRect.top - OFFSET - tooltipRect.height + window.scrollY}px`
+      : `${triggerRect.top + OFFSET + triggerRect.height + window.scrollY}px`,
+  };
+};
 
 export default Layout;
