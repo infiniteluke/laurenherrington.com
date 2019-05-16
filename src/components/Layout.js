@@ -59,6 +59,7 @@ const StoryHelpContent = ({ dismiss }) => (
       style={{
         border: 'none',
         width: '100%',
+        backgroundColor: 'white',
         borderRadius: '3px',
         padding: '8px',
       }}
