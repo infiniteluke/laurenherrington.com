@@ -51,29 +51,21 @@ const Image = styled.img`
 
 const StoryHelpContent = ({ dismiss }) => (
   <HelpBox>
-    <button
-      style={{
-        border: 'none',
-        position: 'absolute',
-        right: 0,
-        top: 0,
-        background: 'none',
-        color: 'white',
-        cursor: 'pointer',
-        marginTop: '15px',
-        marginRight: '5px',
-      }}
-      onClick={() => dismiss()}
-    >
-      <VisuallyHidden>Close</VisuallyHidden>
-      <span style={{ padding: '10px' }} aria-hidden>
-        ✖
-      </span>
-    </button>
     <h3 style={{ marginTop: '15px', textAlign: 'center', margin: 0 }}>
       Swipe to see more
     </h3>
-    <Swipe style={{ marginTop: '25px' }} />
+    <Swipe style={{ margin: '35px' }} />
+    <button
+      style={{
+        border: 'none',
+        width: '100%',
+        borderRadius: '3px',
+        padding: '8px',
+      }}
+      onClick={() => dismiss()}
+    >
+      Dismiss
+    </button>
   </HelpBox>
 );
 
@@ -177,7 +169,7 @@ const siteDataQuery = graphql`
   }
 `;
 
-const OFFSET = 12;
+const OFFSET = 20;
 
 const positionHelp = (triggerRect, tooltipRect) => {
   const collisions = {

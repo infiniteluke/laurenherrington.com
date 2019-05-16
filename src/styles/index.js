@@ -180,4 +180,21 @@ export const HelpBox = styled.div`
   padding: 30px;
   color: white;
   border-radius: 10px;
+  position: relative;
+
+  /* Assumes arrow is on top. Make this a prop */
+  &:after {
+    content: ' ';
+    display: block;
+    height: 20px;
+    width: 20px;
+    background-color: inherit;
+    border: inherit;
+    position: absolute;
+    top: -9px;
+    left: calc(50% - 10px);
+    clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+    transform: rotate(-225deg);
+    border-radius: 0 0 0 0.25em;
+  }
 `;
