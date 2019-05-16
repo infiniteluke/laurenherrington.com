@@ -60,7 +60,8 @@ const StoryHelpContent = ({ dismiss }) => (
         background: 'none',
         color: 'white',
         cursor: 'pointer',
-        marginTop: '10px',
+        marginTop: '15px',
+        marginRight: '5px',
       }}
       onClick={() => dismiss()}
     >
@@ -69,7 +70,7 @@ const StoryHelpContent = ({ dismiss }) => (
         ✖
       </span>
     </button>
-    <h3 style={{ marginTop: '10px', textAlign: 'center', margin: 0 }}>
+    <h3 style={{ marginTop: '15px', textAlign: 'center', margin: 0 }}>
       Swipe to see more
     </h3>
     <Swipe style={{ marginTop: '25px' }} />
