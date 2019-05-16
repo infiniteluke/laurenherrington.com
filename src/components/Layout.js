@@ -112,6 +112,7 @@ const Layout = ({
           {showStories && categories.length ? (
             typeof window !== 'undefined' ? (
               <Help
+                helpName="stories"
                 position={positionHelp}
                 style={{
                   zIndex: 1,

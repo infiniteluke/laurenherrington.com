@@ -2,7 +2,6 @@ import React from 'react';
 import Portal from '@reach/portal';
 import VisuallyHidden from '@reach/visually-hidden';
 import { useRect } from '@reach/rect';
-import { useId } from '@reach/auto-id';
 
 const Help = React.forwardRef(function Help(
   {
@@ -24,9 +23,9 @@ const Help = React.forwardRef(function Help(
   },
   forwardRef
 ) {
-  const id = `${helpName}:${useId()}`;
+  const id = helpName;
   const [dismissed, setDismiss] = useLocalStorage(
-    `${localStorageNameSpace}:${id}:dismissed`,
+    `${localStorageNameSpace}:${helpName}:dismissed`,
     false
   );
   const match = React.useRef(window.matchMedia(mobileMediaQuery));

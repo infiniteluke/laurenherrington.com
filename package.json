@@ -8,7 +8,6 @@
     "url": "https://github.com/infiniteluke/laurenherrington.com/issues"
   },
   "dependencies": {
-    "@reach/auto-id": "^0.2.0",
     "@reach/portal": "^0.2.1",
     "@reach/rect": "^0.2.1",
     "@reach/visually-hidden": "^0.1.4",
