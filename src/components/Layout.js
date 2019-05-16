@@ -82,80 +82,89 @@ const Layout = ({
   showStories = true,
   categories = [],
   category = 'no',
-}) => (
-  <ThemeProvider theme={theme}>
-    <PageWrapper className={`${category}-category`}>
-      <SEO
-        title={title}
-        meta={[
-          {
-            property: 'og:image',
-            content: 'https://laurenherrington.com/lauren-share.png',
-          },
-        ]}
-      />
-      <GlobalStyle />
-      <StaticQuery
-        query={siteDataQuery}
-        render={data => <Header title={data.site.siteMetadata.headerTitle} />}
-      />
-      <Main>
-        {showStories && categories.length ? (
-          <Help
-            position={positionHelp}
-            style={{
-              zIndex: 1,
-              position: 'absolute',
-              padding: 0,
-              maxWidth: '80%',
-              whiteSpace: 'nowrap',
-              border: 'none',
-            }}
-            ariaLabel="Help with stories menu"
-            mobileMediaQuery="(max-width: 750px)"
-            render={StoryHelpContent}
-          >
-            <Stories>
-              {categories.map(
-                ({ category: { id, title, image, slug, directLink } }) => (
-                  <StoryCircle
-                    key={id}
-                    title={title}
-                    image={image}
-                    to={directLink ? `/${slug}` : `/tag/${slug}`}
-                  />
-                )
-              )}
-            </Stories>
-          </Help>
-        ) : null}
-        {children}
-      </Main>
-      <Footer>
-        <FooterList>
-          <FooterItem>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.instagram.com/lherrington/"
-            >
-              <Image src={withPrefix('/img/instagram.svg')} alt="Instagram" />
-            </a>
-          </FooterItem>
-          <FooterItem>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://tinyletter.com/laurenherrington/"
-            >
-              <Image src={withPrefix('/img/envelope.svg')} alt="Newsletter" />
-            </a>
-          </FooterItem>
-        </FooterList>
-      </Footer>
-    </PageWrapper>
-  </ThemeProvider>
-);
+}) => {
+  const stories = (
+    <Stories>
+      {categories.map(
+        ({ category: { id, title, image, slug, directLink } }) => (
+          <StoryCircle
+            key={id}
+            title={title}
+            image={image}
+            to={directLink ? `/${slug}` : `/tag/${slug}`}
+          />
+        )
+      )}
+    </Stories>
+  );
+  return (
+    <ThemeProvider theme={theme}>
+      <PageWrapper className={`${category}-category`}>
+        <SEO
+          title={title}
+          meta={[
+            {
+              property: 'og:image',
+              content: 'https://laurenherrington.com/lauren-share.png',
+            },
+          ]}
+        />
+        <GlobalStyle />
+        <StaticQuery
+          query={siteDataQuery}
+          render={data => <Header title={data.site.siteMetadata.headerTitle} />}
+        />
+        <Main>
+          {showStories && categories.length ? (
+            typeof window !== 'undefined' ? (
+              <Help
+                position={positionHelp}
+                style={{
+                  zIndex: 1,
+                  position: 'absolute',
+                  padding: 0,
+                  maxWidth: '80%',
+                  whiteSpace: 'nowrap',
+                  border: 'none',
+                }}
+                ariaLabel="Help with stories menu"
+                mobileMediaQuery="(max-width: 750px)"
+                render={StoryHelpContent}
+              >
+                {stories}
+              </Help>
+            ) : (
+              stories
+            )
+          ) : null}
+          {children}
+        </Main>
+        <Footer>
+          <FooterList>
+            <FooterItem>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/lherrington/"
+              >
+                <Image src={withPrefix('/img/instagram.svg')} alt="Instagram" />
+              </a>
+            </FooterItem>
+            <FooterItem>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://tinyletter.com/laurenherrington/"
+              >
+                <Image src={withPrefix('/img/envelope.svg')} alt="Newsletter" />
+              </a>
+            </FooterItem>
+          </FooterList>
+        </Footer>
+      </PageWrapper>
+    </ThemeProvider>
+  );
+};
 
 const siteDataQuery = graphql`
   query LayoutSiteTitle {
@@ -170,13 +179,6 @@ const siteDataQuery = graphql`
 const OFFSET = 12;
 
 const positionHelp = (triggerRect, tooltipRect) => {
-  if (typeof window !== 'undefined') {
-    return {
-      left: `50%`,
-      top: `50%`,
-      transform: 'translate(-50%, -50%)',
-    };
-  }
   const collisions = {
     top: triggerRect.top - tooltipRect.height < 0,
     bottom:
