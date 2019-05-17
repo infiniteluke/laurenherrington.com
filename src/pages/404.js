@@ -12,18 +12,6 @@ class NotFoundPage extends React.Component {
 
     return (
       <Layout location={this.props.location} categories={categories} title="❔">
-        <Stories>
-          {categories.map(
-            ({ category: { id, title, image, slug, directLink } }) => (
-              <StoryCircle
-                key={id}
-                title={title}
-                image={image}
-                to={directLink ? `/${slug}` : `/tag/${slug}`}
-              />
-            )
-          )}
-        </Stories>
         <h1>Not Found</h1>
         <p>This page could not be found.</p>
       </Layout>
