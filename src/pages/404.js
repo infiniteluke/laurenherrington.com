@@ -2,8 +2,6 @@ import React from 'react';
 import { graphql } from 'gatsby';
 
 import Layout from '../components/Layout';
-import StoryCircle from '../components/StoryCircle';
-import { Stories } from '../styles';
 
 class NotFoundPage extends React.Component {
   render() {

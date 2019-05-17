@@ -3,10 +3,8 @@ import { graphql } from 'gatsby';
 import styled from 'styled-components';
 
 import Layout from '../components/Layout';
-import StoryCircle from '../components/StoryCircle';
 import HeroImage from '../components/HeroImage';
 import Book from '../components/Book';
-import { Stories } from '../styles';
 
 const BookGrid = styled.section`
   display: flex;
