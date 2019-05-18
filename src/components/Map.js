@@ -42,7 +42,7 @@ export default ({
   }, [zoom]);
   React.useEffect(() => {
     topoPromise.then(data => setTopo(data.default));
-  }, [topoPromise]);
+  }, []);
 
   return topo ? (
     <div

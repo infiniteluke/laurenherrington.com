@@ -1,15 +1,16 @@
 import React from 'react';
 
-export default props => (
+export default React.forwardRef((props, ref) => (
   <svg
+    ref={ref}
     {...props}
-    enableBackground="new 0 0 99.176 99.176"
-    height="99.176px"
-    id="Layer_1"
     version="1.1"
-    viewBox="0 0 99.176 99.176"
-    width="99.176px"
     xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 99.176 99.176"
+    height="100px"
+    width="100px"
+    xmlSpace="preserve"
   >
     <g>
       <path
@@ -33,4 +34,4 @@ export default props => (
       />
     </g>
   </svg>
-);
+));

@@ -63,7 +63,7 @@ export const CategoryContainer = styled(Link)`
   }
 `;
 
-export const Stories = styled.nav`
+export const StoriesWrapper = styled.nav`
   width: 100vw;
   position: relative;
   left: 50%;
@@ -173,6 +173,7 @@ export const MapLabel = styled.label`
 `;
 
 export const HelpBox = styled.div`
+  width: 100%;
   background: black;
   display: flex;
   flex-direction: column;

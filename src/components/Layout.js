@@ -2,16 +2,19 @@ import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { StaticQuery, graphql } from 'gatsby';
 import { withPrefix } from 'gatsby';
-import VisuallyHidden from '@reach/visually-hidden';
+import { useSpring, animated } from 'react-spring';
 
 import Header from './Header';
-import Swipe from './Swipe';
+import Swipe from './icons/Swipe';
+import CheckCircle from './icons/CheckCircle';
 import StoryCircle from './StoryCircle';
 import Help from './Help';
 import SEO from './SEO';
 import GlobalStyle from '../styles/global';
-import { Stories, HelpBox } from '../styles';
+import { StoriesWrapper, HelpBox } from '../styles';
 import theme from '../utils/theme';
+
+animated.Swipe = animated(Swipe);
 
 const Main = styled.main`
   max-width: 1000px;
@@ -49,25 +52,91 @@ const Image = styled.img`
   height: 40px;
 `;
 
-const StoryHelpContent = ({ dismiss }) => (
-  <HelpBox>
-    <h3 style={{ marginTop: '15px', textAlign: 'center', margin: 0 }}>
-      Swipe to see more
-    </h3>
-    <Swipe style={{ margin: '35px' }} />
-    <button
-      style={{
-        border: 'none',
-        width: '100%',
-        backgroundColor: 'white',
-        borderRadius: '3px',
-        padding: '8px',
-      }}
-      onClick={() => dismiss()}
-    >
-      Dismiss
-    </button>
-  </HelpBox>
+const StoryHelpContent = ({ dismiss, actionCompleted, helping }) => {
+  const swipeStates = ['rotate(45deg)', 'rotate(0deg)'];
+  const swipeProps = useSpring({
+    to: async next => {
+      let i = 0;
+      while (i < 7) {
+        await next({ transform: swipeStates[1] });
+        await next({ transform: swipeStates[0], config: { duration: 800 } });
+        i++;
+      }
+    },
+    from: { transform: swipeStates[0] },
+    config: { duration: 300 },
+  });
+  React.useEffect(() => {
+    if (actionCompleted) {
+      const timer = setTimeout(() => {
+        dismiss();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  });
+
+  return (
+    <HelpBox>
+      <h3
+        style={{
+          marginTop: '15px',
+          textAlign: 'center',
+          margin: 0,
+        }}
+      >
+        {actionCompleted ? 'You did it!' : 'Swipe to see more'}
+      </h3>
+      <div style={{ margin: '35px' }}>
+        {!actionCompleted ? (
+          <animated.Swipe style={swipeProps} />
+        ) : (
+          <CheckCircle />
+        )}
+      </div>
+      {!actionCompleted && (
+        <button
+          style={{
+            border: 'none',
+            width: '100%',
+            backgroundColor: 'white',
+            borderRadius: '3px',
+            padding: '8px',
+          }}
+          onClick={() => dismiss()}
+        >
+          Dismiss
+        </button>
+      )}
+    </HelpBox>
+  );
+};
+
+const Stories = React.forwardRef(
+  ({ completeAction = () => {}, categories }, ref) => {
+    const scrolled = React.useRef(false);
+    return (
+      <StoriesWrapper
+        ref={ref}
+        onScroll={() => {
+          if (!scrolled.current) {
+            completeAction();
+          }
+          scrolled.current = true;
+        }}
+      >
+        {categories.map(
+          ({ category: { id, title, image, slug, directLink } }) => (
+            <StoryCircle
+              key={id}
+              title={title}
+              image={image}
+              to={directLink ? `/${slug}` : `/tag/${slug}`}
+            />
+          )
+        )}
+      </StoriesWrapper>
+    );
+  }
 );
 
 const Layout = ({
@@ -77,20 +146,6 @@ const Layout = ({
   categories = [],
   category = 'no',
 }) => {
-  const stories = (
-    <Stories>
-      {categories.map(
-        ({ category: { id, title, image, slug, directLink } }) => (
-          <StoryCircle
-            key={id}
-            title={title}
-            image={image}
-            to={directLink ? `/${slug}` : `/tag/${slug}`}
-          />
-        )
-      )}
-    </Stories>
-  );
   return (
     <ThemeProvider theme={theme}>
       <PageWrapper className={`${category}-category`}>
@@ -112,6 +167,7 @@ const Layout = ({
           {showStories && categories.length ? (
             typeof window !== 'undefined' ? (
               <Help
+                render={StoryHelpContent}
                 helpName="stories"
                 position={positionHelp}
                 style={{
@@ -124,12 +180,11 @@ const Layout = ({
                 }}
                 ariaLabel="Help with stories menu"
                 mobileMediaQuery="(max-width: 750px)"
-                render={StoryHelpContent}
               >
-                {stories}
+                <Stories categories={categories} />
               </Help>
             ) : (
-              stories
+              <Stories categories={categories} />
             )
           ) : null}
           {children}

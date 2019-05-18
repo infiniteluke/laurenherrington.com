@@ -23,13 +23,12 @@ const Help = React.forwardRef(function Help(
   },
   forwardRef
 ) {
-  const id = helpName;
   const [dismissed, setDismiss] = useLocalStorage(
     `${localStorageNameSpace}:${helpName}:dismissed`,
     false
   );
+  const [actionCompleted, setActionCompleted] = React.useState(false);
   const match = React.useRef(window.matchMedia(mobileMediaQuery));
-  // Mobile first: true, effect will set false if needed.
   const [isMobile, setIsMobile] = React.useState(match.current.matches);
   React.useEffect(() => {
     if (mobileHelpOnly) {
@@ -43,8 +42,8 @@ const Help = React.forwardRef(function Help(
       };
     }
   }, [mobileHelpOnly, isMobile, match]);
-  // State
-  const isVisible =
+
+  const helping =
     // Don't show help if it's been dismissed
     !dismissed &&
     // If only mobile should see help,
@@ -54,32 +53,40 @@ const Help = React.forwardRef(function Help(
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
           navigator.userAgent
         )));
-  // Actions
+  // Ref for help
+  const triggerRef = React.useRef();
+  const triggerRect = useRect(triggerRef, helping);
+
   const dismiss = () => {
     setDismiss(true);
   };
-  // Ref for help
-  const triggerRef = React.useRef();
-  const triggerRect = useRect(triggerRef, isVisible);
+  const completeAction = () => {
+    setActionCompleted(true);
+  };
 
   return (
     <React.Fragment>
-      {React.cloneElement(React.Children.only(children), { ref: triggerRef })}
-      {isVisible ? (
+      {/* Clone the children we're providing help for and pass some "helpful" props to them */}
+      {React.cloneElement(React.Children.only(children), {
+        ref: triggerRef,
+        completeAction,
+        helping,
+      })}
+      {helping && (
         <Portal>
           <HelpContent
             ariaLabel={ariaLabel}
             position={position}
-            isVisible={isVisible}
-            id={id}
+            helping={helping}
+            id={helpName}
             triggerRect={triggerRect}
             ref={forwardRef}
             {...rest}
           >
-            {render({ dismiss, isVisible })}
+            {render({ dismiss, actionCompleted })}
           </HelpContent>
         </Portal>
-      ) : null}
+      )}
     </React.Fragment>
   );
 });
@@ -122,13 +129,13 @@ const positionDefault = (triggerRect, tooltipRect) => {
   };
 };
 
-const HelpContent = React.forwardRef(function TooltipContent(
+const HelpContent = React.forwardRef(function HelpContent(
   {
     children,
     dismiss,
     ariaLabel,
     position,
-    isVisible,
+    helping,
     id,
     triggerRect,
     style,
@@ -138,7 +145,7 @@ const HelpContent = React.forwardRef(function TooltipContent(
 ) {
   const useAriaLabel = ariaLabel != null;
   const tooltipRef = React.useRef();
-  const tooltipRect = useRect(tooltipRef, isVisible);
+  const tooltipRect = useRect(tooltipRef, helping);
 
   return (
     <React.Fragment>
