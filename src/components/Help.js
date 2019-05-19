@@ -7,18 +7,17 @@ const Help = React.forwardRef(function Help(
   {
     // The component you want to provide "Help" for
     children,
-    // The HelpContent to render
+    // The HelpContent to render in the popup
     render = () => {
       throw new Error(
         'You must provide a render prop that renders the Help content'
       );
     },
     ariaLabel,
-    mobileMediaQuery = '(max-width: 412px)',
     position = positionDefault,
     localStorageNameSpace = 'help',
     helpName = 'tip',
-    mobileHelpOnly = true,
+    actionCompletedTimeout = 1000,
     ...rest
   },
   forwardRef
@@ -28,41 +27,30 @@ const Help = React.forwardRef(function Help(
     false
   );
   const [actionCompleted, setActionCompleted] = React.useState(false);
-  const match = React.useRef(window.matchMedia(mobileMediaQuery));
-  const [isMobile, setIsMobile] = React.useState(match.current.matches);
-  React.useEffect(() => {
-    if (mobileHelpOnly) {
-      const mediaMatch = match.current;
-      const listener = e => {
-        setIsMobile(e.matches);
-      };
-      mediaMatch.addListener(listener);
-      return () => {
-        mediaMatch.removeListener(listener);
-      };
-    }
-  }, [mobileHelpOnly, isMobile, match]);
-
-  const helping =
-    // Don't show help if it's been dismissed
-    !dismissed &&
-    // If only mobile should see help,
-    // use media queries or userAgent to decide whether to show help
-    (mobileHelpOnly &&
-      (isMobile ||
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-          navigator.userAgent
-        )));
-  // Ref for help
-  const triggerRef = React.useRef();
-  const triggerRect = useRect(triggerRef, helping);
-
-  const dismiss = () => {
-    setDismiss(true);
-  };
   const completeAction = () => {
     setActionCompleted(true);
   };
+  const dismiss = React.useCallback(() => {
+    setDismiss(true);
+  }, [setDismiss]);
+  React.useEffect(() => {
+    if (actionCompleted) {
+      const timer = setTimeout(() => {
+        dismiss();
+      }, actionCompletedTimeout);
+      return () => clearTimeout(timer);
+    }
+  }, [actionCompleted, actionCompletedTimeout, dismiss]);
+
+  // Don't show help if it's been dismissed
+  const helping = !dismissed;
+  // Ref for help
+  const triggerRef = React.useRef();
+  const triggerRect = useRect(triggerRef, helping);
+  // Because the portal is only rendered when helping,
+  // we need to unconditionally render the help children so any
+  // hooks inside it will be executed.
+  const helpChildren = render({ dismiss, actionCompleted });
 
   return (
     <React.Fragment>
@@ -83,7 +71,7 @@ const Help = React.forwardRef(function Help(
             ref={forwardRef}
             {...rest}
           >
-            {render({ dismiss, actionCompleted })}
+            {helpChildren}
           </HelpContent>
         </Portal>
       )}

@@ -4,9 +4,10 @@ import fontFiles from '../fonts';
 import { createGlobalStyle } from 'styled-components';
 
 export default createGlobalStyle`
-  * {
+  *, *:before, *:after {
     box-sizing: border-box;
   }
+
   html, body, #___gatsby, #___gatsby > div {
     height: 100%;
     -webkit-tap-highlight-color: rgba(0,0,0,0);

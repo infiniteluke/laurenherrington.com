@@ -26,7 +26,7 @@ const StoryImage = styled.div`
     border: none;
   }
 
-  @media (min-width: 600px) {
+  @media (min-width: 475px) {
     margin: 0 22px;
     width: 85px;
   }

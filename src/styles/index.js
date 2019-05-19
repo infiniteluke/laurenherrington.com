@@ -68,7 +68,7 @@ export const StoriesWrapper = styled.nav`
   position: relative;
   left: 50%;
   margin-left: -50vw;
-  margin-bottom: 45px;
+  margin-bottom: 30px;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
   &::-webkit-scrollbar {
@@ -174,11 +174,11 @@ export const MapLabel = styled.label`
 
 export const HelpBox = styled.div`
   width: 100%;
-  background: black;
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 30px;
+  padding: 15px;
   color: white;
   border-radius: 10px;
   position: relative;
@@ -190,9 +190,8 @@ export const HelpBox = styled.div`
     height: 20px;
     width: 20px;
     background-color: inherit;
-    border: inherit;
     position: absolute;
-    top: -9px;
+    top: -10px;
     left: calc(50% - 10px);
     clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
     transform: rotate(-225deg);

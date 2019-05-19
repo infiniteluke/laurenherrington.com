@@ -3,10 +3,11 @@ import styled, { ThemeProvider } from 'styled-components';
 import { StaticQuery, graphql } from 'gatsby';
 import { withPrefix } from 'gatsby';
 import { useSpring, animated } from 'react-spring';
+import MediaQuery from 'react-responsive';
 
 import Header from './Header';
 import Swipe from './icons/Swipe';
-import CheckCircle from './icons/CheckCircle';
+import Happy from './icons/Happy';
 import StoryCircle from './StoryCircle';
 import Help from './Help';
 import SEO from './SEO';
@@ -53,26 +54,18 @@ const Image = styled.img`
 `;
 
 const StoryHelpContent = ({ dismiss, actionCompleted, helping }) => {
-  const swipeStates = ['rotate(45deg)', 'rotate(0deg)'];
+  const SWIPE_STATES = ['rotate(45deg)', 'rotate(0deg)'];
   const swipeProps = useSpring({
     to: async next => {
       let i = 0;
+      // Do 7 "swipes"
       while (i < 7) {
-        await next({ transform: swipeStates[1] });
-        await next({ transform: swipeStates[0], config: { duration: 800 } });
+        await next({ transform: SWIPE_STATES[1], config: { duration: 300 } });
+        await next({ transform: SWIPE_STATES[0], config: { duration: 800 } });
         i++;
       }
     },
-    from: { transform: swipeStates[0] },
-    config: { duration: 300 },
-  });
-  React.useEffect(() => {
-    if (actionCompleted) {
-      const timer = setTimeout(() => {
-        dismiss();
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
+    from: { transform: SWIPE_STATES[0] },
   });
 
   return (
@@ -82,17 +75,20 @@ const StoryHelpContent = ({ dismiss, actionCompleted, helping }) => {
           marginTop: '15px',
           textAlign: 'center',
           margin: 0,
+          fontSize: '.9rem',
         }}
       >
         {actionCompleted ? 'You did it!' : 'Swipe to see more'}
       </h3>
-      <div style={{ margin: '35px' }}>
-        {!actionCompleted ? (
+      {!actionCompleted ? (
+        <div style={{ margin: '25px 15px' }}>
           <animated.Swipe style={swipeProps} />
-        ) : (
-          <CheckCircle />
-        )}
-      </div>
+        </div>
+      ) : (
+        <div style={{ marginTop: '25px' }}>
+          <Happy />
+        </div>
+      )}
       {!actionCompleted && (
         <button
           style={{
@@ -100,7 +96,7 @@ const StoryHelpContent = ({ dismiss, actionCompleted, helping }) => {
             width: '100%',
             backgroundColor: 'white',
             borderRadius: '3px',
-            padding: '8px',
+            padding: '5px',
           }}
           onClick={() => dismiss()}
         >
@@ -164,29 +160,40 @@ const Layout = ({
           render={data => <Header title={data.site.siteMetadata.headerTitle} />}
         />
         <Main>
-          {showStories && categories.length ? (
-            typeof window !== 'undefined' ? (
-              <Help
-                render={StoryHelpContent}
-                helpName="stories"
-                position={positionHelp}
-                style={{
-                  zIndex: 1,
-                  position: 'absolute',
-                  padding: 0,
-                  maxWidth: '80%',
-                  whiteSpace: 'nowrap',
-                  border: 'none',
-                }}
-                ariaLabel="Help with stories menu"
-                mobileMediaQuery="(max-width: 750px)"
-              >
-                <Stories categories={categories} />
-              </Help>
-            ) : (
-              <Stories categories={categories} />
-            )
-          ) : null}
+          <MediaQuery maxWidth={800}>
+            {matches => {
+              // Help is only relevant at small viewport widths
+              // Help can only be rendered on client side
+              if (
+                typeof window !== 'undefined' &&
+                matches &&
+                showStories &&
+                categories.length
+              ) {
+                return (
+                  <Help
+                    render={StoryHelpContent}
+                    helpName="stories"
+                    position={positionHelp}
+                    style={{
+                      zIndex: 1,
+                      position: 'absolute',
+                      padding: 0,
+                      maxWidth: '80%',
+                      whiteSpace: 'nowrap',
+                      border: 'none',
+                    }}
+                    ariaLabel="Help with stories menu"
+                  >
+                    <Stories categories={categories} />
+                  </Help>
+                );
+              } else if (showStories && categories.length) {
+                return <Stories categories={categories} />;
+              }
+              return null;
+            }}
+          </MediaQuery>
           {children}
         </Main>
         <Footer>
