@@ -10,6 +10,9 @@ import MapHelper from '../components/MapHelper';
 import Heart from '../components/Heart';
 import { Content } from '../styles';
 
+import Facebook from '../components/icons/Facebook';
+import Twitter from '../components/icons/Twitter';
+
 const Map = React.lazy(() => import('../components/Map'));
 
 const ArticleFooter = styled.footer`
@@ -39,10 +42,12 @@ const PreviousLink = styled(Link)`
 const BlogPostTemplate = ({
   data,
   location,
-  pageContext: { next, previous },
+  pageContext: { slug, next, previous },
 }) => {
   const post = data.contentfulPost;
+  const siteMetadata = data.site.siteMetadata;
   const categories = data.allContentfulCategory.categories;
+  const postUrl = `${siteMetadata.siteUrl}/post/${slug}`;
   return (
     <Layout
       location={location}
@@ -67,7 +72,7 @@ const BlogPostTemplate = ({
           <Heart />
         </div>
         {post.locations && (
-          <div
+          <section
             style={{
               display: 'flex',
               alignItems: 'center',
@@ -92,8 +97,44 @@ const BlogPostTemplate = ({
                 <Map locations={post.locations} zoom={30} />
               </React.Suspense>
             )}
-          </div>
+          </section>
         )}
+        <section
+          style={{
+            margin: '60px 0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            width: '100%',
+          }}
+        >
+          <h2>
+            Share this post{' '}
+            <span aria-label="information desk woman" role="img">
+              💁‍
+            </span>
+          </h2>
+          <div>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}`}
+            >
+              <Facebook />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`https://twitter.com/home?status="${
+                post.body.childMarkdownRemark.excerpt
+              }"
+              ${postUrl}`}
+            >
+              <Twitter />
+            </a>
+          </div>
+        </section>
         <ArticleFooter>
           {previous ? (
             <PreviousLink to={`/post/${previous.slug}`}>
@@ -135,6 +176,11 @@ const BlogPostTemplate = ({
 
 export const pageQuery = graphql`
   query PostQuery($slug: String) {
+    site {
+      siteMetadata {
+        siteUrl
+      }
+    }
     allContentfulCategory(sort: { fields: weight }) {
       categories: edges {
         category: node {
