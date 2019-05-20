@@ -8,10 +8,10 @@ import BlogPostMeta from '../components/BlogPostMeta';
 import Loading from '../components/Loading';
 import MapHelper from '../components/MapHelper';
 import Heart from '../components/Heart';
-import { Content } from '../styles';
-
+import SocialLink from '../components/SocialLink';
 import Facebook from '../components/icons/Facebook';
 import Twitter from '../components/icons/Twitter';
+import { Content } from '../styles';
 
 const Map = React.lazy(() => import('../components/Map'));
 
@@ -116,23 +116,19 @@ const BlogPostTemplate = ({
             </span>
           </h2>
           <div>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}`}
+            <SocialLink
+              link={`https://www.facebook.com/sharer/sharer.php?u=${postUrl}`}
             >
               <Facebook />
-            </a>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={`https://twitter.com/home?status="${
+            </SocialLink>
+            <SocialLink
+              link={`https://twitter.com/home?status="${
                 post.body.childMarkdownRemark.excerpt
               }"
               ${postUrl}`}
             >
               <Twitter />
-            </a>
+            </SocialLink>
           </div>
         </section>
         <ArticleFooter>
