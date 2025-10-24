@@ -23,71 +23,10 @@ class RootIndex extends React.Component {
       p => p.category
     );
     return (
-      <Layout
-        location={this.props.location}
-        title="🏠"
-        categories={this.props.data.allContentfulCategory.categories}
-        showStories={false}
-      >
-        <Nav>
-          <CategoryList>
-            <React.Fragment>
-              {categories.map(category => {
-                return (
-                  <CategoryCircle
-                    key={category.slug}
-                    category={category}
-                    to={
-                      category.directLink
-                        ? `/${category.slug}`
-                        : `/tag/${category.slug}`
-                    }
-                  />
-                );
-              })}
-            </React.Fragment>
-          </CategoryList>
-        </Nav>
-      </Layout>
+      <h1>Under construction</h1>
     );
   }
 }
 
 export default RootIndex;
 
-export const pageQuery = graphql`
-  query HomeQuery {
-    globeImage: contentfulAsset(
-      id: { eq: "20caf6fa-18f2-59e8-a742-385190338ec5" }
-    ) {
-      ...squareImageLarge
-    }
-    allContentfulCategory(limit: 1000, sort: { fields: weight }) {
-      categories: edges {
-        category: node {
-          id
-          slug
-          title
-          directLink
-          squareImageLarge: image {
-            ...squareImageLarge
-          }
-        }
-      }
-    }
-  }
-
-  fragment squareImageSmall on ContentfulAsset {
-    title
-    fluid(maxWidth: 200, maxHeight: 200) {
-      ...GatsbyContentfulFluid_withWebp
-    }
-  }
-
-  fragment squareImageLarge on ContentfulAsset {
-    title
-    fluid(maxWidth: 600, maxHeight: 600) {
-      ...GatsbyContentfulFluid_withWebp
-    }
-  }
-`;
