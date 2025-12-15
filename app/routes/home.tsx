@@ -1,16 +1,73 @@
 import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
 import { useEffect } from "react";
+import shopSettings from "../data/shop_settings.json";
+import listingsCsv from "../data/EtsyListingsDownload.csv?raw";
+import type { Listing } from "~/types";
 
-export function meta({}: Route.MetaArgs) {
+function parseCSV(csv: string): Listing[] {
+  const lines = csv.trim().split("\n");
+  const headers = parseCSVLine(lines[0]);
+
+  return lines
+    .slice(1)
+    .filter((line) => line.trim())
+    .map((line, index) => {
+      const values = parseCSVLine(line);
+      const row: Record<string, string> = {};
+      headers.forEach((header, i) => {
+        row[header] = values[i] || "";
+      });
+      return {
+        id: index + 1,
+        title: row.TITLE,
+        description: row.DESCRIPTION,
+        price: parseFloat(row.PRICE) || 0,
+        currency: row.CURRENCY_CODE,
+        quantity: parseInt(row.QUANTITY) || 0,
+        tags: row.TAGS ? row.TAGS.split(",") : [],
+        materials: row.MATERIALS,
+        image: row.IMAGE1,
+      };
+    });
+}
+
+function parseCSVLine(line: string): string[] {
+  const result: string[] = [];
+  let current = "";
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === "," && !inQuotes) {
+      result.push(current);
+      current = "";
+    } else {
+      current += char;
+    }
+  }
+  result.push(current);
+  return result;
+}
+
+export function meta({ loaderData }: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: loaderData.shopName },
+    { name: "description", content: "collaging portfolio" },
   ];
 }
 
-export function loader({ context }: Route.LoaderArgs) {
-  return { message: context.cloudflare.env.VALUE_FROM_CLOUDFLARE };
+export async function loader({ context }: Route.LoaderArgs) {
+  const listings = parseCSV(listingsCsv);
+  const iconUrl = shopSettings.icon_url;
+
+  return {
+    listings,
+    iconUrl,
+    shopName: shopSettings.name,
+  };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
@@ -33,5 +90,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     }
   }, []);
 
-  return <Welcome message={loaderData.message} />;
+  return (
+    <Welcome
+      listings={loaderData.listings}
+      iconUrl={loaderData.iconUrl}
+      shopName={loaderData.shopName}
+    />
+  );
 }
