@@ -9,8 +9,8 @@ interface WelcomeProps {
 
 export function Welcome({ listings, iconUrl, shopName }: WelcomeProps) {
   return (
-    <main>
-      <header className="flex items-center gap-4 mb-8">
+    <main className=" flex items-center justify-center flex-col">
+      <header className="flex items-center gap-4 my-8">
         <img
           src={iconUrl}
           alt={`${shopName} shop icon`}
