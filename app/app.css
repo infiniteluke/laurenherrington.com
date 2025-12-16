@@ -12,6 +12,11 @@ body {
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, grey 1px, transparent 1px),
+    linear-gradient(to bottom, grey 1px, transparent 1px);
 }
 
 /* Subtle default route transition when the View Transitions API is available. */
