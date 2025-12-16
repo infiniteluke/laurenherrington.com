@@ -10,8 +10,7 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const id = Number(params.id);
-  const listing = Number.isFinite(id) ? getListingById(id) : undefined;
+  const listing = getListingById(params.id);
   if (!listing) {
     throw new Response("Not found", { status: 404 });
   }

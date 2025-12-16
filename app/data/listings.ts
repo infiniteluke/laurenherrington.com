@@ -1,3 +1,4 @@
+import { slugify } from "util/slugs";
 import listingsCsv from "./EtsyListingsDownload.csv?raw";
 import type { Listing } from "~/types";
 
@@ -35,7 +36,7 @@ function parseCSV(csv: string): Listing[] {
         row[header] = values[i] || "";
       });
       return {
-        id: index + 1,
+        id: slugify(row.TITLE),
         title: row.TITLE,
         description: row.DESCRIPTION,
         price: parseFloat(row.PRICE) || 0,
@@ -55,12 +56,10 @@ export function getListings(): Listing[] {
   return cached;
 }
 
-export function getListingById(id: number): Listing | undefined {
+export function getListingById(id: string): Listing | undefined {
   return getListings().find((l) => l.id === id);
 }
 
 export function getListingsTotal(): number {
   return getListings().length;
 }
-
-
