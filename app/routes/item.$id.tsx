@@ -41,13 +41,6 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
           <div className="text-sm font-medium truncate px-2">
             {listing.title}
           </div>
-          <Link
-            to="/"
-            viewTransition
-            className="px-3 py-2 bg-white/10 active:bg-white/20"
-          >
-            Home
-          </Link>
         </div>
       </div>
 
