@@ -41,7 +41,11 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
           <div className="text-sm font-medium truncate px-2">
             {listing.title}
           </div>
-          <Link to="/" className="px-3 py-2 bg-white/10 active:bg-white/20">
+          <Link
+            to="/"
+            viewTransition
+            className="px-3 py-2 bg-white/10 active:bg-white/20"
+          >
             Home
           </Link>
         </div>
@@ -52,6 +56,7 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
           src={listing.image}
           alt={listing.description || listing.title}
           className="max-h-[calc(100dvh-80px)] w-auto max-w-full object-contain"
+          style={{ viewTransitionName: `listing-image-${listing.id}` }}
         />
       </div>
     </main>

@@ -26,7 +26,7 @@ export function ProgressBar() {
 
   return (
     <div
-      className="fixed left-3 right-3 bottom-8 z-50 pointer-events-none"
+      className="fixed left-3 right-3 bottom-5 z-50 pointer-events-none"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       aria-hidden="true"
     >
@@ -38,7 +38,7 @@ export function ProgressBar() {
       >
         <div
           className={[
-            "h-full rounded-full",
+            "h-full rounded-full transition-[width] duration-500 ease-out motion-reduce:transition-none",
             onDarkSurface ? "bg-white/90" : "bg-black/70",
           ].join(" ")}
           style={{ width: `${pct * 100}%` }}

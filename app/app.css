@@ -13,3 +13,31 @@ body {
     color-scheme: dark;
   }
 }
+
+/* Subtle default route transition when the View Transitions API is available. */
+@supports (view-transition-name: none) {
+  ::view-transition-old(root) {
+    animation: lh-fade-out 180ms ease-out both;
+  }
+  ::view-transition-new(root) {
+    animation: lh-fade-in 220ms ease-out both;
+  }
+
+  @keyframes lh-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes lh-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
