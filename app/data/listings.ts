@@ -56,8 +56,18 @@ export function getListings(): Listing[] {
   return cached;
 }
 
-export function getListingById(id: string): Listing | undefined {
-  return getListings().find((l) => l.id === id);
+export function getListingCursorsById(id: string): {
+  listing: Listing | undefined;
+  next: Listing | undefined;
+  previous: Listing | undefined;
+} {
+  const listings = getListings();
+  const index = listings.findIndex((l) => l.id === id);
+  return {
+    listing: listings[index],
+    next: listings[index + 1],
+    previous: listings[index - 1],
+  };
 }
 
 export function getListingsTotal(): number {

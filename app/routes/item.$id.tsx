@@ -1,7 +1,7 @@
 import type { Route } from "./+types/item.$id";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
-import { getListingById } from "~/data/listings";
+import { getListingCursorsById } from "~/data/listings";
 import { markItemVisited } from "~/utils/progress.client";
 
 export function meta({ data }: Route.MetaArgs) {
@@ -10,16 +10,16 @@ export function meta({ data }: Route.MetaArgs) {
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const listing = getListingById(params.id);
+  const { listing, next, previous } = getListingCursorsById(params.id);
   if (!listing) {
     throw new Response("Not found", { status: 404 });
   }
-  return { listing };
+  return { listing, next, previous };
 }
 
 export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const { listing } = loaderData;
+  const { listing, next } = loaderData;
 
   useEffect(() => {
     markItemVisited(listing.id);
@@ -31,15 +31,23 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
         <div className="flex items-center justify-between gap-2 px-3 py-3">
           <button
             type="button"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/", { viewTransition: true })}
             className="px-3 py-2 bg-white/10 active:bg-white/20"
-            aria-label="Back"
+            aria-label="Home"
           >
-            Back
+            Home
           </button>
           <div className="text-sm font-medium truncate px-2">
             {listing.title}
           </div>
+          {next && (
+            <Link
+              to={`/item/${next.id}`}
+              className="px-3 py-2 bg-white/10 active:bg-white/20"
+            >
+              Next
+            </Link>
+          )}
         </div>
       </div>
 
