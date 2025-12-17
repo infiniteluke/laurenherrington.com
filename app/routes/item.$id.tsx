@@ -1,12 +1,13 @@
 import type { Route } from "./+types/item.$id";
-import { useEffect } from "react";
 import { ButtonLink } from "~/components/ButtonLink";
 import { getListingCursorsById } from "~/data/listings";
-import { markItemVisited } from "~/utils/progress.client";
+import { trackVisit } from "~/middleware/trackVisit";
 
-export function meta({ data }: Route.MetaArgs) {
-  if (!data?.listing) return [{ title: "Item" }];
-  return [{ title: data.listing.title }];
+export const clientMiddleware = [trackVisit];
+
+export function meta({ loaderData }: Route.MetaArgs) {
+  if (!loaderData?.listing) return [{ title: "Item" }];
+  return [{ title: loaderData.listing.title }];
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -19,10 +20,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
   const { listing, next } = loaderData;
-
-  useEffect(() => {
-    markItemVisited(listing.id);
-  }, [listing.id]);
 
   return (
     <main className="h-dvh flex flex-col overflow-hidden">

@@ -1,24 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router";
-import { getListingsTotal } from "~/data/listings";
-import { getVisitedItemIds, onProgressUpdated } from "~/utils/progress.client";
-
-export function ProgressBar() {
-  const location = useLocation();
-  const total = useMemo(() => getListingsTotal(), []);
-  const [visitedCount, setVisitedCount] = useState(0);
-
-  useEffect(() => {
-    // Re-read on navigation so it reflects visits triggered elsewhere.
-    setVisitedCount(getVisitedItemIds().length);
-  }, [location.key]);
-
-  useEffect(() => {
-    return onProgressUpdated(() => {
-      setVisitedCount(getVisitedItemIds().length);
-    });
-  }, []);
-
+export function ProgressBar({
+  total,
+  visitedCount,
+}: {
+  total: number;
+  visitedCount: number;
+}) {
   if (!total) return null;
 
   const pct = Math.max(0, Math.min(1, visitedCount / total));

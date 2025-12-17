@@ -10,6 +10,27 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { ProgressBar } from "~/components/ProgressBar";
+import { getListingsTotal } from "~/data/listings";
+import { getVisitedCount } from "~/utils/progress.client";
+
+export async function loader() {
+  return { totalListings: getListingsTotal() };
+}
+
+export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
+  const serverData = await serverLoader();
+  return {
+    ...serverData,
+    visitedCount: getVisitedCount(),
+  };
+}
+
+clientLoader.hydrate = true as const;
+
+export function shouldRevalidate() {
+  // Always revalidate on navigation to pick up fresh visitedCount from localStorage
+  return true;
+}
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -42,11 +63,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+export default function App({ loaderData }: Route.ComponentProps) {
+  const visitedCount =
+    "visitedCount" in loaderData ? loaderData.visitedCount : 0;
   return (
     <>
       <Outlet />
-      <ProgressBar />
+      <ProgressBar
+        total={loaderData.totalListings}
+        visitedCount={visitedCount}
+      />
     </>
   );
 }

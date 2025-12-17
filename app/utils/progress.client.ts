@@ -1,40 +1,29 @@
-const STORAGE_KEY = "lh_visited_fullscreen_item_ids_v1";
-const UPDATED_EVENT = "lh_progress_updated_v1";
+const STORAGE_KEY = "lh_visited_items_v1";
 
-function safeParse(json: string | null): string[] {
-  if (!json) return [];
+function readSet(): Set<string> {
   try {
-    const parsed = JSON.parse(json);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter((x) => typeof x === "string");
+    const json = localStorage.getItem(STORAGE_KEY);
+    if (!json) return new Set();
+    const arr = JSON.parse(json);
+    return new Set(
+      Array.isArray(arr) ? arr.filter((x) => typeof x === "string") : []
+    );
   } catch {
-    return [];
+    return new Set();
   }
 }
 
-export function getVisitedItemIds(): string[] {
-  if (typeof window === "undefined") return [];
-  return safeParse(window.localStorage.getItem(STORAGE_KEY));
+function writeSet(set: Set<string>): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
 }
 
-export function markItemVisited(id: string): string[] {
-  if (typeof window === "undefined") return [];
-  const current = new Set(getVisitedItemIds());
-  current.add(id);
-  const next = Array.from(current).sort();
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  window.dispatchEvent(new Event(UPDATED_EVENT));
-  return next;
+export function getVisitedCount(): number {
+  return readSet().size;
 }
 
-export function onProgressUpdated(handler: () => void): () => void {
-  if (typeof window === "undefined") return () => {};
-  window.addEventListener(UPDATED_EVENT, handler);
-  window.addEventListener("storage", handler);
-  return () => {
-    window.removeEventListener(UPDATED_EVENT, handler);
-    window.removeEventListener("storage", handler);
-  };
+export function markVisited(id: string): number {
+  const set = readSet();
+  set.add(id);
+  writeSet(set);
+  return set.size;
 }
-
-
