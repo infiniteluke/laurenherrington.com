@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { Welcome } from "../components/Welcome";
 import { useEffect } from "react";
 import shopSettings from "../data/shop_settings.json";
 import { getListings } from "~/data/listings";
