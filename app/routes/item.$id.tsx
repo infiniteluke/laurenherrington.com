@@ -1,6 +1,6 @@
 import type { Route } from "./+types/item.$id";
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router";
+import { ButtonLink } from "~/components/ButtonLink";
 import { getListingCursorsById } from "~/data/listings";
 import { markItemVisited } from "~/utils/progress.client";
 
@@ -18,7 +18,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
-  const navigate = useNavigate();
   const { listing, next } = loaderData;
 
   useEffect(() => {
@@ -26,39 +25,21 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
   }, [listing.id]);
 
   return (
-    <main className="min-h-dvh bg-black text-white">
-      <div className="sticky top-0 z-10 bg-black/60 backdrop-blur border-b border-white/10">
-        <div className="flex items-center justify-between gap-2 px-3 py-3">
-          <button
-            type="button"
-            onClick={() => navigate("/", { viewTransition: true })}
-            className="px-3 py-2 bg-white/10 active:bg-white/20"
-            aria-label="Home"
-          >
-            Home
-          </button>
-          <div className="text-sm font-medium truncate px-2">
-            {listing.title}
-          </div>
-          {next && (
-            <Link
-              to={`/item/${next.id}`}
-              className="px-3 py-2 bg-white/10 active:bg-white/20"
-            >
-              Next
-            </Link>
-          )}
-        </div>
+    <main className="h-dvh flex flex-col overflow-hidden">
+      <div className="flex items-center justify-between gap-3 px-3 py-3">
+        <ButtonLink to="/" viewTransition>
+          Home
+        </ButtonLink>
+        {next && <ButtonLink to={`/item/${next.id}`}>Next</ButtonLink>}
       </div>
+      <h1 className="text-center mb-2">{listing.title}</h1>
 
-      <div className="flex items-center justify-center px-3 py-6">
-        <img
-          src={listing.image}
-          alt={listing.description || listing.title}
-          className="max-h-[calc(100dvh-80px)] w-auto max-w-full object-contain"
-          style={{ viewTransitionName: `listing-image-${listing.id}` }}
-        />
-      </div>
+      <img
+        className="object-contain max-h-full max-w-full mx-auto"
+        src={listing.image}
+        alt={listing.description || listing.title}
+        style={{ viewTransitionName: `listing-image-${listing.id}` }}
+      />
     </main>
   );
 }
