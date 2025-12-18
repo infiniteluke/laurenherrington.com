@@ -1,5 +1,6 @@
 import {
   isRouteErrorResponse,
+  Link,
   Links,
   Meta,
   Outlet,
@@ -14,6 +15,7 @@ import { ProgressBar } from "~/components/ProgressBar";
 import { getListingsTotal } from "~/data/listings";
 import { getVisitedCount, resetProgress } from "~/utils/progress.client";
 import { SmileyCelebration } from "./components/SmileyCelebration";
+import { ButtonLink } from "./components/ButtonLink";
 
 export async function loader() {
   return { totalListings: getListingsTotal(), visitedCount: 0 };
@@ -106,9 +108,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   return (
     <main className="pt-16 p-4 container mx-auto">
       <h1>{message}</h1>
-      <p>{details}</p>
+      <p className="mb-4">{details}</p>
+      <ButtonLink to="/">Go Home</ButtonLink>
       {stack && (
-        <pre className="w-full p-4 overflow-x-auto">
+        <pre className="w-full p-4 overflow-x-auto mt-4">
           <code>{stack}</code>
         </pre>
       )}
