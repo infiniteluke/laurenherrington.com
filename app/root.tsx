@@ -16,6 +16,7 @@ import { getListingsTotal } from "~/data/listings";
 import { getVisitedCount, resetProgress } from "~/utils/progress.client";
 import { SmileyCelebration } from "./components/SmileyCelebration";
 import { ButtonLink } from "./components/ButtonLink";
+import shopSettings from "./data/shop_settings.json";
 
 export async function loader() {
   return { totalListings: getListingsTotal(), visitedCount: 0 };
@@ -76,6 +77,20 @@ export default function App({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <Outlet />
+      <div className="flex justify-center mt-16">
+        <a
+          href={`https://www.etsy.com/shop/${shopSettings.name}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Visit Etsy shop"
+        >
+          <img
+            src="/etsy-svgrepo-com.svg"
+            alt="Etsy"
+            className="w-10 h-10 hover:opacity-80 transition-opacity"
+          />
+        </a>
+      </div>
       {"visitedCount" in loaderData && (
         <ProgressBar
           total={loaderData.totalListings}

@@ -33,7 +33,7 @@ export function ProgressBar({
 
       {/* Reset button */}
       {showReset && (
-        <Form method="post" action="/" className="flex">
+        <Form method="post" action="/" className="flex" style={{ zIndex: 102 }}>
           <button
             type="submit"
             className="h-7 w-7 flex items-center justify-center bg-win95-silver border-2 border-t-win95-highlight border-l-win95-highlight border-b-win95-shadow border-r-win95-shadow active:border-t-win95-shadow active:border-l-win95-shadow active:border-b-win95-highlight active:border-r-win95-highlight"

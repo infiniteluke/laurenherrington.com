@@ -60,13 +60,6 @@ export function SmileyCelebration({ active }: { active: boolean }) {
   const animationRef = useRef<number>(0);
   const spawnedRef = useRef(false);
   const scrollVelocityRef = useRef(0);
-  const [resetKey, setResetKey] = useState(0);
-
-  const handleReset = () => {
-    smileysRef.current = [];
-    spawnedRef.current = false;
-    setResetKey((k) => k + 1);
-  };
 
   // Track scroll inertia
   useEffect(() => {
@@ -204,29 +197,19 @@ export function SmileyCelebration({ active }: { active: boolean }) {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationRef.current);
     };
-  }, [active, resetKey]);
+  }, [active]);
 
   if (!active) return null;
 
   return (
-    <>
-      <canvas
-        ref={canvasRef}
-        className="fixed inset-0 z-[45] pointer-events-none"
-        style={{
-          touchAction: "none",
-          viewTransitionName: "smiley-celebration",
-          zIndex: 101,
-        }}
-      />
-      <div className="flex justify-center py-4">
-        <button
-          onClick={handleReset}
-          className="px-4 py-2 bg-win95-silver border-2 border-t-win95-highlight border-l-win95-highlight border-b-win95-shadow border-r-win95-shadow active:border-t-win95-shadow active:border-l-win95-shadow active:border-b-win95-highlight active:border-r-win95-highlight text-black"
-        >
-          Reset Smileys
-        </button>
-      </div>
-    </>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 z-[45] pointer-events-none"
+      style={{
+        touchAction: "none",
+        viewTransitionName: "smiley-celebration",
+        zIndex: 101,
+      }}
+    />
   );
 }

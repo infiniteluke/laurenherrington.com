@@ -1,4 +1,5 @@
 const STORAGE_KEY = "lh_visited_items_v1";
+const CELEBRATED_KEY = "lh_celebrated_v1";
 
 function readSet(): Set<string> {
   try {
@@ -30,4 +31,13 @@ export function markVisited(id: string): number {
 
 export function resetProgress(): void {
   localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(CELEBRATED_KEY);
+}
+
+export function hasCelebrated(): boolean {
+  return localStorage.getItem(CELEBRATED_KEY) === "true";
+}
+
+export function markCelebrated(): void {
+  localStorage.setItem(CELEBRATED_KEY, "true");
 }
