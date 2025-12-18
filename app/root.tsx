@@ -69,7 +69,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="mb-24">
+      <body className="mb-24 mx-3">
         {children}
         <ScrollRestoration />
         <Scripts />
