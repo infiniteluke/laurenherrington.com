@@ -30,6 +30,7 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
         {next && <ButtonLink to={`/item/${next.id}`}>Next</ButtonLink>}
       </div>
       <h1 className="text-center mb-2">{listing.title}</h1>
+      <p className="text-center text-sm mb-2">{listing.description}</p>
 
       <img
         className="object-contain max-h-full max-w-full mx-auto"
