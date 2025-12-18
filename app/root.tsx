@@ -5,16 +5,18 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  redirect,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 import { ProgressBar } from "~/components/ProgressBar";
 import { getListingsTotal } from "~/data/listings";
-import { getVisitedCount } from "~/utils/progress.client";
+import { getVisitedCount, resetProgress } from "~/utils/progress.client";
+import { SmileyCelebration } from "./components/SmileyCelebration";
 
 export async function loader() {
-  return { totalListings: getListingsTotal() };
+  return { totalListings: getListingsTotal(), visitedCount: 0 };
 }
 
 export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
@@ -26,6 +28,11 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
 }
 
 clientLoader.hydrate = true as const;
+
+export async function clientAction() {
+  resetProgress();
+  throw redirect("/");
+}
 
 export function shouldRevalidate() {
   // Always revalidate on navigation to pick up fresh visitedCount from localStorage
@@ -54,7 +61,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="mb-24">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -64,14 +71,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-  const visitedCount =
-    "visitedCount" in loaderData ? loaderData.visitedCount : 0;
   return (
     <>
       <Outlet />
-      <ProgressBar
-        total={loaderData.totalListings}
-        visitedCount={visitedCount}
+      {"visitedCount" in loaderData && (
+        <ProgressBar
+          total={loaderData.totalListings}
+          visitedCount={loaderData.visitedCount}
+        />
+      )}
+      <SmileyCelebration
+        active={loaderData.visitedCount === loaderData.totalListings}
       />
     </>
   );

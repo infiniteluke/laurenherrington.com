@@ -32,4 +32,7 @@ body {
   ::view-transition-group(progress-bar) {
     z-index: 100;
   }
+  ::view-transition-group(smiley-celebration) {
+    z-index: 101;
+  }
 }

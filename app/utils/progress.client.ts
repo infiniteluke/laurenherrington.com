@@ -27,3 +27,7 @@ export function markVisited(id: string): number {
   writeSet(set);
   return set.size;
 }
+
+export function resetProgress(): void {
+  localStorage.removeItem(STORAGE_KEY);
+}
