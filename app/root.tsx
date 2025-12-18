@@ -12,14 +12,19 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { ProgressBar } from "~/components/ProgressBar";
-import { getListingsTotal } from "~/data/listings";
+import { getListings, getListingsTotal } from "~/data/listings";
 import { getVisitedCount, resetProgress } from "~/utils/progress.client";
 import { SmileyCelebration } from "./components/SmileyCelebration";
 import { ButtonLink } from "./components/ButtonLink";
 import shopSettings from "./data/shop_settings.json";
 
 export async function loader() {
-  return { totalListings: getListingsTotal(), visitedCount: 0 };
+  const listings = getListings();
+  return {
+    totalListings: listings.length,
+    firstItemId: listings[0]?.id ?? "",
+    visitedCount: 0,
+  };
 }
 
 export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
@@ -95,6 +100,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         <ProgressBar
           total={loaderData.totalListings}
           visitedCount={loaderData.visitedCount}
+          firstItemId={loaderData.firstItemId}
         />
       )}
       <SmileyCelebration

@@ -5,7 +5,7 @@ export function ButtonLink({ className, ...props }: LinkProps) {
     <Link
       {...props}
       className={[
-        "text-sm inline-block px-3 py-1 select-none",
+        "px-3 py-1 select-none",
         "bg-win95-silver",
         "border-2 border-t-win95-highlight border-l-win95-highlight border-b-win95-shadow border-r-win95-shadow",
         "shadow-[1px_1px_0_black]",

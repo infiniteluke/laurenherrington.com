@@ -1,38 +1,45 @@
-import { Form } from "react-router";
+import { Form, Link } from "react-router";
+import { ButtonLink } from "./ButtonLink";
 
 export function ProgressBar({
   total,
   visitedCount,
+  firstItemId,
 }: {
   total: number;
   visitedCount: number;
+  firstItemId: string;
 }) {
   if (!total) return null;
 
   const pct = Math.max(0, Math.min(1, visitedCount / total));
-  const showReset = visitedCount > 0;
+  const hasProgress = visitedCount > 0;
 
   return (
     <div
-      className="fixed left-3 right-3 bottom-5 z-50 flex items-center gap-2"
+      className="fixed left-3 right-3 bottom-3 z-50 flex items-center gap-2"
       style={{
         paddingBottom: "env(safe-area-inset-bottom)",
         viewTransitionName: "progress-bar",
       }}
     >
-      {/* Progress bar */}
-      <div
-        className="flex-1 h-7 overflow-hidden bg-win95-silver border-2 border-t-win95-shadow border-l-win95-shadow border-b-win95-highlight border-r-win95-highlight pointer-events-none"
-        aria-hidden="true"
-      >
-        <div
-          className="h-full bg-win95-navy transition-[width] duration-500 ease-out motion-reduce:transition-none"
-          style={{ width: `${pct * 100}%` }}
-        />
-      </div>
+      {!hasProgress && (
+        <ButtonLink to={`/item/${firstItemId}`}>Start</ButtonLink>
+      )}
 
-      {/* Reset button */}
-      {showReset && (
+      {hasProgress && (
+        <div
+          className="flex-1 h-7 overflow-hidden bg-win95-silver border-2 border-t-win95-shadow border-l-win95-shadow border-b-win95-highlight border-r-win95-highlight pointer-events-none"
+          aria-hidden="true"
+        >
+          <div
+            className="h-full bg-win95-navy transition-[width] duration-500 ease-out motion-reduce:transition-none"
+            style={{ width: `${pct * 100}%` }}
+          />
+        </div>
+      )}
+
+      {hasProgress && (
         <Form method="post" action="/" className="flex" style={{ zIndex: 102 }}>
           <button
             type="submit"

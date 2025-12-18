@@ -24,10 +24,14 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
   return (
     <main className="h-dvh flex flex-col overflow-hidden">
       <div className="flex items-center justify-between gap-3 px-3 py-3">
-        <ButtonLink to="/" viewTransition>
+        <ButtonLink className="text-sm" to="/" viewTransition>
           Home
         </ButtonLink>
-        {next && <ButtonLink to={`/item/${next.id}`}>Next</ButtonLink>}
+        {next && (
+          <ButtonLink className="text-sm" to={`/item/${next.id}`}>
+            Next
+          </ButtonLink>
+        )}
       </div>
       <h1 className="text-center mb-2">{listing.title}</h1>
       <p className="text-center text-sm mb-2">{listing.description}</p>
