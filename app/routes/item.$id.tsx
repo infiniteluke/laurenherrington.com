@@ -39,12 +39,18 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
       <h1 className="text-center my-3">{listing.title}</h1>
       <p className="text-center text-sm mb-2">{listing.description}</p>
 
-      <img
-        className="object-contain max-h-full max-w-full mx-auto"
-        src={listing.image}
-        alt={listing.description || listing.title}
-        style={{ viewTransitionName: `listing-image-${listing.id}` }}
-      />
+      <div className="flex-1 flex items-center justify-center overflow-hidden">
+        <div
+          className="max-h-full max-w-full"
+          style={{ viewTransitionName: `listing-image-${listing.id}` }}
+        >
+          <img
+            className="object-contain max-h-[calc(100dvh-120px)] max-w-full"
+            src={listing.image}
+            alt={listing.description || listing.title}
+          />
+        </div>
+      </div>
     </main>
   );
 }

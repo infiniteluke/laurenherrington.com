@@ -8,6 +8,10 @@
   --color-win95-highlight: #ffffff;
   --color-win95-shadow: #808080;
   --color-win95-navy: #000080;
+
+  /* Windows 95 hard shadow */
+  --shadow-win95-navy: 10px 10px 0 var(--color-win95-navy);
+  --shadow-win95-silver: 10px 10px 0 var(--color-win95-silver);
 }
 
 html {

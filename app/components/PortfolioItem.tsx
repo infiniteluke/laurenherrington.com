@@ -9,14 +9,11 @@ export function PortfolioItem({ product }: { product: Listing }) {
       </Link>
       <Link
         to={`/item/${product.id}`}
-        className="overflow-hidden bg-neutral-100"
+        className="overflow-hidden bg-neutral-100 shadow-win95-silver"
         viewTransition
+        style={{ viewTransitionName: `listing-image-${product.id}` }}
       >
-        <img
-          src={product.image}
-          alt={product.description || product.title}
-          style={{ viewTransitionName: `listing-image-${product.id}` }}
-        />
+        <img src={product.image} alt={product.description || product.title} />
       </Link>
     </div>
   );
