@@ -87,7 +87,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
           <img
             src="/etsy-svgrepo-com.svg"
             alt="Etsy"
-            className="w-10 h-10 hover:opacity-80 transition-opacity"
+            className="w-16 h-16 hover:opacity-80 transition-opacity"
           />
         </a>
       </div>

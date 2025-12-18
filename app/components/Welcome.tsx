@@ -18,6 +18,7 @@ export function Welcome({ listings, iconUrl, shopName }: WelcomeProps) {
         />
         <h1>{shopName}</h1>
       </header>
+      <p className="text-sm mb-8">Visit a collage to make progress</p>
       <div className="flex flex-col gap-4 md:block md:columns-2 lg:columns-3 md:gap-0 md:space-y-0 [column-gap:1rem]">
         {listings.map((listing) => (
           <PortfolioItem key={listing.id} product={listing} />
