@@ -46,8 +46,10 @@ export function ProgressBar({
               stroke="currentColor"
               strokeWidth="2"
             >
-              <path d="M2 8a6 6 0 0 1 10.5-4M14 8a6 6 0 0 1-10.5 4" />
-              <path d="M2 4v4h4M14 12v-4h-4" />
+              <path d="M3 5.5A5.5 5.5 0 0 1 13 8" />
+              <path d="M14 4v4h-4" />
+              <path d="M13 10.5A5.5 5.5 0 0 1 3 8" />
+              <path d="M2 12V8h4" />
             </svg>
           </button>
         </Form>
