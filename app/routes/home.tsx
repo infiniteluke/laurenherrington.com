@@ -3,6 +3,8 @@ import { Welcome } from "../components/Welcome";
 import { useEffect } from "react";
 import shopSettings from "../data/shop_settings.json";
 import { getListings } from "~/data/listings";
+import { useRouteLoaderData } from "react-router";
+import type { loader as rootLoader } from "../root";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   return [
@@ -11,7 +13,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
   ];
 }
 
-export async function loader({ context }: Route.LoaderArgs) {
+export async function loader() {
   const listings = getListings();
   const iconUrl = shopSettings.icon_url;
 
@@ -23,6 +25,8 @@ export async function loader({ context }: Route.LoaderArgs) {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
+  const rootLoaderData = useRouteLoaderData<typeof rootLoader>("root");
+
   useEffect(() => {
     // An old version of this site contained a service worker.
     if ("serviceWorker" in navigator) {
@@ -44,6 +48,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
   return (
     <Welcome
+      visitedCount={rootLoaderData?.visitedCount ?? 0}
       listings={loaderData.listings}
       iconUrl={loaderData.iconUrl}
       shopName={loaderData.shopName}

@@ -69,7 +69,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="mb-24 mx-3">
+      <body className="mx-3">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -82,7 +82,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <Outlet />
-      <div className="flex justify-center mt-16">
+      <footer className="flex justify-center mt-16 mb-8">
         <a
           href={`https://www.etsy.com/shop/${shopSettings.name}`}
           target="_blank"
@@ -95,12 +95,11 @@ export default function App({ loaderData }: Route.ComponentProps) {
             className="w-16 h-16 hover:opacity-80 transition-opacity"
           />
         </a>
-      </div>
+      </footer>
       {"visitedCount" in loaderData && (
         <ProgressBar
           total={loaderData.totalListings}
           visitedCount={loaderData.visitedCount}
-          firstItemId={loaderData.firstItemId}
         />
       )}
       <SmileyCelebration

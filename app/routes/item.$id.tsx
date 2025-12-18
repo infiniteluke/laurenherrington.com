@@ -23,7 +23,10 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
 
   return (
     <main className="h-dvh flex flex-col overflow-hidden">
-      <div className="flex items-center justify-between gap-3 px-3 py-3">
+      <div
+        className="z-10 fixed bottom-10 left-0 right-0 flex items-center justify-between gap-3 px-3 py-3"
+        style={{ viewTransitionName: "item-nav" }}
+      >
         <ButtonLink className="text-sm" to="/" viewTransition>
           Home
         </ButtonLink>
@@ -33,7 +36,7 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
           </ButtonLink>
         )}
       </div>
-      <h1 className="text-center mb-2">{listing.title}</h1>
+      <h1 className="text-center my-3">{listing.title}</h1>
       <p className="text-center text-sm mb-2">{listing.description}</p>
 
       <img

@@ -1,14 +1,11 @@
 import { Form, Link } from "react-router";
-import { ButtonLink } from "./ButtonLink";
 
 export function ProgressBar({
   total,
   visitedCount,
-  firstItemId,
 }: {
   total: number;
   visitedCount: number;
-  firstItemId: string;
 }) {
   if (!total) return null;
 
@@ -23,10 +20,6 @@ export function ProgressBar({
         viewTransitionName: "progress-bar",
       }}
     >
-      {!hasProgress && (
-        <ButtonLink to={`/item/${firstItemId}`}>Start</ButtonLink>
-      )}
-
       {hasProgress && (
         <div
           className="flex-1 h-7 overflow-hidden bg-win95-silver border-2 border-t-win95-shadow border-l-win95-shadow border-b-win95-highlight border-r-win95-highlight pointer-events-none"
