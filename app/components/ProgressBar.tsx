@@ -13,27 +13,34 @@ export function ProgressBar({
   const hasProgress = visitedCount > 0;
 
   return (
-    <div
-      className="fixed left-3 right-3 bottom-3 z-50 flex items-center gap-2"
-      style={{
-        paddingBottom: "env(safe-area-inset-bottom)",
-        viewTransitionName: "progress-bar",
-      }}
-    >
+    <>
       {hasProgress && (
         <div
-          className="flex-1 h-7 overflow-hidden bg-win95-silver border-2 border-t-win95-shadow border-l-win95-shadow border-b-win95-highlight border-r-win95-highlight pointer-events-none"
-          aria-hidden="true"
+          className="fixed left-3 right-[calc(0.75rem+1.75rem+0.5rem)] bottom-3 z-50"
+          style={{
+            paddingBottom: "env(safe-area-inset-bottom)",
+            viewTransitionName: "progress-bar",
+          }}
         >
           <div
-            className="h-full bg-win95-navy transition-[width] duration-500 ease-out motion-reduce:transition-none"
-            style={{ width: `${pct * 100}%` }}
-          />
+            className="h-7 overflow-hidden bg-win95-silver border-2 border-t-win95-shadow border-l-win95-shadow border-b-win95-highlight border-r-win95-highlight pointer-events-none"
+            aria-hidden="true"
+          >
+            <div
+              className="h-full bg-win95-navy transition-[width] duration-500 ease-out motion-reduce:transition-none"
+              style={{ width: `${pct * 100}%` }}
+            />
+          </div>
         </div>
       )}
 
       {hasProgress && (
-        <Form method="post" action="/" className="flex" style={{ zIndex: 102 }}>
+        <Form
+          method="post"
+          action="/"
+          className="fixed right-3 bottom-3 z-[110]"
+          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        >
           <button
             type="submit"
             className="h-7 w-7 flex items-center justify-center bg-win95-silver border-2 border-t-win95-highlight border-l-win95-highlight border-b-win95-shadow border-r-win95-shadow active:border-t-win95-shadow active:border-l-win95-shadow active:border-b-win95-highlight active:border-r-win95-highlight"
@@ -54,6 +61,6 @@ export function ProgressBar({
           </button>
         </Form>
       )}
-    </div>
+    </>
   );
 }
