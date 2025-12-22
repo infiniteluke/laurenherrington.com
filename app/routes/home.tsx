@@ -49,9 +49,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <Welcome
       visitedCount={rootLoaderData?.visitedCount ?? 0}
+      firstItemId={rootLoaderData?.firstItemId ?? ""}
+      firstUnviewedItemId={rootLoaderData?.firstUnviewedItemId ?? ""}
       listings={loaderData.listings}
       iconUrl={loaderData.iconUrl}
       shopName={loaderData.shopName}
+      shopSettings={shopSettings}
     />
   );
 }

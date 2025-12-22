@@ -8,4 +8,5 @@ export interface Listing {
   tags: string[];
   materials: string;
   image: string;
+  listing_id: string;
 }

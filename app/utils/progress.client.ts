@@ -22,6 +22,10 @@ export function getVisitedCount(): number {
   return readSet().size;
 }
 
+export function getVisitedIds(): Set<string> {
+  return readSet();
+}
+
 export function markVisited(id: string): number {
   const set = readSet();
   set.add(id);

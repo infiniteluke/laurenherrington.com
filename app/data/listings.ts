@@ -45,6 +45,7 @@ function parseCSV(csv: string): Listing[] {
         tags: row.TAGS ? row.TAGS.split(",") : [],
         materials: row.MATERIALS,
         image: row.IMAGE1,
+        listing_id: row.LISTING_ID,
       };
     });
 }

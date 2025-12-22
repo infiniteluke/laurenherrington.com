@@ -13,25 +13,34 @@ import type { Route } from "./+types/root";
 import "./app.css";
 import { ProgressBar } from "~/components/ProgressBar";
 import { getListings, getListingsTotal } from "~/data/listings";
-import { getVisitedCount, resetProgress } from "~/utils/progress.client";
+import {
+  getVisitedCount,
+  getVisitedIds,
+  resetProgress,
+} from "~/utils/progress.client";
 import { SmileyCelebration } from "./components/SmileyCelebration";
 import { ButtonLink } from "./components/ButtonLink";
-import shopSettings from "./data/shop_settings.json";
 
 export async function loader() {
   const listings = getListings();
+  const firstItemId = listings[0]?.id ?? "";
   return {
     totalListings: listings.length,
-    firstItemId: listings[0]?.id ?? "",
+    firstItemId,
+    firstUnviewedItemId: firstItemId,
     visitedCount: 0,
   };
 }
 
 export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   const serverData = await serverLoader();
+  const visitedIds = getVisitedIds();
+  const listings = getListings();
+  const firstUnviewed = listings.find((l) => !visitedIds.has(`/item/${l.id}`));
   return {
     ...serverData,
-    visitedCount: getVisitedCount(),
+    visitedCount: visitedIds.size,
+    firstUnviewedItemId: firstUnviewed?.id ?? serverData.firstItemId,
   };
 }
 
@@ -82,20 +91,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <Outlet />
-      <footer className="flex justify-center mt-16 mb-8">
-        <a
-          href={`https://www.etsy.com/shop/${shopSettings.name}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Visit Etsy shop"
-        >
-          <img
-            src="/etsy-svgrepo-com.svg"
-            alt="Etsy"
-            className="w-16 h-16 hover:opacity-80 transition-opacity"
-          />
-        </a>
-      </footer>
       {"visitedCount" in loaderData && (
         <ProgressBar
           total={loaderData.totalListings}
