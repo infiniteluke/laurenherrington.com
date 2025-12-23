@@ -10,29 +10,32 @@ interface Smiley {
 
 const SIZE = 32;
 
-function drawSmiley(ctx: CanvasRenderingContext2D, x: number, y: number) {
+let smileySprite: HTMLCanvasElement | null = null;
+
+function getSmileySprite(): HTMLCanvasElement {
+  if (smileySprite) return smileySprite;
+
+  smileySprite = document.createElement("canvas");
+  smileySprite.width = SIZE;
+  smileySprite.height = SIZE;
+  const ctx = smileySprite.getContext("2d")!;
   const pixelSize = SIZE / 16;
-  const px = Math.round(x - SIZE / 2);
-  const py = Math.round(y - SIZE / 2);
 
   for (let row = 0; row < 16; row++) {
     for (let col = 0; col < 16; col++) {
       const val = SMILEY_PIXEL_ART[row][col];
-      if (val === 1) {
-        ctx.fillStyle = SMILEY_COLORS.outline;
-      } else if (val === 2) {
-        ctx.fillStyle = SMILEY_COLORS.face;
-      } else {
-        continue;
-      }
+      if (val === 0) continue;
+      ctx.fillStyle = val === 1 ? SMILEY_COLORS.outline : SMILEY_COLORS.face;
       ctx.fillRect(
-        px + col * pixelSize,
-        py + row * pixelSize,
+        col * pixelSize,
+        row * pixelSize,
         Math.ceil(pixelSize),
         Math.ceil(pixelSize)
       );
     }
   }
+
+  return smileySprite;
 }
 
 export function SmileyCelebration({ active }: { active: boolean }) {
@@ -42,7 +45,6 @@ export function SmileyCelebration({ active }: { active: boolean }) {
   const spawnedRef = useRef(false);
   const scrollVelocityRef = useRef(0);
 
-  // Track scroll inertia
   useEffect(() => {
     if (!active) return;
 
@@ -54,7 +56,7 @@ export function SmileyCelebration({ active }: { active: boolean }) {
       const dt = now - lastTime;
       if (dt > 0) {
         const delta = window.scrollY - lastScrollY;
-        scrollVelocityRef.current = (delta / dt) * 16; // Normalize to ~60fps
+        scrollVelocityRef.current = (delta / dt) * 16;
       }
       lastScrollY = window.scrollY;
       lastTime = now;
@@ -78,7 +80,6 @@ export function SmileyCelebration({ active }: { active: boolean }) {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Capture stable dimensions at start (avoids iOS rubber-band viewport changes)
     const stableWidth = document.documentElement.clientWidth;
     const stableHeight = document.documentElement.clientHeight;
 
@@ -86,13 +87,11 @@ export function SmileyCelebration({ active }: { active: boolean }) {
     canvas.height = stableHeight;
 
     const resize = () => {
-      // Only update on actual orientation/resize, not scroll bounce
       canvas.width = document.documentElement.clientWidth;
       canvas.height = document.documentElement.clientHeight;
     };
     window.addEventListener("resize", resize);
 
-    // Spawn smileys
     if (!spawnedRef.current) {
       spawnedRef.current = true;
       for (let i = 0; i < 50; i++) {
@@ -111,11 +110,11 @@ export function SmileyCelebration({ active }: { active: boolean }) {
     const FRICTION = 0.98;
     const BOUNCE = 0.75;
     const FLOOR_Y = stableHeight;
+    const sprite = getSmileySprite();
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Decay scroll velocity
       scrollVelocityRef.current *= 0.95;
 
       for (const smiley of smileysRef.current) {
@@ -125,20 +124,17 @@ export function SmileyCelebration({ active }: { active: boolean }) {
         smiley.x += smiley.vx;
         smiley.y += smiley.vy;
 
-        // Ceiling (above viewport to catch flying smileys)
         const CEILING_Y = -500;
         if (smiley.y - SIZE / 2 < CEILING_Y) {
           smiley.y = CEILING_Y + SIZE / 2;
           smiley.vy *= -BOUNCE;
         }
 
-        // Floor
         if (smiley.y + SIZE / 2 > FLOOR_Y) {
           smiley.y = FLOOR_Y - SIZE / 2;
           smiley.vy *= -BOUNCE;
         }
 
-        // Walls
         if (smiley.x < SIZE / 2) {
           smiley.x = SIZE / 2;
           smiley.vx *= -BOUNCE;
@@ -148,7 +144,6 @@ export function SmileyCelebration({ active }: { active: boolean }) {
           smiley.vx *= -BOUNCE;
         }
 
-        // Collisions
         for (const other of smileysRef.current) {
           if (other === smiley) continue;
           const dx = other.x - smiley.x;
@@ -166,7 +161,11 @@ export function SmileyCelebration({ active }: { active: boolean }) {
           }
         }
 
-        drawSmiley(ctx, smiley.x, smiley.y);
+        ctx.drawImage(
+          sprite,
+          Math.round(smiley.x - SIZE / 2),
+          Math.round(smiley.y - SIZE / 2)
+        );
       }
 
       animationRef.current = requestAnimationFrame(animate);
