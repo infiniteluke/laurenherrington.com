@@ -1,6 +1,7 @@
 import { PortfolioItem } from "~/components/PortfolioItem";
 import type { Listing } from "~/types";
 import { ButtonLink } from "./ButtonLink";
+import { Smiley } from "./Smiley";
 
 interface WelcomeProps {
   listings: Listing[];
@@ -35,7 +36,9 @@ export function Welcome({
         />
         <h1>{shopName}</h1>
       </header>
-      <p className="text-sm">Visit a collage to make progress</p>
+      <p className="text-sm">
+        Visit a collage to make progress <Smiley size={32} />
+      </p>
       {firstUnviewedItemId && (
         <ButtonLink to={`/item/${firstUnviewedItemId}`}>
           {hasProgress ? "Continue" : "Start"}

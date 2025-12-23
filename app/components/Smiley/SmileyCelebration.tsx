@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { SMILEY_PIXEL_ART, SMILEY_COLORS } from "./constants";
 
 interface Smiley {
   x: number;
@@ -9,26 +10,6 @@ interface Smiley {
 
 const SIZE = 32;
 
-// 0 = transparent, 1 = black (outline/features), 2 = yellow (face)
-const SMILEY_PIXEL_ART = [
-  [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-  [0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 0, 0, 0],
-  [0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0],
-  [0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0],
-  [0, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 0],
-  [1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 1],
-  [1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 1, 2, 2, 2, 2, 1],
-  [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-  [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-  [1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-  [1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1],
-  [0, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 1, 0],
-  [0, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 0],
-  [0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 0, 0],
-  [0, 0, 0, 1, 1, 2, 2, 2, 2, 2, 2, 1, 1, 0, 0, 0],
-  [0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
-];
-
 function drawSmiley(ctx: CanvasRenderingContext2D, x: number, y: number) {
   const pixelSize = SIZE / 16;
   const px = Math.round(x - SIZE / 2);
@@ -38,9 +19,9 @@ function drawSmiley(ctx: CanvasRenderingContext2D, x: number, y: number) {
     for (let col = 0; col < 16; col++) {
       const val = SMILEY_PIXEL_ART[row][col];
       if (val === 1) {
-        ctx.fillStyle = "#000";
+        ctx.fillStyle = SMILEY_COLORS.outline;
       } else if (val === 2) {
-        ctx.fillStyle = "#FFD700";
+        ctx.fillStyle = SMILEY_COLORS.face;
       } else {
         continue;
       }

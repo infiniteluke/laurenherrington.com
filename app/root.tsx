@@ -18,7 +18,7 @@ import {
   getVisitedIds,
   resetProgress,
 } from "~/utils/progress.client";
-import { SmileyCelebration } from "./components/SmileyCelebration";
+import { SmileyCelebration } from "./components/Smiley";
 import { ButtonLink } from "./components/ButtonLink";
 
 export async function loader() {
