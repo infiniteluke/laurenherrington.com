@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router";
 import type { Listing } from "~/types";
+import { getViewTransitionName } from "~/utils/viewTransition";
 
 interface Stack {
   id: string;
@@ -41,7 +42,7 @@ export function ListingStack({ stack }: { stack: Stack }) {
               style={{
                 transform,
                 zIndex: images.length - index,
-                viewTransitionName: `listing-image-${listing.id}`,
+                viewTransitionName: getViewTransitionName(listing.id),
               }}
             >
               <img

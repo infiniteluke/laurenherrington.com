@@ -3,6 +3,7 @@ import { ButtonLink } from "~/components/ButtonLink";
 import { getListingCursorsById } from "~/data/listings";
 import stacksData from "~/data/stacks.json";
 import { trackItemVisit } from "~/middleware/trackVisit";
+import { getViewTransitionName } from "~/utils/viewTransition";
 
 export const clientMiddleware = [trackItemVisit];
 
@@ -71,7 +72,7 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
       <div className="flex-1 flex justify-center">
         <div
           className="max-h-full max-w-full"
-          style={{ viewTransitionName: `listing-image-${listing.id}` }}
+          style={{ viewTransitionName: getViewTransitionName(listing.id) }}
         >
           <img
             className="object-contain max-h-[calc(100dvh-150px)] max-w-full"

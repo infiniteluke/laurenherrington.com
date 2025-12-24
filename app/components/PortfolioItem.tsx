@@ -1,5 +1,6 @@
 import type { Listing } from "~/types";
 import { Link } from "react-router";
+import { getViewTransitionName } from "~/utils/viewTransition";
 
 export function PortfolioItem({
   product,
@@ -29,7 +30,7 @@ export function PortfolioItem({
         to={`/item/${product.id}`}
         className="overflow-hidden bg-neutral-100 shadow-win95-silver"
         viewTransition
-        style={{ viewTransitionName: `listing-image-${product.id}` }}
+        style={{ viewTransitionName: getViewTransitionName(product.id) }}
       >
         <img src={product.image} alt={product.description || product.title} />
       </Link>
