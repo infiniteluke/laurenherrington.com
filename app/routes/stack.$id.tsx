@@ -57,7 +57,7 @@ export default function StackPage({ loaderData }: Route.ComponentProps) {
             className="text-sm"
             to={`/stack/${nextStack.id}`}
           >
-            Next Stack
+            {nextStack.name}
           </ButtonLink>
         )}
       </div>
