@@ -75,6 +75,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `html{background-size:40px 40px;background-image:linear-gradient(to right, rgba(128, 128, 128, 0.15) 1px, transparent 1px),linear-gradient(to bottom, rgba(128, 128, 128, 0.15) 1px, transparent 1px)}html,body{font-size:1.4rem;line-height:1;font-family:"VT323",ui-monospace,monospace}body{margin-left:0.75rem;margin-right:0.75rem}`,
+          }}
+        />
         <Meta />
         <Links />
       </head>
