@@ -4,6 +4,7 @@ import { getListingCursorsById } from "~/data/listings";
 import stacksData from "~/data/stacks.json";
 import { trackItemVisit } from "~/middleware/trackVisit";
 import { getViewTransitionName } from "~/utils/viewTransition";
+import { findNextUnviewedStack } from "~/utils/stacks";
 
 export const clientMiddleware = [trackItemVisit];
 
@@ -24,20 +25,45 @@ export async function loader({ params }: Route.LoaderArgs) {
   const stack = stacksData[stackIndex];
   const isLastInStack =
     stack && stack.listingIds[stack.listingIds.length - 1] === params.id;
-  const nextStack = isLastInStack ? stacksData[stackIndex + 1] : null;
 
-  return { listing, next, previous, stack, isLastInStack, nextStack };
+  return {
+    listing,
+    next,
+    previous,
+    stack,
+    isLastInStack,
+    stackIndex,
+    nextUnviewedStack: null,
+  };
 }
 
+export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
+  const serverData = await serverLoader();
+  const { getVisitedIds } = await import("~/utils/progress.client");
+  const visitedIds = getVisitedIds();
+
+  const nextUnviewedStack =
+    serverData.isLastInStack && serverData.stackIndex !== undefined
+      ? findNextUnviewedStack(serverData.stackIndex, visitedIds)
+      : null;
+
+  return {
+    ...serverData,
+    nextUnviewedStack,
+  };
+}
+
+clientLoader.hydrate = true as const;
+
 export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
-  const { listing, next, stack, isLastInStack, nextStack } = loaderData;
+  const { listing, next, stack, isLastInStack, nextUnviewedStack } = loaderData;
 
   let nextButton = null;
   if (isLastInStack) {
-    if (nextStack) {
+    if (nextUnviewedStack) {
       nextButton = (
-        <ButtonLink className="text-sm" to={`/stack/${nextStack.id}`}>
-          {nextStack.name}
+        <ButtonLink className="text-sm" to={`/stack/${nextUnviewedStack.id}`}>
+          {nextUnviewedStack.name}
         </ButtonLink>
       );
     } else {

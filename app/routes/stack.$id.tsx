@@ -4,6 +4,7 @@ import { ButtonLink } from "~/components/ButtonLink";
 import { getListingsByIds } from "~/data/listings";
 import stacksData from "~/data/stacks.json";
 import { trackStackVisit } from "~/middleware/trackVisit";
+import { findNextUnviewedStack } from "~/utils/stacks";
 
 export const clientMiddleware = [trackStackVisit];
 
@@ -15,7 +16,6 @@ export function meta({ loaderData }: Route.MetaArgs) {
 export async function loader({ params }: Route.LoaderArgs) {
   const stackIndex = stacksData.findIndex((s) => s.id === params.id);
   const stackData = stacksData[stackIndex];
-  const nextStack = stacksData[stackIndex + 1];
   if (!stackData) {
     throw new Response("Not found", { status: 404 });
   }
@@ -23,16 +23,35 @@ export async function loader({ params }: Route.LoaderArgs) {
   const listings = getListingsByIds(stackData.listingIds);
 
   return {
-    nextStack,
     stack: {
       ...stackData,
       listings,
     },
+    stackIndex,
+    nextUnviewedStack: null,
   };
 }
 
+export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
+  const serverData = await serverLoader();
+  const { getVisitedIds } = await import("~/utils/progress.client");
+  const visitedIds = getVisitedIds();
+
+  const nextUnviewedStack =
+    serverData.stackIndex !== undefined
+      ? findNextUnviewedStack(serverData.stackIndex, visitedIds)
+      : null;
+
+  return {
+    ...serverData,
+    nextUnviewedStack,
+  };
+}
+
+clientLoader.hydrate = true as const;
+
 export default function StackPage({ loaderData }: Route.ComponentProps) {
-  const { stack, nextStack } = loaderData;
+  const { stack, nextUnviewedStack } = loaderData;
 
   return (
     <main className="flex items-center justify-center flex-col lg:mx-24 gap-4 my-8">
@@ -56,13 +75,17 @@ export default function StackPage({ loaderData }: Route.ComponentProps) {
         <ButtonLink className="text-sm" to="/" viewTransition>
           Home
         </ButtonLink>
-        {nextStack && (
+        {nextUnviewedStack ? (
           <ButtonLink
             viewTransition
             className="text-sm"
-            to={`/stack/${nextStack.id}`}
+            to={`/stack/${nextUnviewedStack.id}`}
           >
-            {nextStack.name}
+            {nextUnviewedStack.name}
+          </ButtonLink>
+        ) : (
+          <ButtonLink viewTransition className="text-sm" to="/">
+            Home
           </ButtonLink>
         )}
       </div>
