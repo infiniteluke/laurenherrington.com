@@ -43,6 +43,8 @@ export function Welcome({
           src={iconUrl}
           alt={`${shopName} shop icon`}
           className="w-16 h-16"
+          width={64}
+          height={64}
         />
         <h1>{shopName}</h1>
       </header>
@@ -58,6 +60,8 @@ export function Welcome({
           playsInline
           className="md:h-16 h-5"
           aria-label="star"
+          width={64}
+          height={64}
         />
         <video
           src="/unicorn.mp4"
@@ -67,6 +71,8 @@ export function Welcome({
           playsInline
           className="md:h-16 h-8"
           aria-label="unicorn"
+          width={64}
+          height={64}
         />
         {firstUnviewedStackId && (
           <ButtonLink
@@ -88,6 +94,8 @@ export function Welcome({
           playsInline
           className="md:h-16 h-5"
           aria-label="wizard"
+          width={64}
+          height={64}
         />
         <video
           src="/spaceman.mp4"
@@ -97,6 +105,8 @@ export function Welcome({
           playsInline
           className="md:h-16 h-8"
           aria-label="spaceman"
+          width={64}
+          height={64}
         />
       </div>
       <div className="flex flex-wrap justify-center gap-32 mt-12">
@@ -115,6 +125,8 @@ export function Welcome({
             src="/etsy-svgrepo-com.svg"
             alt="Etsy"
             className="w-16 h-16 hover:opacity-80 transition-opacity"
+            width={64}
+            height={64}
           />
         </a>
       </footer>

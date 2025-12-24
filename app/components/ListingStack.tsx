@@ -49,6 +49,9 @@ export function ListingStack({ stack }: { stack: Stack }) {
                 src={listing.image}
                 alt={listing.title}
                 className="w-full h-full object-cover"
+                width={128}
+                height={128}
+                loading="lazy"
               />
             </div>
           );
