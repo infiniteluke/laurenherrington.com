@@ -40,8 +40,13 @@ export default function StackPage({ loaderData }: Route.ComponentProps) {
         <h1>{stack.name}</h1>
       </header>
       <div className="flex flex-col gap-4 md:block md:columns-2 lg:columns-3 md:gap-0 md:space-y-0 [column-gap:1rem]">
-        {stack.listings.map((listing) => (
-          <PortfolioItem key={listing.id} product={listing} />
+        {stack.listings.map((listing, index) => (
+          <PortfolioItem
+            key={listing.id}
+            product={listing}
+            index={index}
+            totalInStack={Math.min(4, stack.listings.length)}
+          />
         ))}
       </div>
       <div
