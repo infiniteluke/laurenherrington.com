@@ -74,18 +74,16 @@ export function Welcome({
           width={64}
           height={64}
         />
-        {firstUnviewedStackId && (
-          <ButtonLink
-            to={`/stack/${firstUnviewedStackId}`}
-            onClick={() => {
-              if (isDone) {
-                resetProgress();
-              }
-            }}
-          >
-            {hasProgress ? (isDone ? "Restart" : "Continue") : "Start"}
-          </ButtonLink>
-        )}
+        <ButtonLink
+          to={`/stack/${firstUnviewedStackId}`}
+          onClick={() => {
+            if (isDone) {
+              resetProgress();
+            }
+          }}
+        >
+          {hasProgress ? (isDone ? "Restart" : "Continue") : "Start"}
+        </ButtonLink>
         <video
           src="/wizard.mp4"
           autoPlay
