@@ -122,7 +122,12 @@ export function SmileyCelebration({ active }: { active: boolean }) {
 
       scrollVelocityRef.current *= 0.95;
 
-      for (const smiley of smileysRef.current) {
+      const smileys = smileysRef.current;
+      const checkRadiusSq = SIZE * SIZE * 4; // Check within 2x SIZE
+
+      // Update physics and check boundaries
+      for (let i = 0; i < smileys.length; i++) {
+        const smiley = smileys[i];
         smiley.vy += GRAVITY + scrollVelocityRef.current * 0.02;
         smiley.vx *= FRICTION;
         smiley.vy *= FRICTION;
@@ -148,13 +153,23 @@ export function SmileyCelebration({ active }: { active: boolean }) {
           smiley.x = canvas.width - SIZE / 2;
           smiley.vx *= -BOUNCE;
         }
+      }
 
-        for (const other of smileysRef.current) {
-          if (other === smiley) continue;
+      // Optimized collision detection: only check each pair once (O(n²/2) instead of O(n²))
+      // Use squared distance to avoid expensive sqrt until collision confirmed
+      for (let i = 0; i < smileys.length; i++) {
+        const smiley = smileys[i];
+        for (let j = i + 1; j < smileys.length; j++) {
+          const other = smileys[j];
+
           const dx = other.x - smiley.x;
           const dy = other.y - smiley.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
+          // Early exit if too far apart
+          if (distSq > checkRadiusSq) continue;
+
+          const dist = Math.sqrt(distSq);
           if (dist < SIZE && dist > 0) {
             const overlap = (SIZE - dist) / 2;
             const nx = dx / dist;
@@ -165,7 +180,11 @@ export function SmileyCelebration({ active }: { active: boolean }) {
             other.y += ny * overlap * 0.5;
           }
         }
+      }
 
+      // Draw all smileys
+      for (let i = 0; i < smileys.length; i++) {
+        const smiley = smileys[i];
         ctx.drawImage(
           sprite,
           Math.round(smiley.x - SIZE / 2),
