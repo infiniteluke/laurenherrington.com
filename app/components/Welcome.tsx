@@ -3,6 +3,7 @@ import type { Listing } from "~/types";
 import { ButtonLink } from "./ButtonLink";
 import { Smiley } from "./Smiley";
 import { resetProgress } from "~/utils/progress.client";
+import { useState, useEffect } from "react";
 
 interface Stack {
   id: string;
@@ -33,6 +34,12 @@ export function Welcome({
   firstUnviewedStackId,
   shopSettings,
 }: WelcomeProps) {
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
   const hasProgress = visitedCount > 0;
   const isDone = visitedCount === totalStacks;
 
@@ -75,16 +82,25 @@ export function Welcome({
           width={64}
           height={64}
         />
-        <ButtonLink
-          to={`/stack/${firstUnviewedStackId}`}
-          onClick={() => {
-            if (isDone) {
-              resetProgress();
-            }
-          }}
-        >
-          {hasProgress ? (isDone ? "Restart" : "Continue") : "Start"}
-        </ButtonLink>
+        {firstUnviewedStackId && (
+          <ButtonLink
+            to={`/stack/${firstUnviewedStackId}`}
+            onClick={() => {
+              if (isDone) {
+                resetProgress();
+              }
+            }}
+            className="min-w-[4rem]"
+          >
+            {isHydrated
+              ? hasProgress
+                ? isDone
+                  ? "Restart"
+                  : "Continue"
+                : "Start"
+              : "\u00A0"}
+          </ButtonLink>
+        )}
         <video
           src="/wizard.mp4"
           autoPlay
