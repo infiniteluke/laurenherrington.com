@@ -57,10 +57,16 @@ export function shouldRevalidate() {
 }
 
 export const links: Route.LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
     href: "https://fonts.gstatic.com",
+    crossOrigin: "anonymous",
+  },
+  {
+    rel: "preload",
+    href: "https://fonts.gstatic.com/s/vt323/v18/pxiKyp0ihIEF2hsY.ttf",
+    as: "font",
+    type: "font/ttf",
     crossOrigin: "anonymous",
   },
   {
