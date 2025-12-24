@@ -47,7 +47,7 @@ export function Welcome({
         <h1>{shopName}</h1>
       </header>
       <p className="text-sm">
-        Visit a collage to make progress <Smiley size={32} />
+        Visit a stack to make progress <Smiley size={32} />
       </p>
       <div className="flex items-center gap-4">
         <img src="/star.gif" alt="star" className="md:h-16 h-5" />
