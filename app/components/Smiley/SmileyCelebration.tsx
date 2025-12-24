@@ -94,7 +94,12 @@ export function SmileyCelebration({ active }: { active: boolean }) {
 
     if (!spawnedRef.current) {
       spawnedRef.current = true;
-      for (let i = 0; i < 50; i++) {
+      // Scale smiley count based on viewport width
+      // Mobile (~400px) = 50, Desktop (5200px) = 200 (4x)
+      const widthMultiplier = 1 + ((stableWidth - 400) / 4800) * 3;
+      const smileyCount = Math.round(50 * Math.max(1, widthMultiplier));
+
+      for (let i = 0; i < smileyCount; i++) {
         setTimeout(() => {
           smileysRef.current.push({
             x: Math.random() * stableWidth,
