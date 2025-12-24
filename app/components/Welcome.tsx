@@ -25,6 +25,7 @@ export function Welcome({
   shopSettings,
 }: WelcomeProps) {
   const hasProgress = visitedCount > 0;
+  const isDone = visitedCount === listings.length;
 
   return (
     <main className="flex items-center justify-center flex-col lg:mx-24 gap-4 my-8">
@@ -44,7 +45,7 @@ export function Welcome({
         <img src="/unicorn.gif" alt="unicorn" className="md:h-16 h-8" />
         {firstUnviewedItemId && (
           <ButtonLink to={`/item/${firstUnviewedItemId}`}>
-            {hasProgress ? "Continue" : "Start"}
+            {hasProgress ? (isDone ? "Restart" : "Continue") : "Start"}
           </ButtonLink>
         )}
         <img src="/wizard.gif" alt="wizard" className="md:h-16 h-5" />
