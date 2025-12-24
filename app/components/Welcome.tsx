@@ -3,7 +3,7 @@ import type { Listing } from "~/types";
 import { ButtonLink } from "./ButtonLink";
 import { Smiley } from "./Smiley";
 import { resetProgress } from "~/utils/progress.client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface Stack {
   id: string;
@@ -35,6 +35,10 @@ export function Welcome({
   shopSettings,
 }: WelcomeProps) {
   const [isHydrated, setIsHydrated] = useState(false);
+  const starVideoRef = useRef<HTMLVideoElement>(null);
+  const unicornVideoRef = useRef<HTMLVideoElement>(null);
+  const wizardVideoRef = useRef<HTMLVideoElement>(null);
+  const spacemanVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     setIsHydrated(true);
@@ -42,6 +46,27 @@ export function Welcome({
 
   const hasProgress = visitedCount > 0;
   const isDone = visitedCount === totalStacks;
+
+  // Pause videos when celebration is active
+  useEffect(() => {
+    const videos = [
+      starVideoRef.current,
+      unicornVideoRef.current,
+      wizardVideoRef.current,
+      spacemanVideoRef.current,
+    ].filter(Boolean) as HTMLVideoElement[];
+
+    if (isDone) {
+      videos.forEach((video) => video.pause());
+    } else {
+      videos.forEach((video) => {
+        if (video.paused) {
+          // ignore errors if video hasn't loaded yet
+          video.play().catch(() => {});
+        }
+      });
+    }
+  }, [isDone]);
 
   return (
     <main className="flex items-center justify-center flex-col lg:mx-24 gap-4 my-8">
@@ -61,6 +86,7 @@ export function Welcome({
       </p>
       <div className="flex items-center gap-4">
         <video
+          ref={starVideoRef}
           src="/star.mp4"
           autoPlay
           loop
@@ -72,6 +98,7 @@ export function Welcome({
           height={64}
         />
         <video
+          ref={unicornVideoRef}
           src="/unicorn.mp4"
           autoPlay
           loop
@@ -102,6 +129,7 @@ export function Welcome({
           </ButtonLink>
         )}
         <video
+          ref={wizardVideoRef}
           src="/wizard.mp4"
           autoPlay
           loop
@@ -113,6 +141,7 @@ export function Welcome({
           height={64}
         />
         <video
+          ref={spacemanVideoRef}
           src="/spaceman.mp4"
           autoPlay
           loop
