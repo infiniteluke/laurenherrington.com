@@ -40,15 +40,15 @@ export function Welcome({
         Visit a collage to make progress <Smiley size={32} />
       </p>
       <div className="flex items-center gap-4">
-        <img src="/5.gif" alt="5" className="md:h-16 h-5" />
-        <img src="/unicorn.gif" alt="125" className="md:h-16 h-8" />
+        <img src="/star.gif" alt="star" className="md:h-16 h-5" />
+        <img src="/unicorn.gif" alt="unicorn" className="md:h-16 h-8" />
         {firstUnviewedItemId && (
           <ButtonLink to={`/item/${firstUnviewedItemId}`}>
             {hasProgress ? "Continue" : "Start"}
           </ButtonLink>
         )}
-        <img src="/125.gif" alt="125" className="md:h-16 h-5" />
-        <img src="/90.gif" alt="90" className="md:h-16 h-8" />
+        <img src="/wizard.gif" alt="wizard" className="md:h-16 h-5" />
+        <img src="/spaceman.gif" alt="spaceman" className="md:h-16 h-8" />
       </div>
       <div className="flex flex-col gap-4 md:block md:columns-2 lg:columns-3 md:gap-0 md:space-y-0 [column-gap:1rem]">
         {listings.map((listing) => (
