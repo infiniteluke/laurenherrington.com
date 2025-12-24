@@ -45,6 +45,7 @@ export function Welcome({
           className="w-16 h-16"
           width={64}
           height={64}
+          fetchPriority="high"
         />
         <h1>{shopName}</h1>
       </header>

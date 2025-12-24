@@ -32,7 +32,12 @@ export function PortfolioItem({
         viewTransition
         style={{ viewTransitionName: getViewTransitionName(product.id) }}
       >
-        <img src={product.image} alt={product.description || product.title} />
+        <img
+          src={product.image}
+          alt={product.description || product.title}
+          loading="lazy"
+          fetchPriority="low"
+        />
       </Link>
     </div>
   );

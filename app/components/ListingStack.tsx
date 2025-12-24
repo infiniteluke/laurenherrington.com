@@ -52,6 +52,7 @@ export function ListingStack({ stack }: { stack: Stack }) {
                 width={128}
                 height={128}
                 loading="lazy"
+                fetchPriority="low"
               />
             </div>
           );

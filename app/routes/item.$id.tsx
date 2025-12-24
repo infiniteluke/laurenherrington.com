@@ -5,6 +5,7 @@ import stacksData from "~/data/stacks.json";
 import { trackItemVisit } from "~/middleware/trackVisit";
 import { getViewTransitionName } from "~/utils/viewTransition";
 import { findNextUnviewedStack } from "~/utils/stacks";
+const { getVisitedIds } = await import("~/utils/progress.client");
 
 export const clientMiddleware = [trackItemVisit];
 
@@ -39,7 +40,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   const serverData = await serverLoader();
-  const { getVisitedIds } = await import("~/utils/progress.client");
   const visitedIds = getVisitedIds();
 
   const nextUnviewedStack =
@@ -104,6 +104,7 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
             className="object-contain max-h-[calc(100dvh-150px)] max-w-full"
             src={listing.image}
             alt={listing.description || listing.title}
+            fetchPriority="high"
           />
         </div>
       </div>
