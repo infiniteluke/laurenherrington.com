@@ -50,8 +50,24 @@ export function Welcome({
         Visit a stack to make progress <Smiley size={32} />
       </p>
       <div className="flex items-center gap-4">
-        <img src="/star.gif" alt="star" className="md:h-16 h-5" />
-        <img src="/unicorn.gif" alt="unicorn" className="md:h-16 h-8" />
+        <video
+          src="/star.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="md:h-16 h-5"
+          aria-label="star"
+        />
+        <video
+          src="/unicorn.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="md:h-16 h-8"
+          aria-label="unicorn"
+        />
         {firstUnviewedStackId && (
           <ButtonLink
             to={`/stack/${firstUnviewedStackId}`}
@@ -64,8 +80,24 @@ export function Welcome({
             {hasProgress ? (isDone ? "Restart" : "Continue") : "Start"}
           </ButtonLink>
         )}
-        <img src="/wizard.gif" alt="wizard" className="md:h-16 h-5" />
-        <img src="/spaceman.gif" alt="spaceman" className="md:h-16 h-8" />
+        <video
+          src="/wizard.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="md:h-16 h-5"
+          aria-label="wizard"
+        />
+        <video
+          src="/spaceman.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="md:h-16 h-8"
+          aria-label="spaceman"
+        />
       </div>
       <div className="flex flex-wrap justify-center gap-32 mt-12">
         {stacks.map((stack) => (
