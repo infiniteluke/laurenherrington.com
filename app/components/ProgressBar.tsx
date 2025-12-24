@@ -1,4 +1,4 @@
-import { Form, Link } from "react-router";
+import { Form } from "react-router";
 
 export function ProgressBar({
   total,

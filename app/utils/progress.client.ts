@@ -1,5 +1,5 @@
-const STORAGE_KEY = "lh_visited_items_v1";
-const CELEBRATED_KEY = "lh_celebrated_v1";
+const STORAGE_KEY = "lh_visited_stacks_v1";
+const CELEBRATED_KEY = "lh_celebrated_stacks_v1";
 
 function readSet(): Set<string> {
   try {

@@ -1,9 +1,10 @@
 import type { Route } from "./+types/item.$id";
 import { ButtonLink } from "~/components/ButtonLink";
 import { getListingCursorsById } from "~/data/listings";
-import { trackVisit } from "~/middleware/trackVisit";
+import stacksData from "~/data/stacks.json";
+import { trackItemVisit } from "~/middleware/trackVisit";
 
-export const clientMiddleware = [trackVisit];
+export const clientMiddleware = [trackItemVisit];
 
 export function meta({ loaderData }: Route.MetaArgs) {
   if (!loaderData?.listing) return [{ title: "Item" }];
@@ -15,11 +16,43 @@ export async function loader({ params }: Route.LoaderArgs) {
   if (!listing) {
     throw new Response("Not found", { status: 404 });
   }
-  return { listing, next, previous };
+
+  const stackIndex = stacksData.findIndex((s) =>
+    s.listingIds.includes(params.id)
+  );
+  const stack = stacksData[stackIndex];
+  const isLastInStack =
+    stack && stack.listingIds[stack.listingIds.length - 1] === params.id;
+  const nextStack = isLastInStack ? stacksData[stackIndex + 1] : null;
+
+  return { listing, next, previous, stack, isLastInStack, nextStack };
 }
 
 export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
-  const { listing, next } = loaderData;
+  const { listing, next, stack, isLastInStack, nextStack } = loaderData;
+
+  let nextButton = null;
+  if (isLastInStack) {
+    if (nextStack) {
+      nextButton = (
+        <ButtonLink className="text-sm" to={`/stack/${nextStack.id}`}>
+          {nextStack.name}
+        </ButtonLink>
+      );
+    } else {
+      nextButton = (
+        <ButtonLink className="text-sm" to="/">
+          Home
+        </ButtonLink>
+      );
+    }
+  } else if (next) {
+    nextButton = (
+      <ButtonLink className="text-sm" to={`/item/${next.id}`}>
+        Next
+      </ButtonLink>
+    );
+  }
 
   return (
     <main className="h-dvh flex flex-col overflow-hidden gap-3">
@@ -51,14 +84,14 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
         className="z-10 fixed bottom-10 left-0 right-0 flex items-center justify-between gap-3 px-3 py-3"
         style={{ viewTransitionName: "item-nav" }}
       >
-        <ButtonLink className="text-sm" to="/" viewTransition>
-          Home
+        <ButtonLink
+          className="text-sm"
+          to={stack ? `/stack/${stack.id}` : "/"}
+          viewTransition
+        >
+          {stack ? stack.name : "Home"}
         </ButtonLink>
-        {next && (
-          <ButtonLink className="text-sm" to={`/item/${next.id}`}>
-            Next
-          </ButtonLink>
-        )}
+        {nextButton}
       </div>
     </main>
   );

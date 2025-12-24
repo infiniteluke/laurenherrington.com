@@ -74,3 +74,14 @@ export function getListingCursorsById(id: string): {
 export function getListingsTotal(): number {
   return getListings().length;
 }
+
+export function getListingById(id: string): Listing | undefined {
+  return getListings().find((l) => l.id === id);
+}
+
+export function getListingsByIds(ids: string[]): Listing[] {
+  const listings = getListings();
+  return ids
+    .map((id) => listings.find((l) => l.id === id))
+    .filter((l): l is Listing => l !== undefined);
+}

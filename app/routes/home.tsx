@@ -2,7 +2,8 @@ import type { Route } from "./+types/home";
 import { Welcome } from "../components/Welcome";
 import { useEffect } from "react";
 import shopSettings from "../data/shop_settings.json";
-import { getListings } from "~/data/listings";
+import stacksData from "../data/stacks.json";
+import { getListingsByIds } from "~/data/listings";
 import { useRouteLoaderData } from "react-router";
 import type { loader as rootLoader } from "../root";
 
@@ -14,11 +15,15 @@ export function meta({ loaderData }: Route.MetaArgs) {
 }
 
 export async function loader() {
-  const listings = getListings();
+  const stacks = stacksData.map((stack) => ({
+    ...stack,
+    listings: getListingsByIds(stack.listingIds),
+  }));
   const iconUrl = shopSettings.icon_url;
 
   return {
-    listings,
+    stacks,
+    totalStacks: stacksData.length,
     iconUrl,
     shopName: shopSettings.name,
   };
@@ -49,9 +54,10 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <Welcome
       visitedCount={rootLoaderData?.visitedCount ?? 0}
-      firstItemId={rootLoaderData?.firstItemId ?? ""}
-      firstUnviewedItemId={rootLoaderData?.firstUnviewedItemId ?? ""}
-      listings={loaderData.listings}
+      firstStackId={rootLoaderData?.firstStackId ?? ""}
+      firstUnviewedStackId={rootLoaderData?.firstUnviewedStackId ?? ""}
+      stacks={loaderData.stacks}
+      totalStacks={loaderData.totalStacks}
       iconUrl={loaderData.iconUrl}
       shopName={loaderData.shopName}
       shopSettings={shopSettings}

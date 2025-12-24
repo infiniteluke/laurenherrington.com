@@ -1,15 +1,23 @@
-import { PortfolioItem } from "~/components/PortfolioItem";
+import { ListingStack } from "~/components/ListingStack";
 import type { Listing } from "~/types";
 import { ButtonLink } from "./ButtonLink";
 import { Smiley } from "./Smiley";
+import { resetProgress } from "~/utils/progress.client";
+
+interface Stack {
+  id: string;
+  name: string;
+  listings: Listing[];
+}
 
 interface WelcomeProps {
-  listings: Listing[];
+  stacks: Stack[];
+  totalStacks: number;
   iconUrl: string;
   shopName: string;
   visitedCount: number;
-  firstItemId: string;
-  firstUnviewedItemId: string;
+  firstStackId: string;
+  firstUnviewedStackId: string;
   shopSettings: {
     name: string;
     icon_url: string;
@@ -17,15 +25,16 @@ interface WelcomeProps {
 }
 
 export function Welcome({
-  listings,
+  stacks,
+  totalStacks,
   iconUrl,
   shopName,
   visitedCount,
-  firstUnviewedItemId,
+  firstUnviewedStackId,
   shopSettings,
 }: WelcomeProps) {
   const hasProgress = visitedCount > 0;
-  const isDone = visitedCount === listings.length;
+  const isDone = visitedCount === totalStacks;
 
   return (
     <main className="flex items-center justify-center flex-col lg:mx-24 gap-4 my-8">
@@ -43,17 +52,24 @@ export function Welcome({
       <div className="flex items-center gap-4">
         <img src="/star.gif" alt="star" className="md:h-16 h-5" />
         <img src="/unicorn.gif" alt="unicorn" className="md:h-16 h-8" />
-        {firstUnviewedItemId && (
-          <ButtonLink to={`/item/${firstUnviewedItemId}`}>
+        {firstUnviewedStackId && (
+          <ButtonLink
+            to={`/stack/${firstUnviewedStackId}`}
+            onClick={() => {
+              if (isDone) {
+                resetProgress();
+              }
+            }}
+          >
             {hasProgress ? (isDone ? "Restart" : "Continue") : "Start"}
           </ButtonLink>
         )}
         <img src="/wizard.gif" alt="wizard" className="md:h-16 h-5" />
         <img src="/spaceman.gif" alt="spaceman" className="md:h-16 h-8" />
       </div>
-      <div className="flex flex-col gap-4 md:block md:columns-2 lg:columns-3 md:gap-0 md:space-y-0 [column-gap:1rem]">
-        {listings.map((listing) => (
-          <PortfolioItem key={listing.id} product={listing} />
+      <div className="flex flex-wrap justify-center gap-32 mt-12">
+        {stacks.map((stack) => (
+          <ListingStack key={stack.id} stack={stack} />
         ))}
       </div>
       <footer className="flex justify-center mt-16 mb-8">

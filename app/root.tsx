@@ -12,7 +12,7 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { ProgressBar } from "~/components/ProgressBar";
-import { getListings, getListingsTotal } from "~/data/listings";
+import stacksData from "~/data/stacks.json";
 import {
   getVisitedCount,
   getVisitedIds,
@@ -22,12 +22,11 @@ import { SmileyCelebration } from "./components/Smiley";
 import { ButtonLink } from "./components/ButtonLink";
 
 export async function loader() {
-  const listings = getListings();
-  const firstItemId = listings[0]?.id ?? "";
+  const firstStackId = stacksData[0]?.id ?? "";
   return {
-    totalListings: listings.length,
-    firstItemId,
-    firstUnviewedItemId: firstItemId,
+    totalStacks: stacksData.length,
+    firstStackId,
+    firstUnviewedStackId: firstStackId,
     visitedCount: 0,
   };
 }
@@ -35,12 +34,13 @@ export async function loader() {
 export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   const serverData = await serverLoader();
   const visitedIds = getVisitedIds();
-  const listings = getListings();
-  const firstUnviewed = listings.find((l) => !visitedIds.has(`/item/${l.id}`));
+  const firstUnviewed = stacksData.find(
+    (s) => !visitedIds.has(`/stack/${s.id}`)
+  );
   return {
     ...serverData,
     visitedCount: visitedIds.size,
-    firstUnviewedItemId: firstUnviewed?.id ?? serverData.firstItemId,
+    firstUnviewedStackId: firstUnviewed?.id ?? serverData.firstStackId,
   };
 }
 
@@ -93,12 +93,12 @@ export default function App({ loaderData }: Route.ComponentProps) {
       <Outlet />
       {"visitedCount" in loaderData && (
         <ProgressBar
-          total={loaderData.totalListings}
+          total={loaderData.totalStacks}
           visitedCount={loaderData.visitedCount}
         />
       )}
       <SmileyCelebration
-        active={loaderData.visitedCount === loaderData.totalListings}
+        active={loaderData.visitedCount === loaderData.totalStacks}
       />
     </>
   );
