@@ -137,7 +137,7 @@ export function Welcome({
                 resetProgress();
               }
             }}
-            className="min-w-[5.5rem] text-center"
+            className=" text-center"
           >
             {isHydrated
               ? hasProgress
