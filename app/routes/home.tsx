@@ -51,6 +51,9 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     }
   }, []);
 
+  // Get visited IDs from root loader data
+  const visitedIds = rootLoaderData?.visitedIds ?? new Set<string>();
+
   return (
     <Welcome
       visitedCount={rootLoaderData?.visitedCount ?? 0}
@@ -61,6 +64,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       iconUrl={loaderData.iconUrl}
       shopName={loaderData.shopName}
       shopSettings={shopSettings}
+      visitedIds={visitedIds}
     />
   );
 }

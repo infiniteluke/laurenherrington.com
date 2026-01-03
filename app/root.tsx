@@ -40,6 +40,7 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   return {
     ...serverData,
     visitedCount: visitedIds.size,
+    visitedIds,
     firstUnviewedStackId: firstUnviewed?.id ?? serverData.firstStackId,
   };
 }

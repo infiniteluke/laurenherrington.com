@@ -23,6 +23,7 @@ interface WelcomeProps {
     name: string;
     icon_url: string;
   };
+  visitedIds: Set<string>;
 }
 
 export function Welcome({
@@ -33,6 +34,7 @@ export function Welcome({
   visitedCount,
   firstUnviewedStackId,
   shopSettings,
+  visitedIds,
 }: WelcomeProps) {
   const [isHydrated, setIsHydrated] = useState(false);
   const starVideoRef = useRef<HTMLVideoElement>(null);
@@ -81,8 +83,26 @@ export function Welcome({
         />
         <h1>{shopName}</h1>
       </header>
-      <p className="text-sm">
-        Visit a stack to make progress <Smiley size={32} />
+      <p className="text-sm text-center">
+        {isDone ? (
+          <>
+            You've visited all {totalStacks} stacks! <Smiley size={32} />
+          </>
+        ) : hasProgress ? (
+          <>
+            Visit all {totalStacks} stacks to unlock a surprise!{" "}
+            <Smiley size={32} />
+            <br />
+            <span className="text-xs opacity-75">
+              {visitedCount} / {totalStacks} complete
+            </span>
+          </>
+        ) : (
+          <>
+            Click through all {totalStacks} stacks to unlock a surprise!{" "}
+            <Smiley size={32} />
+          </>
+        )}
       </p>
       <div className="flex items-center gap-4">
         <video
@@ -155,7 +175,11 @@ export function Welcome({
       </div>
       <div className="flex flex-wrap justify-center gap-32 mt-12">
         {stacks.map((stack) => (
-          <ListingStack key={stack.id} stack={stack} />
+          <ListingStack
+            key={stack.id}
+            stack={stack}
+            isVisited={visitedIds.has(`/stack/${stack.id}`)}
+          />
         ))}
       </div>
       <footer className="flex justify-center mt-16 mb-8">

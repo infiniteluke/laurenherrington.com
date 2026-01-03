@@ -9,14 +9,20 @@ interface Stack {
   listings: Listing[];
 }
 
-export function ListingStack({ stack }: { stack: Stack }) {
+export function ListingStack({
+  stack,
+  isVisited = false,
+}: {
+  stack: Stack;
+  isVisited?: boolean;
+}) {
   const images = stack.listings.slice(0, 4);
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <Link
       to={`/stack/${stack.id}`}
-      className="relative block w-32 h-32"
+      className="relative block w-32 h-32 group"
       viewTransition
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -48,7 +54,9 @@ export function ListingStack({ stack }: { stack: Stack }) {
               <img
                 src={listing.image}
                 alt={listing.title}
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover transition-opacity duration-300 ${
+                  isVisited ? "opacity-60" : "opacity-100"
+                }`}
                 width={128}
                 height={128}
                 loading="lazy"
@@ -57,8 +65,21 @@ export function ListingStack({ stack }: { stack: Stack }) {
             </div>
           );
         })}
+        {isVisited && (
+          <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+            <div className="bg-win95-navy text-white text-xs px-2 py-1 border-2 border-t-win95-highlight border-l-win95-highlight border-b-win95-shadow border-r-win95-shadow">
+              ✓
+            </div>
+          </div>
+        )}
       </div>
-      <h3 className="mt-4 text-center underline relative z-10">{stack.name}</h3>
+      <h3
+        className={`mt-4 text-center underline relative z-10 transition-opacity ${
+          isVisited ? "opacity-60" : ""
+        }`}
+      >
+        {stack.name}
+      </h3>
     </Link>
   );
 }
