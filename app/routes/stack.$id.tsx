@@ -5,6 +5,7 @@ import { getListingsByIds } from "~/data/listings";
 import stacksData from "~/data/stacks.json";
 import { trackStackVisit } from "~/middleware/trackVisit";
 import { findNextUnviewedStack } from "~/utils/stacks";
+import { MAX_STACK_PREVIEW_IMAGES } from "~/constants";
 
 export const clientMiddleware = [trackStackVisit];
 
@@ -64,7 +65,10 @@ export default function StackPage({ loaderData }: Route.ComponentProps) {
             key={listing.id}
             product={listing}
             index={index}
-            totalInStack={Math.min(4, stack.listings.length)}
+            totalInStack={Math.min(
+              MAX_STACK_PREVIEW_IMAGES,
+              stack.listings.length
+            )}
           />
         ))}
       </div>

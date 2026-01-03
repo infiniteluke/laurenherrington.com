@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import type { Listing } from "~/types";
 import { getViewTransitionName } from "~/utils/viewTransition";
+import { MAX_STACK_PREVIEW_IMAGES } from "~/constants";
 
 interface Stack {
   id: string;
@@ -16,7 +17,7 @@ export function ListingStack({
   stack: Stack;
   isVisited?: boolean;
 }) {
-  const images = stack.listings.slice(0, 4);
+  const images = stack.listings.slice(0, MAX_STACK_PREVIEW_IMAGES);
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -59,8 +60,8 @@ export function ListingStack({
                 }`}
                 width={128}
                 height={128}
-                loading="lazy"
-                fetchPriority="low"
+                loading="eager"
+                fetchPriority="high"
               />
             </div>
           );

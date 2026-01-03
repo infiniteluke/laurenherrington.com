@@ -1,6 +1,7 @@
 import type { Listing } from "~/types";
 import { Link } from "react-router";
 import { getViewTransitionName } from "~/utils/viewTransition";
+import { MAX_STACK_PREVIEW_IMAGES } from "~/constants";
 
 export function PortfolioItem({
   product,
@@ -12,9 +13,11 @@ export function PortfolioItem({
   totalInStack?: number;
 }) {
   // Match z-index from ListingStack for smooth view transitions
-  // Only first 4 items were visible in the stack
+  // Only first MAX_STACK_PREVIEW_IMAGES items were visible in the stack
   const zIndex =
-    index !== undefined && totalInStack !== undefined && index < 4
+    index !== undefined &&
+    totalInStack !== undefined &&
+    index < MAX_STACK_PREVIEW_IMAGES
       ? totalInStack - index
       : undefined;
 
@@ -35,8 +38,16 @@ export function PortfolioItem({
         <img
           src={product.image}
           alt={product.description || product.title}
-          loading="lazy"
-          fetchPriority="low"
+          loading={
+            index !== undefined && index < MAX_STACK_PREVIEW_IMAGES
+              ? "eager"
+              : "lazy"
+          }
+          fetchPriority={
+            index !== undefined && index < MAX_STACK_PREVIEW_IMAGES
+              ? "high"
+              : "low"
+          }
         />
       </Link>
     </div>
