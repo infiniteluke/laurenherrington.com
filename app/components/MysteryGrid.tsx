@@ -11,6 +11,13 @@ interface Props {
 }
 
 export function MysteryGrid({ pieces, foundIds, adoptedIds }: Props) {
+  if (pieces.length === 0) {
+    return (
+      <div className="text-center">
+        <p>No pieces to find yet... check back later!</p>
+      </div>
+    );
+  }
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full">
       {pieces.map((piece) => {

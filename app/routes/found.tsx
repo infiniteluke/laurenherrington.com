@@ -13,7 +13,7 @@ import { getOrSetUserUuid } from "~/utils/userCookie.server";
 
 export function meta() {
   return [
-    { title: "Finders Keepers" },
+    { title: "👀 Finders Keepers" },
     { name: "robots", content: "noindex,nofollow" },
   ];
 }
@@ -47,7 +47,7 @@ export default function FoundIndex({ loaderData }: Route.ComponentProps) {
   return (
     <main className="flex flex-col items-center gap-6 mx-4 my-8 max-w-3xl md:mx-auto">
       <header className="text-center">
-        <h1>Finders Keepers</h1>
+        <h1>👀 Finders Keepers</h1>
         <p className="text-sm">
           I'm hiding art around the city. Scan the QR code on a piece you find
           to mark it as found and if you want, bring it home!

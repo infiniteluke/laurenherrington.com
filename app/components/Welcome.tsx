@@ -72,6 +72,9 @@ export function Welcome({
 
   return (
     <main className="flex items-center justify-center flex-col lg:mx-24 gap-4 my-8">
+      <ButtonLink className=" self-center md:self-end" to="/found">
+        👀 Finders Keepers
+      </ButtonLink>
       <header className="flex items-center gap-4">
         <img
           src={iconUrl}

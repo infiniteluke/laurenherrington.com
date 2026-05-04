@@ -29,6 +29,7 @@ export async function loader() {
     firstStackId,
     firstUnviewedStackId: firstStackId,
     visitedCount: 0,
+    visitedIds: new Set<string>(),
   };
 }
 
