@@ -1,5 +1,10 @@
 [
   {
+    "id": "finders-keepers",
+    "name": "Finders Keepers",
+    "listingIds": ["sights-01", "in-london-01", "olivia-01"]
+  },
+  {
     "id": "nature-vibes",
     "name": "Nature Vibes",
     "listingIds": [

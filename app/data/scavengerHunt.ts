@@ -1,6 +1,6 @@
 import type { HuntPiece, Listing } from "~/types";
 import huntJson from "./scavengerHunt.json";
-import { getListingById } from "./listings";
+import { getCsvListingById } from "./listings";
 
 const huntPieces = huntJson as HuntPiece[];
 
@@ -18,7 +18,7 @@ export function isHuntPieceId(id: string): boolean {
 
 export function getHuntPieceAsListing(piece: HuntPiece): Listing {
   if (piece.listingId) {
-    const listing = getListingById(piece.listingId);
+    const listing = getCsvListingById(piece.listingId);
     if (listing) return { ...listing, id: piece.id };
   }
   return {

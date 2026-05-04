@@ -1,6 +1,11 @@
 import { slugify } from "util/slugs";
 import listingsCsv from "./EtsyListingsDownload.csv?raw";
 import type { Listing } from "~/types";
+import {
+  getHuntPieceAsListing,
+  getHuntPieceById,
+  getHuntPieces,
+} from "./scavengerHunt";
 
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
@@ -62,12 +67,12 @@ export function getListingCursorsById(id: string): {
   next: Listing | undefined;
   previous: Listing | undefined;
 } {
-  const listings = getListings();
-  const index = listings.findIndex((l) => l.id === id);
+  const all = getAllPieces();
+  const index = all.findIndex((l) => l.id === id);
   return {
-    listing: listings[index],
-    next: listings[index + 1],
-    previous: listings[index - 1],
+    listing: all[index],
+    next: all[index + 1],
+    previous: all[index - 1],
   };
 }
 
@@ -75,13 +80,23 @@ export function getListingsTotal(): number {
   return getListings().length;
 }
 
-export function getListingById(id: string): Listing | undefined {
+export function getCsvListingById(id: string): Listing | undefined {
   return getListings().find((l) => l.id === id);
 }
 
+export function getListingById(id: string): Listing | undefined {
+  const listing = getCsvListingById(id);
+  if (listing) return listing;
+  const hunt = getHuntPieceById(id);
+  return hunt ? getHuntPieceAsListing(hunt) : undefined;
+}
+
 export function getListingsByIds(ids: string[]): Listing[] {
-  const listings = getListings();
   return ids
-    .map((id) => listings.find((l) => l.id === id))
+    .map((id) => getListingById(id))
     .filter((l): l is Listing => l !== undefined);
+}
+
+export function getAllPieces(): Listing[] {
+  return [...getHuntPieces().map(getHuntPieceAsListing), ...getListings()];
 }
