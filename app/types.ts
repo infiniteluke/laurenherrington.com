@@ -10,3 +10,15 @@ export interface Listing {
   image: string;
   listing_id: string;
 }
+
+export interface Find {
+  id: string;
+  artId: string;
+  userUuid: string;
+  foundBy: string | null;
+  location: string | null;
+  foundAt: number;
+  adopted: boolean;
+  createdAt: number;
+  ipHash: string | null;
+}
