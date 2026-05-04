@@ -2,6 +2,7 @@ import type { Route } from "./+types/item.$id";
 import { ButtonLink } from "~/components/ButtonLink";
 import { getListingCursorsById } from "~/data/listings";
 import { isHuntPieceId } from "~/data/scavengerHunt";
+import { isAdopted } from "~/data/finds.server";
 import stacksData from "~/data/stacks.json";
 import { trackItemVisit } from "~/middleware/trackVisit";
 import { getViewTransitionName } from "~/utils/viewTransition";
@@ -15,7 +16,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
   return [{ title: loaderData.listing.title }];
 }
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, context }: Route.LoaderArgs) {
   const { listing, next, previous } = getListingCursorsById(params.id);
   if (!listing) {
     throw new Response("Not found", { status: 404 });
@@ -28,6 +29,9 @@ export async function loader({ params }: Route.LoaderArgs) {
   const isLastInStack =
     stack && stack.listingIds[stack.listingIds.length - 1] === params.id;
   const isHunt = isHuntPieceId(params.id);
+  const adopted = isHunt
+    ? await isAdopted(context.cloudflare.env.LUEBOO_DB, params.id)
+    : false;
 
   return {
     listing,
@@ -37,6 +41,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     isLastInStack,
     stackIndex,
     isHunt,
+    adopted,
     nextUnviewedStack: null,
   };
 }
@@ -59,8 +64,15 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
 clientLoader.hydrate = true as const;
 
 export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
-  const { listing, next, stack, isLastInStack, isHunt, nextUnviewedStack } =
-    loaderData;
+  const {
+    listing,
+    next,
+    stack,
+    isLastInStack,
+    isHunt,
+    adopted,
+    nextUnviewedStack,
+  } = loaderData;
 
   let nextButton = null;
   if (isLastInStack) {
@@ -89,10 +101,15 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
     <main className="h-dvh flex flex-col overflow-hidden gap-3">
       <h1 className="text-center mt-3">{listing.title}</h1>
       {isHunt && (
-        <div className="flex justify-center">
+        <div className="flex justify-center gap-2">
           <span className="bg-win95-navy text-white text-xs px-2 py-0.5">
             FINDERS KEEPERS
           </span>
+          {adopted && (
+            <span className="bg-win95-navy text-white text-xs px-2 py-0.5">
+              ADOPTED
+            </span>
+          )}
         </div>
       )}
       <p className="text-center text-sm">{listing.description}</p>

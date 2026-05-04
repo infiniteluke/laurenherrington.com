@@ -7,10 +7,12 @@ export function PortfolioItem({
   product,
   index,
   totalInStack,
+  adopted,
 }: {
   product: Listing;
   index?: number;
   totalInStack?: number;
+  adopted?: boolean;
 }) {
   // Match z-index from ListingStack for smooth view transitions
   // Only first MAX_STACK_PREVIEW_IMAGES items were visible in the stack
@@ -31,7 +33,7 @@ export function PortfolioItem({
       </Link>
       <Link
         to={`/item/${product.id}`}
-        className="overflow-hidden bg-neutral-100 shadow-win95-silver"
+        className="relative overflow-hidden bg-neutral-100 shadow-win95-silver"
         viewTransition
         style={{ viewTransitionName: getViewTransitionName(product.id) }}
       >
@@ -49,6 +51,11 @@ export function PortfolioItem({
               : "low"
           }
         />
+        {adopted && (
+          <span className="absolute top-1 right-1 bg-win95-navy text-white text-[10px] px-1.5 py-0.5">
+            ADOPTED
+          </span>
+        )}
       </Link>
     </div>
   );

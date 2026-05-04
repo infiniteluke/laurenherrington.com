@@ -2,6 +2,8 @@ import type { Route } from "./+types/stack.$id";
 import { PortfolioItem } from "~/components/PortfolioItem";
 import { ButtonLink } from "~/components/ButtonLink";
 import { getListingsByIds } from "~/data/listings";
+import { isHuntPieceId } from "~/data/scavengerHunt";
+import { getAdoptedHuntIds } from "~/data/finds.server";
 import stacksData from "~/data/stacks.json";
 import { trackStackVisit } from "~/middleware/trackVisit";
 import { findNextUnviewedStack } from "~/utils/stacks";
@@ -14,7 +16,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
   return [{ title: loaderData.stack.name }];
 }
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, context }: Route.LoaderArgs) {
   const stackIndex = stacksData.findIndex((s) => s.id === params.id);
   const stackData = stacksData[stackIndex];
   if (!stackData) {
@@ -22,6 +24,13 @@ export async function loader({ params }: Route.LoaderArgs) {
   }
 
   const listings = getListingsByIds(stackData.listingIds);
+  const huntIdsInStack = listings
+    .map((l) => l.id)
+    .filter((id) => isHuntPieceId(id));
+  const adoptedIds = await getAdoptedHuntIds(
+    context.cloudflare.env.LUEBOO_DB,
+    huntIdsInStack
+  );
 
   return {
     stack: {
@@ -29,6 +38,7 @@ export async function loader({ params }: Route.LoaderArgs) {
       listings,
     },
     stackIndex,
+    adoptedIds: [...adoptedIds],
     nextUnviewedStack: null,
   };
 }
@@ -52,7 +62,8 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
 clientLoader.hydrate = true as const;
 
 export default function StackPage({ loaderData }: Route.ComponentProps) {
-  const { stack, nextUnviewedStack } = loaderData;
+  const { stack, adoptedIds, nextUnviewedStack } = loaderData;
+  const adoptedSet = new Set(adoptedIds);
 
   return (
     <main className="flex items-center justify-center flex-col lg:mx-24 gap-4 my-8">
@@ -69,6 +80,7 @@ export default function StackPage({ loaderData }: Route.ComponentProps) {
               MAX_STACK_PREVIEW_IMAGES,
               stack.listings.length
             )}
+            adopted={adoptedSet.has(listing.id)}
           />
         ))}
       </div>
