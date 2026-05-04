@@ -14,6 +14,7 @@ import {
   isAdopted,
   recordFind,
 } from "~/data/finds.server";
+import { computeIpHash } from "~/utils/ipHash.server";
 import { getOrSetUserUuid } from "~/utils/userCookie.server";
 
 export function meta({ data: d }: Route.MetaArgs) {
@@ -32,12 +33,17 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
   const db = context.cloudflare.env.LUEBOO_DB;
 
   if (!(await hasUserFoundArt(db, userUuid, piece.id))) {
+    const ipHash = await computeIpHash(
+      request,
+      context.cloudflare.env.IP_HASH_SALT
+    );
     await recordFind(db, {
       artId: piece.id,
       userUuid,
       foundAt: Date.now(),
       adopted: false,
       auto: true,
+      ipHash,
     });
   }
 
@@ -106,6 +112,10 @@ export async function action({ request, params, context }: Route.ActionArgs) {
     }
   }
 
+  const ipHash = await computeIpHash(
+    request,
+    context.cloudflare.env.IP_HASH_SALT
+  );
   const find = await recordFind(db, {
     artId: piece.id,
     userUuid,
@@ -113,6 +123,7 @@ export async function action({ request, params, context }: Route.ActionArgs) {
     location,
     foundAt: foundAtMs,
     adopted: wantsAdopted,
+    ipHash,
   });
 
   return data({ ok: true as const, find }, { headers });
