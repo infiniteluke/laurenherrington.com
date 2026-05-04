@@ -13,6 +13,14 @@
   "observability": {
     "enabled": true,
   },
+  "d1_databases": [
+    {
+      "binding": "LUEBOO_DB",
+      "database_name": "lueboo_prod",
+      "database_id": "08d36a9d-4001-4a89-bb78-6df4d45e178c",
+      "migrations_dir": "migrations",
+    },
+  ],
   /**
    * Smart Placement
    * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
