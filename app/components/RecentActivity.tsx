@@ -16,6 +16,12 @@ function relativeTime(ms: number): string {
   return `${days}d ago`;
 }
 
+const PREPOSITION_MAP = {
+  found: "at",
+  spotted: "in",
+  adopted: "near",
+};
+
 export function RecentActivity({ finds }: Props) {
   if (finds.length === 0) {
     return <p className="text-sm text-win95-shadow">No finds yet.</p>;
@@ -31,7 +37,8 @@ export function RecentActivity({ finds }: Props) {
         return (
           <li key={find.id}>
             {who} {verb} <em>{title}</em>
-            {where ? ` at ${where}` : ""} · {relativeTime(find.createdAt)}
+            {where ? ` ${PREPOSITION_MAP[verb]} ${where}` : ""} ·{" "}
+            {relativeTime(find.createdAt)}
           </li>
         );
       })}

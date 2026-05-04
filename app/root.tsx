@@ -7,6 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
   redirect,
+  useLocation,
 } from "react-router";
 
 import type { Route } from "./+types/root";
@@ -100,18 +101,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
+  const onFoundRoute = useLocation().pathname.startsWith("/found");
   return (
     <>
       <Outlet />
-      {"visitedCount" in loaderData && (
+      {!onFoundRoute && "visitedCount" in loaderData && (
         <ProgressBar
           total={loaderData.totalStacks}
           visitedCount={loaderData.visitedCount}
         />
       )}
-      <SmileyCelebration
-        active={loaderData.visitedCount === loaderData.totalStacks}
-      />
+      {!onFoundRoute && (
+        <SmileyCelebration
+          active={loaderData.visitedCount === loaderData.totalStacks}
+        />
+      )}
     </>
   );
 }
