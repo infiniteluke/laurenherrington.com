@@ -26,7 +26,7 @@ export function RecentActivity({ finds }: Props) {
         const piece = getHuntPieceById(find.artId);
         const title = piece?.title ?? find.artId;
         const who = find.foundBy?.trim() || "Anonymous";
-        const verb = find.adopted ? "adopted" : "found";
+        const verb = find.adopted ? "adopted" : find.auto ? "spotted" : "found";
         const where = find.location?.trim();
         return (
           <li key={find.id}>

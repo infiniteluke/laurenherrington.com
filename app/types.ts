@@ -27,6 +27,7 @@ export interface Find {
   location: string | null;
   foundAt: number;
   adopted: boolean;
+  auto: boolean;
   createdAt: number;
   ipHash: string | null;
 }

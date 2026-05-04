@@ -8,6 +8,7 @@ interface FindRow {
   location: string | null;
   found_at: number;
   adopted: number;
+  auto: number;
   created_at: number;
   ip_hash: string | null;
 }
@@ -21,6 +22,7 @@ function rowToFind(row: FindRow): Find {
     location: row.location,
     foundAt: row.found_at,
     adopted: row.adopted === 1,
+    auto: row.auto === 1,
     createdAt: row.created_at,
     ipHash: row.ip_hash,
   };
@@ -33,6 +35,7 @@ export interface NewFind {
   location?: string | null;
   foundAt: number;
   adopted: boolean;
+  auto?: boolean;
   ipHash?: string | null;
 }
 
@@ -43,11 +46,12 @@ export async function recordFind(
   const id = crypto.randomUUID();
   const createdAt = Date.now();
   const adopted = input.adopted ? 1 : 0;
+  const auto = input.auto ? 1 : 0;
 
   const row = await db
     .prepare(
-      `INSERT INTO finds (id, art_id, user_uuid, found_by, location, found_at, adopted, created_at, ip_hash)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `INSERT INTO finds (id, art_id, user_uuid, found_by, location, found_at, adopted, auto, created_at, ip_hash)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        RETURNING *`
     )
     .bind(
@@ -58,6 +62,7 @@ export async function recordFind(
       input.location ?? null,
       input.foundAt,
       adopted,
+      auto,
       createdAt,
       input.ipHash ?? null
     )

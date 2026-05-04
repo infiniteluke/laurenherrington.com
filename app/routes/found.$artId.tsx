@@ -37,6 +37,7 @@ export async function loader({ request, params, context }: Route.LoaderArgs) {
       userUuid,
       foundAt: Date.now(),
       adopted: false,
+      auto: true,
     });
   }
 
