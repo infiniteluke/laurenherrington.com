@@ -1,6 +1,7 @@
 import type { Route } from "./+types/item.$id";
 import { ButtonLink } from "~/components/ButtonLink";
 import { getListingCursorsById } from "~/data/listings";
+import { isHuntPieceId } from "~/data/scavengerHunt";
 import stacksData from "~/data/stacks.json";
 import { trackItemVisit } from "~/middleware/trackVisit";
 import { getViewTransitionName } from "~/utils/viewTransition";
@@ -26,6 +27,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const stack = stacksData[stackIndex];
   const isLastInStack =
     stack && stack.listingIds[stack.listingIds.length - 1] === params.id;
+  const isHunt = isHuntPieceId(params.id);
 
   return {
     listing,
@@ -34,6 +36,7 @@ export async function loader({ params }: Route.LoaderArgs) {
     stack,
     isLastInStack,
     stackIndex,
+    isHunt,
     nextUnviewedStack: null,
   };
 }
@@ -56,7 +59,8 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
 clientLoader.hydrate = true as const;
 
 export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
-  const { listing, next, stack, isLastInStack, nextUnviewedStack } = loaderData;
+  const { listing, next, stack, isLastInStack, isHunt, nextUnviewedStack } =
+    loaderData;
 
   let nextButton = null;
   if (isLastInStack) {
@@ -84,16 +88,32 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
   return (
     <main className="h-dvh flex flex-col overflow-hidden gap-3">
       <h1 className="text-center mt-3">{listing.title}</h1>
+      {isHunt && (
+        <div className="flex justify-center">
+          <span className="bg-win95-navy text-white text-xs px-2 py-0.5">
+            FINDERS KEEPERS
+          </span>
+        </div>
+      )}
       <p className="text-center text-sm">{listing.description}</p>
-      <a
-        href={`https://www.etsy.com/listing/${listing.listing_id}/${listing.id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center justify-center gap-1.5 text-sm hover:opacity-70 transition-opacity"
-      >
-        <span>Buy on</span>
-        <img src="/etsy-svgrepo-com.svg" alt="Etsy" className="h-5 w-auto" />
-      </a>
+      {isHunt ? (
+        <a
+          href="/found"
+          className="flex items-center justify-center gap-1.5 text-sm hover:opacity-70 transition-opacity"
+        >
+          <span>🔍 Find me in the wild!</span>
+        </a>
+      ) : (
+        <a
+          href={`https://www.etsy.com/listing/${listing.listing_id}/${listing.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-1.5 text-sm hover:opacity-70 transition-opacity"
+        >
+          <span>Buy on</span>
+          <img src="/etsy-svgrepo-com.svg" alt="Etsy" className="h-5 w-auto" />
+        </a>
+      )}
 
       <div className="flex-1 flex justify-center">
         <div
