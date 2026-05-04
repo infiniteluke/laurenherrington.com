@@ -49,8 +49,8 @@ export default function FoundIndex({ loaderData }: Route.ComponentProps) {
       <header className="text-center">
         <h1>Finders Keepers</h1>
         <p className="text-sm">
-          Lauren is hiding art around the city. Scan the QR code on a piece you
-          find — or just enjoy the mystery.
+          I'm hiding art around the city. Scan the QR code on a piece you find
+          to mark it as found and if you want, bring it home!
         </p>
       </header>
       <MysteryGrid

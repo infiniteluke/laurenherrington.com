@@ -186,17 +186,17 @@ export default function FoundArt({
       )}
 
       <section className="w-full">
-        <h2 className="mb-2">Other finders</h2>
+        <h2 className="mb-2">Other "{piece.title}" Activity</h2>
         <RecentActivity finds={recentForArt} />
       </section>
 
       <section className="w-full">
-        <h2 className="mb-2">Recent activity</h2>
+        <h2 className="mb-2">All activity</h2>
         <RecentActivity finds={recentGlobal} />
       </section>
 
       <ButtonLink to="/found" className="text-sm">
-        See the whole hunt
+        See all
       </ButtonLink>
     </main>
   );
