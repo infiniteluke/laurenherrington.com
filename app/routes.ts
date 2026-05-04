@@ -5,4 +5,5 @@ export default [
   route("item/:id", "routes/item.$id.tsx"),
   route("stack/:id", "routes/stack.$id.tsx"),
   route("found", "routes/found.tsx"),
+  route("found/:artId", "routes/found.$artId.tsx"),
 ] satisfies RouteConfig;
