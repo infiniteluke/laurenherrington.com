@@ -24,7 +24,7 @@ const PREPOSITION_MAP = {
 
 export function RecentActivity({ finds }: Props) {
   if (finds.length === 0) {
-    return <p className="text-sm text-win95-shadow">No finds yet.</p>;
+    return <p className="text-sm text-win95-shadow">No activity yet.</p>;
   }
   return (
     <ul className="text-sm space-y-1">
