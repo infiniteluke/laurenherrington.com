@@ -11,6 +11,14 @@ export interface Listing {
   listing_id: string;
 }
 
+export interface HuntPiece {
+  id: string;
+  title: string;
+  listingId?: string;
+  image?: string;
+  description?: string;
+}
+
 export interface Find {
   id: string;
   artId: string;
