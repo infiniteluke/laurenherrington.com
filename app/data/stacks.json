@@ -12,12 +12,18 @@
   {
     "id": "space-dreams",
     "name": "Space Dreams",
-    "listingIds": ["space-cats", "olivia", "recreate", "recreate-ii"]
+    "listingIds": [
+      "space-cats",
+      "olivia",
+      "recreate",
+      "recreate-ii",
+      "space-trash"
+    ]
   },
   {
     "id": "time-capsule",
     "name": "Time Capsule",
-    "listingIds": ["tell-me-more-album-art-ii", "1996", "red", "2024"]
+    "listingIds": ["tell-me-more-album-art-ii", "1996", "red", "2024", "1977"]
   },
   {
     "id": "cosmic-blues",
@@ -27,7 +33,13 @@
   {
     "id": "abstract-thoughts",
     "name": "Abstract Thoughts",
-    "listingIds": ["nonsense", "untitled-7", "no-cantar", "smoke-and-light"]
+    "listingIds": [
+      "nonsense",
+      "untitled-7",
+      "no-cantar",
+      "smoke-and-light",
+      "peace"
+    ]
   },
   {
     "id": "summer-feels",
@@ -42,6 +54,6 @@
   {
     "id": "wild-places",
     "name": "Wild Places",
-    "listingIds": ["space-complex", "judah's-nostalgia", "grief"]
+    "listingIds": ["space-complex", "judah's-nostalgia", "grief", "howdy"]
   }
 ]
