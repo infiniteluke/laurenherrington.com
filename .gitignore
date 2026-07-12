@@ -16,3 +16,6 @@ worker-configuration.d.ts
 
 !.dev.vars.example
 !.env.example
+
+# Raw zine scans — huge originals; only optimized .webp pages are committed
+/public/**/Page*_*.jpeg

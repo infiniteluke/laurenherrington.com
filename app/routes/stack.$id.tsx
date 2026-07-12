@@ -1,12 +1,12 @@
 import type { Route } from "./+types/stack.$id";
 import { PortfolioItem } from "~/components/PortfolioItem";
 import { ButtonLink } from "~/components/ButtonLink";
+import { ZineViewer } from "~/components/ZineViewer";
 import { getListingsByIds } from "~/data/listings";
 import { isHuntPieceId } from "~/data/scavengerHunt";
 import { getAdoptedHuntIds } from "~/data/finds.server";
-import stacksData from "~/data/stacks.json";
 import { trackStackVisit } from "~/middleware/trackVisit";
-import { findNextUnviewedStack } from "~/utils/stacks";
+import { findNextUnviewedStack, getStacks, isZineStack } from "~/utils/stacks";
 import { MAX_STACK_PREVIEW_IMAGES } from "~/constants";
 
 export const clientMiddleware = [trackStackVisit];
@@ -17,10 +17,26 @@ export function meta({ loaderData }: Route.MetaArgs) {
 }
 
 export async function loader({ params, context }: Route.LoaderArgs) {
-  const stackIndex = stacksData.findIndex((s) => s.id === params.id);
-  const stackData = stacksData[stackIndex];
+  const stacks = getStacks();
+  const stackIndex = stacks.findIndex((s) => s.id === params.id);
+  const stackData = stacks[stackIndex];
   if (!stackData) {
     throw new Response("Not found", { status: 404 });
+  }
+
+  if (isZineStack(stackData)) {
+    return {
+      stack: {
+        id: stackData.id,
+        name: stackData.name,
+        type: "zine" as const,
+        pages: stackData.pages,
+        listings: [],
+      },
+      stackIndex,
+      adoptedIds: [] as string[],
+      nextUnviewedStack: null,
+    };
   }
 
   const listings = getListingsByIds(stackData.listingIds);
@@ -34,7 +50,10 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 
   return {
     stack: {
-      ...stackData,
+      id: stackData.id,
+      name: stackData.name,
+      type: "listing" as const,
+      pages: [] as string[],
       listings,
     },
     stackIndex,
@@ -63,6 +82,18 @@ clientLoader.hydrate = true as const;
 
 export default function StackPage({ loaderData }: Route.ComponentProps) {
   const { stack, adoptedIds, nextUnviewedStack } = loaderData;
+
+  if (stack.type === "zine") {
+    return (
+      <ZineViewer
+        stackId={stack.id}
+        name={stack.name}
+        pages={stack.pages}
+        nextStack={nextUnviewedStack}
+      />
+    );
+  }
+
   const adoptedSet = new Set(adoptedIds);
 
   return (

@@ -2,8 +2,10 @@ import type { Route } from "./+types/home";
 import { Welcome } from "../components/Welcome";
 import { useEffect } from "react";
 import shopSettings from "../data/shop_settings.json";
-import stacksData from "../data/stacks.json";
 import { getListingsByIds } from "~/data/listings";
+import { getStacks, isZineStack } from "~/utils/stacks";
+import { getViewTransitionName } from "~/utils/viewTransition";
+import { MAX_STACK_PREVIEW_IMAGES } from "~/constants";
 import { useRouteLoaderData } from "react-router";
 import type { loader as rootLoader } from "../root";
 
@@ -15,15 +17,31 @@ export function meta({ loaderData }: Route.MetaArgs) {
 }
 
 export async function loader() {
-  const stacks = stacksData.map((stack) => ({
-    ...stack,
-    listings: getListingsByIds(stack.listingIds),
-  }));
+  const allStacks = getStacks();
+  const stacks = allStacks.map((stack) => {
+    const previewImages = isZineStack(stack)
+      ? stack.pages.slice(0, MAX_STACK_PREVIEW_IMAGES).map((src, i) => ({
+          key: src,
+          src,
+          alt: `${stack.name} page ${i + 1}`,
+          viewTransitionName: getViewTransitionName(`${stack.id}-${i}`),
+        }))
+      : getListingsByIds(stack.listingIds)
+          .slice(0, MAX_STACK_PREVIEW_IMAGES)
+          .map((listing) => ({
+            key: listing.id,
+            src: listing.image,
+            alt: listing.title,
+            viewTransitionName: getViewTransitionName(listing.id),
+          }));
+
+    return { id: stack.id, name: stack.name, previewImages };
+  });
   const iconUrl = shopSettings.icon_url;
 
   return {
     stacks,
-    totalStacks: stacksData.length,
+    totalStacks: allStacks.length,
     iconUrl,
     shopName: shopSettings.name,
   };

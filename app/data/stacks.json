@@ -55,5 +55,20 @@
     "id": "wild-places",
     "name": "Wild Places",
     "listingIds": ["space-complex", "judah's-nostalgia", "grief", "howdy"]
+  },
+  {
+    "id": "dill-tudd",
+    "name": "Dill Tudd",
+    "type": "zine",
+    "pages": [
+      "/dill-tudd-zine/page-0.webp",
+      "/dill-tudd-zine/page-1.webp",
+      "/dill-tudd-zine/page-2.webp",
+      "/dill-tudd-zine/page-3.webp",
+      "/dill-tudd-zine/page-4.webp",
+      "/dill-tudd-zine/page-5.webp",
+      "/dill-tudd-zine/page-6.webp",
+      "/dill-tudd-zine/page-7.webp"
+    ]
   }
 ]

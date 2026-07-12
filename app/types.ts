@@ -11,6 +11,24 @@ export interface Listing {
   listing_id: string;
 }
 
+interface StackBase {
+  id: string;
+  name: string;
+}
+
+export interface ListingStackData extends StackBase {
+  type?: "listing";
+  listingIds: string[];
+}
+
+export interface ZineStackData extends StackBase {
+  type: "zine";
+  /** Ordered public paths of the zine pages, first page first. */
+  pages: string[];
+}
+
+export type StackData = ListingStackData | ZineStackData;
+
 export interface HuntPiece {
   id: string;
   title: string;

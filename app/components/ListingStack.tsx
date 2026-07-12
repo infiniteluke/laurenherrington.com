@@ -1,23 +1,27 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import type { Listing } from "~/types";
-import { getViewTransitionName } from "~/utils/viewTransition";
-import { MAX_STACK_PREVIEW_IMAGES } from "~/constants";
 
-interface Stack {
+export interface StackPreviewImage {
+  key: string;
+  src: string;
+  alt: string;
+  viewTransitionName: string;
+}
+
+interface StackPreview {
   id: string;
   name: string;
-  listings: Listing[];
+  previewImages: StackPreviewImage[];
 }
 
 export function ListingStack({
   stack,
   isVisited = false,
 }: {
-  stack: Stack;
+  stack: StackPreview;
   isVisited?: boolean;
 }) {
-  const images = stack.listings.slice(0, MAX_STACK_PREVIEW_IMAGES);
+  const images = stack.previewImages;
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -29,7 +33,7 @@ export function ListingStack({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative w-full h-full">
-        {images.map((listing, index) => {
+        {images.map((image, index) => {
           const stackRotation = (index - 1.5) * 6;
           const stackX = (index - 1.5) * 4;
           const stackY = index * 2;
@@ -44,17 +48,17 @@ export function ListingStack({
 
           return (
             <div
-              key={listing.id}
+              key={image.key}
               className="absolute inset-0 overflow-hidden bg-neutral-100 transition-all duration-300 ease-out"
               style={{
                 transform,
                 zIndex: images.length - index,
-                viewTransitionName: getViewTransitionName(listing.id),
+                viewTransitionName: image.viewTransitionName,
               }}
             >
               <img
-                src={listing.image}
-                alt={listing.title}
+                src={image.src}
+                alt={image.alt}
                 className={`w-full h-full object-cover transition-opacity duration-300 ${
                   isVisited ? "opacity-60" : "opacity-100"
                 }`}

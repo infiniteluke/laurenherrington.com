@@ -1,5 +1,5 @@
 import { ListingStack } from "~/components/ListingStack";
-import type { Listing } from "~/types";
+import type { StackPreviewImage } from "~/components/ListingStack";
 import { ButtonLink } from "./ButtonLink";
 import { Smiley } from "./Smiley";
 import { resetProgress } from "~/utils/progress.client";
@@ -8,7 +8,7 @@ import { useState, useEffect, useRef } from "react";
 interface Stack {
   id: string;
   name: string;
-  listings: Listing[];
+  previewImages: StackPreviewImage[];
 }
 
 interface WelcomeProps {

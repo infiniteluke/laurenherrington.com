@@ -1,5 +1,14 @@
 import stacksData from "~/data/stacks.json";
-import type { Listing } from "~/types";
+import type { StackData, ZineStackData } from "~/types";
+
+/** Typed view of the raw stacks JSON. */
+export function getStacks(): StackData[] {
+  return stacksData as StackData[];
+}
+
+export function isZineStack(stack: StackData): stack is ZineStackData {
+  return stack.type === "zine";
+}
 
 /**
  * Finds the next unviewed stack starting from the given index, wrapping around if needed.
@@ -7,14 +16,15 @@ import type { Listing } from "~/types";
 export function findNextUnviewedStack(
   startIndex: number,
   visitedIds: Set<string>
-): (typeof stacksData)[number] | null {
-  const totalStacks = stacksData.length;
+): StackData | null {
+  const stacks = getStacks();
+  const totalStacks = stacks.length;
 
   for (let offset = 1; offset <= totalStacks; offset++) {
     const index = (startIndex + offset) % totalStacks;
-    const stackPath = `/stack/${stacksData[index].id}`;
+    const stackPath = `/stack/${stacks[index].id}`;
     if (!visitedIds.has(stackPath)) {
-      return stacksData[index];
+      return stacks[index];
     }
   }
 

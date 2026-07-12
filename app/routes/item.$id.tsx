@@ -3,10 +3,9 @@ import { ButtonLink } from "~/components/ButtonLink";
 import { getListingCursorsById } from "~/data/listings";
 import { isHuntPieceId } from "~/data/scavengerHunt";
 import { isAdopted } from "~/data/finds.server";
-import stacksData from "~/data/stacks.json";
 import { trackItemVisit } from "~/middleware/trackVisit";
 import { getViewTransitionName } from "~/utils/viewTransition";
-import { findNextUnviewedStack } from "~/utils/stacks";
+import { findNextUnviewedStack, getStacks, isZineStack } from "~/utils/stacks";
 const { getVisitedIds } = await import("~/utils/progress.client");
 
 export const clientMiddleware = [trackItemVisit];
@@ -22,12 +21,15 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     throw new Response("Not found", { status: 404 });
   }
 
-  const stackIndex = stacksData.findIndex((s) =>
-    s.listingIds.includes(params.id)
+  const stacks = getStacks();
+  const stackIndex = stacks.findIndex(
+    (s) => !isZineStack(s) && s.listingIds.includes(params.id)
   );
-  const stack = stacksData[stackIndex];
+  const stack = stacks[stackIndex];
   const isLastInStack =
-    stack && stack.listingIds[stack.listingIds.length - 1] === params.id;
+    stack &&
+    !isZineStack(stack) &&
+    stack.listingIds[stack.listingIds.length - 1] === params.id;
   const isHunt = isHuntPieceId(params.id);
   const adopted = isHunt
     ? await isAdopted(context.cloudflare.env.LUEBOO_DB, params.id)
