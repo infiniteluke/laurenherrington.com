@@ -60,6 +60,9 @@ export function shouldRevalidate() {
 }
 
 export const links: Route.LinksFunction = () => [
+  { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+  { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+  { rel: "manifest", href: "/manifest.webmanifest" },
   {
     rel: "preconnect",
     href: "https://fonts.gstatic.com",
