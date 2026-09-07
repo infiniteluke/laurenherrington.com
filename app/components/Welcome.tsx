@@ -4,6 +4,7 @@ import { ButtonLink } from "./ButtonLink";
 import { Smiley } from "./Smiley";
 import { resetProgress } from "~/utils/progress.client";
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router";
 
 interface Stack {
   id: string;
@@ -208,7 +209,7 @@ export function Welcome({
           </div>
         </section>
       )}
-      <footer className="flex justify-center mt-16 mb-8">
+      <footer className="flex items-center gap-4 justify-center mt-16 mb-8">
         <a
           href={`https://www.etsy.com/shop/${shopSettings.name}`}
           target="_blank"
@@ -223,6 +224,7 @@ export function Welcome({
             height={64}
           />
         </a>
+        <Link to="/contact">contact</Link>
       </footer>
     </main>
   );

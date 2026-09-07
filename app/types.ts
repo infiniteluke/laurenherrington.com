@@ -77,3 +77,13 @@ export interface Find {
   createdAt: number;
   ipHash: string | null;
 }
+
+export interface ContactMessage {
+  id: string;
+  name: string | null;
+  email: string | null;
+  body: string;
+  createdAt: number;
+  ipHash: string | null;
+  emailed: boolean;
+}
