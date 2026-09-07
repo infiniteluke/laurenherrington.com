@@ -1,4 +1,6 @@
+import { useEffect, useRef } from "react";
 import { Form, useNavigation } from "react-router";
+import { loadTurnstile } from "~/utils/turnstile.client";
 
 interface Props {
   /** Signed render timestamp; absent when no FORM_SECRET is configured. */
@@ -24,6 +26,40 @@ const buttonClass = [
 
 export function ContactForm({ formToken, turnstileSiteKey, error }: Props) {
   const busy = useNavigation().state !== "idle";
+  const widgetContainerRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!turnstileSiteKey) return;
+    let cancelled = false;
+
+    loadTurnstile()
+      .then((turnstile) => {
+        if (cancelled || !widgetContainerRef.current) return;
+        widgetIdRef.current =
+          turnstile.render(widgetContainerRef.current, {
+            sitekey: turnstileSiteKey,
+          }) ?? null;
+      })
+      .catch((cause) => console.error("Could not render Turnstile", cause));
+
+    return () => {
+      cancelled = true;
+      const widgetId = widgetIdRef.current;
+      if (widgetId && window.turnstile) {
+        window.turnstile.remove(widgetId);
+        widgetIdRef.current = null;
+      }
+    };
+  }, [turnstileSiteKey]);
+
+  // Tokens are single-use, so a rejected submission needs a fresh challenge or
+  // the next attempt fails verification for a second, misleading reason.
+  useEffect(() => {
+    if (error && widgetIdRef.current && window.turnstile) {
+      window.turnstile.reset(widgetIdRef.current);
+    }
+  }, [error]);
 
   return (
     <Form method="post" className="flex flex-col gap-3 w-full max-w-md">
@@ -86,16 +122,8 @@ export function ContactForm({ formToken, turnstileSiteKey, error }: Props) {
         </label>
       </fieldset>
 
-      {turnstileSiteKey && (
-        <>
-          <script
-            src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-            async
-            defer
-          />
-          <div className="cf-turnstile" data-sitekey={turnstileSiteKey} />
-        </>
-      )}
+      {/* Filled in by turnstile.render() after mount; empty in server markup. */}
+      {turnstileSiteKey && <div ref={widgetContainerRef} />}
 
       {error && (
         <p className="text-sm bg-win95-silver border-2 border-t-win95-shadow border-l-win95-shadow border-b-win95-highlight border-r-win95-highlight p-2">
