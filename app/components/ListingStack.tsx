@@ -17,9 +17,12 @@ interface StackPreview {
 export function ListingStack({
   stack,
   isVisited = false,
+  isPriority = true,
 }: {
   stack: StackPreview;
   isVisited?: boolean;
+  /** Below-the-fold stacks defer their previews rather than competing with the main grid. */
+  isPriority?: boolean;
 }) {
   const images = stack.previewImages;
   const [isHovered, setIsHovered] = useState(false);
@@ -64,8 +67,8 @@ export function ListingStack({
                 }`}
                 width={128}
                 height={128}
-                loading="eager"
-                fetchPriority="high"
+                loading={isPriority ? "eager" : "lazy"}
+                fetchPriority={isPriority ? "high" : "low"}
               />
             </div>
           );

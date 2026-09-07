@@ -3,8 +3,10 @@ import { Welcome } from "../components/Welcome";
 import { useEffect } from "react";
 import shopSettings from "../data/shop_settings.json";
 import { getListingsByIds } from "~/data/listings";
-import { getStacks, isZineStack } from "~/utils/stacks";
+import { getDefaultStacks, getOtherStacks, isZineStack } from "~/utils/stacks";
+import type { StackData } from "~/types";
 import { getViewTransitionName } from "~/utils/viewTransition";
+import { getPreviewImageSrc } from "~/utils/previewImage";
 import { MAX_STACK_PREVIEW_IMAGES } from "~/constants";
 import { useRouteLoaderData } from "react-router";
 import type { loader as rootLoader } from "../root";
@@ -16,32 +18,35 @@ export function meta({ loaderData }: Route.MetaArgs) {
   ];
 }
 
-export async function loader() {
-  const allStacks = getStacks();
-  const stacks = allStacks.map((stack) => {
-    const previewImages = isZineStack(stack)
-      ? stack.pages.slice(0, MAX_STACK_PREVIEW_IMAGES).map((src, i) => ({
-          key: src,
-          src,
-          alt: `${stack.name} page ${i + 1}`,
-          viewTransitionName: getViewTransitionName(`${stack.id}-${i}`),
-        }))
-      : getListingsByIds(stack.listingIds)
-          .slice(0, MAX_STACK_PREVIEW_IMAGES)
-          .map((listing) => ({
-            key: listing.id,
-            src: listing.image,
-            alt: listing.title,
-            viewTransitionName: getViewTransitionName(listing.id),
-          }));
+function toStackPreview(stack: StackData) {
+  const previewImages = isZineStack(stack)
+    ? stack.pages.slice(0, MAX_STACK_PREVIEW_IMAGES).map((src, i) => ({
+        key: src,
+        src: getPreviewImageSrc(src),
+        alt: `${stack.name} page ${i + 1}`,
+        viewTransitionName: getViewTransitionName(`${stack.id}-${i}`),
+      }))
+    : getListingsByIds(stack.listingIds)
+        .slice(0, MAX_STACK_PREVIEW_IMAGES)
+        .map((listing) => ({
+          key: listing.id,
+          src: getPreviewImageSrc(listing.image),
+          alt: listing.title,
+          viewTransitionName: getViewTransitionName(listing.id),
+        }));
 
-    return { id: stack.id, name: stack.name, previewImages };
-  });
+  return { id: stack.id, name: stack.name, previewImages };
+}
+
+export async function loader() {
+  const stacks = getDefaultStacks().map(toStackPreview);
+  const otherStacks = getOtherStacks().map(toStackPreview);
   const iconUrl = shopSettings.icon_url;
 
   return {
     stacks,
-    totalStacks: allStacks.length,
+    otherStacks,
+    totalStacks: stacks.length,
     iconUrl,
     shopName: shopSettings.name,
   };
@@ -78,6 +83,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       firstStackId={rootLoaderData?.firstStackId ?? ""}
       firstUnviewedStackId={rootLoaderData?.firstUnviewedStackId ?? ""}
       stacks={loaderData.stacks}
+      otherStacks={loaderData.otherStacks}
       totalStacks={loaderData.totalStacks}
       iconUrl={loaderData.iconUrl}
       shopName={loaderData.shopName}

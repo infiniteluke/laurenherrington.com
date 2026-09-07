@@ -11,9 +11,17 @@ export interface Listing {
   listing_id: string;
 }
 
+/**
+ * "default" stacks make up the main grid and count toward the smiley
+ * celebration. "other" stacks are shown apart, under "Other Works".
+ */
+export type StackSection = "default" | "other";
+
 interface StackBase {
   id: string;
   name: string;
+  /** Defaults to "default" when omitted. */
+  section?: StackSection;
 }
 
 export interface ListingStackData extends StackBase {

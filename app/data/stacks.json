@@ -6,7 +6,20 @@
       "sights",
       "in-london",
       "monkey-mind-55",
-      "tell-me-more-album-art"
+      "summer-25",
+      "nycole-summer",
+      "silly-goofy"
+    ]
+  },
+  {
+    "id": "color",
+    "name": "Color",
+    "type": "zine",
+    "pages": [
+      "/color/blue-morpho.webp",
+      "/color/disk-media-error.webp",
+      "/color/embrace-swatches.webp",
+      "/color/rising-sun-collage.webp"
     ]
   },
   {
@@ -14,8 +27,9 @@
     "name": "Space Dreams",
     "listingIds": [
       "space-cats",
-      "olivia",
-      "recreate",
+      "blue",
+      "outward-horizons",
+      "space-complex",
       "recreate-ii",
       "space-trash"
     ]
@@ -23,12 +37,19 @@
   {
     "id": "time-capsule",
     "name": "Time Capsule",
-    "listingIds": ["tell-me-more-album-art-ii", "1996", "red", "2024", "1977"]
+    "listingIds": [
+      "tell-me-more-album-art-ii",
+      "olivia",
+      "1996",
+      "red",
+      "2024",
+      "1977"
+    ]
   },
   {
-    "id": "cosmic-blues",
-    "name": "Cosmic Blues",
-    "listingIds": ["blue", "outward-horizons", "brain-mush", "look-one-dollar"]
+    "id": "open",
+    "name": "Open",
+    "listingIds": ["recreate", "look-one-dollar", "grief"]
   },
   {
     "id": "abstract-thoughts",
@@ -36,30 +57,18 @@
     "listingIds": [
       "nonsense",
       "untitled-7",
+      "howdy",
       "no-cantar",
       "smoke-and-light",
-      "peace"
+      "peace",
+      "brain-mush"
     ]
-  },
-  {
-    "id": "summer-feels",
-    "name": "Summer Feels",
-    "listingIds": [
-      "summer-25",
-      "nycole-summer",
-      "silly-goofy",
-      "sorry,-i'm-busy"
-    ]
-  },
-  {
-    "id": "wild-places",
-    "name": "Wild Places",
-    "listingIds": ["space-complex", "judah's-nostalgia", "grief", "howdy"]
   },
   {
     "id": "dill-tudd",
     "name": "Dill Tudd",
     "type": "zine",
+    "section": "other",
     "pages": [
       "/dill-tudd-zine/page-0.webp",
       "/dill-tudd-zine/page-1.webp",
@@ -69,6 +78,20 @@
       "/dill-tudd-zine/page-5.webp",
       "/dill-tudd-zine/page-6.webp",
       "/dill-tudd-zine/page-7.webp"
+    ]
+  },
+  {
+    "id": "mixed-media",
+    "name": "Mixed Media",
+    "type": "zine",
+    "section": "other",
+    "pages": [
+      "/mixed-media/plywood.webp",
+      "/mixed-media/blue.webp",
+      "/mixed-media/brutal.webp",
+      "/mixed-media/guitar.webp",
+      "/mixed-media/rips.webp",
+      "/mixed-media/shadows.webp"
     ]
   }
 ]

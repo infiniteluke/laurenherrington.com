@@ -17,9 +17,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
 }
 
 export async function loader({ params, context }: Route.LoaderArgs) {
-  const stacks = getStacks();
-  const stackIndex = stacks.findIndex((s) => s.id === params.id);
-  const stackData = stacks[stackIndex];
+  const stackData = getStacks().find((s) => s.id === params.id);
   if (!stackData) {
     throw new Response("Not found", { status: 404 });
   }
@@ -33,7 +31,6 @@ export async function loader({ params, context }: Route.LoaderArgs) {
         pages: stackData.pages,
         listings: [],
       },
-      stackIndex,
       adoptedIds: [] as string[],
       nextUnviewedStack: null,
     };
@@ -56,7 +53,6 @@ export async function loader({ params, context }: Route.LoaderArgs) {
       pages: [] as string[],
       listings,
     },
-    stackIndex,
     adoptedIds: [...adoptedIds],
     nextUnviewedStack: null,
   };
@@ -67,14 +63,9 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   const { getVisitedIds } = await import("~/utils/progress.client");
   const visitedIds = getVisitedIds();
 
-  const nextUnviewedStack =
-    serverData.stackIndex !== undefined
-      ? findNextUnviewedStack(serverData.stackIndex, visitedIds)
-      : null;
-
   return {
     ...serverData,
-    nextUnviewedStack,
+    nextUnviewedStack: findNextUnviewedStack(serverData.stack.id, visitedIds),
   };
 }
 

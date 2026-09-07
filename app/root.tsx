@@ -13,19 +13,16 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { ProgressBar } from "~/components/ProgressBar";
-import stacksData from "~/data/stacks.json";
-import {
-  getVisitedCount,
-  getVisitedIds,
-  resetProgress,
-} from "~/utils/progress.client";
+import { countVisitedDefaultStacks, getDefaultStacks } from "~/utils/stacks";
+import { getVisitedIds, resetProgress } from "~/utils/progress.client";
 import { SmileyCelebration } from "./components/Smiley";
 import { ButtonLink } from "./components/ButtonLink";
 
 export async function loader() {
-  const firstStackId = stacksData[0]?.id ?? "";
+  const defaultStacks = getDefaultStacks();
+  const firstStackId = defaultStacks[0]?.id ?? "";
   return {
-    totalStacks: stacksData.length,
+    totalStacks: defaultStacks.length,
     firstStackId,
     firstUnviewedStackId: firstStackId,
     visitedCount: 0,
@@ -36,12 +33,12 @@ export async function loader() {
 export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   const serverData = await serverLoader();
   const visitedIds = getVisitedIds();
-  const firstUnviewed = stacksData.find(
+  const firstUnviewed = getDefaultStacks().find(
     (s) => !visitedIds.has(`/stack/${s.id}`)
   );
   return {
     ...serverData,
-    visitedCount: visitedIds.size,
+    visitedCount: countVisitedDefaultStacks(visitedIds),
     visitedIds,
     firstUnviewedStackId: firstUnviewed?.id ?? serverData.firstStackId,
   };

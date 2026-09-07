@@ -34,6 +34,30 @@ Create a production build:
 npm run build
 ```
 
+## Images
+
+Raw scans and photos live in `originals/` (gitignored); only the optimized
+`.webp` under `public/` is committed. To add artwork, drop the original in
+`originals/<stack>/` and convert it:
+
+```sh
+magick originals/<stack>/<name>.heic -colorspace sRGB -resize 2000x2000 \
+  -strip -quality 82 public/<stack>/<name>.webp
+```
+
+HEIC files from Apple devices carry a stale EXIF orientation tag that libheif
+has already applied on decode — don't rotate or `-auto-orient` them, or they
+come out sideways.
+
+Stack previews render at 128px, so they use a smaller variant instead of the
+full-size image. Listing stacks get theirs from the Etsy CDN automatically;
+locally hosted zine pages need generated thumbnails. After adding or
+reordering pages in `app/data/stacks.json`, run:
+
+```sh
+npm run thumbs
+```
+
 ## Deployment
 
 Deployment is done using the Wrangler CLI.

@@ -13,6 +13,7 @@ interface Stack {
 
 interface WelcomeProps {
   stacks: Stack[];
+  otherStacks: Stack[];
   totalStacks: number;
   iconUrl: string;
   shopName: string;
@@ -28,6 +29,7 @@ interface WelcomeProps {
 
 export function Welcome({
   stacks,
+  otherStacks,
   totalStacks,
   iconUrl,
   shopName,
@@ -188,6 +190,23 @@ export function Welcome({
           />
         ))}
       </div>
+      {otherStacks.length > 0 && (
+        <section className="w-full flex flex-col items-center mt-24">
+          {/* Etched divider: dark line over a light one reads as inset in the win95 theme */}
+          <div className="w-full max-w-3xl border-t-2 border-t-win95-shadow border-b-2 border-b-win95-highlight" />
+          <h2 className="mt-8">Other Works</h2>
+          <div className="flex flex-wrap justify-center gap-32 mt-12">
+            {otherStacks.map((stack) => (
+              <ListingStack
+                key={stack.id}
+                stack={stack}
+                isVisited={visitedIds.has(`/stack/${stack.id}`)}
+                isPriority={false}
+              />
+            ))}
+          </div>
+        </section>
+      )}
       <footer className="flex justify-center mt-16 mb-8">
         <a
           href={`https://www.etsy.com/shop/${shopSettings.name}`}

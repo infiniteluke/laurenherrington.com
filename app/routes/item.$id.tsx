@@ -21,11 +21,9 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     throw new Response("Not found", { status: 404 });
   }
 
-  const stacks = getStacks();
-  const stackIndex = stacks.findIndex(
+  const stack = getStacks().find(
     (s) => !isZineStack(s) && s.listingIds.includes(params.id)
   );
-  const stack = stacks[stackIndex];
   const isLastInStack =
     stack &&
     !isZineStack(stack) &&
@@ -41,7 +39,6 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     previous,
     stack,
     isLastInStack,
-    stackIndex,
     isHunt,
     adopted,
     nextUnviewedStack: null,
@@ -53,8 +50,8 @@ export async function clientLoader({ serverLoader }: Route.ClientLoaderArgs) {
   const visitedIds = getVisitedIds();
 
   const nextUnviewedStack =
-    serverData.isLastInStack && serverData.stackIndex !== undefined
-      ? findNextUnviewedStack(serverData.stackIndex, visitedIds)
+    serverData.isLastInStack && serverData.stack
+      ? findNextUnviewedStack(serverData.stack.id, visitedIds)
       : null;
 
   return {

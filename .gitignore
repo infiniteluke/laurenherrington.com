@@ -19,3 +19,6 @@ worker-configuration.d.ts
 
 # Raw zine scans — huge originals; only optimized .webp pages are committed
 /public/**/Page*_*.jpeg
+
+# Raw artwork scans/photos — huge originals; only optimized .webp is committed
+/originals/
