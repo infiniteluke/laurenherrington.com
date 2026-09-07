@@ -18,7 +18,7 @@ export function getWorkById(id: string): Work | undefined {
 export function getWorkAsListing(work: Work): Listing {
   return {
     id: work.id,
-    title: work.title,
+    title: "",
     description: work.description ?? "",
     price: 0,
     currency: "",
