@@ -12,8 +12,9 @@ import { computeIpHash } from "~/utils/ipHash.server";
 import { createFormToken, verifyFormToken } from "~/utils/formToken.server";
 import { verifyTurnstile } from "~/utils/turnstile.server";
 
+// Send-only address on the zone; no routing rule points at it, so mail sent
+// back to it goes nowhere. The recipient is the CONTACT_TO secret.
 const NOTIFY_FROM = "contact@laurenherrington.com";
-const NOTIFY_TO = "hello@laurenherrington.com";
 
 const MIN_FILL_MS = 3_000;
 const MAX_FORM_AGE_MS = 12 * 60 * 60 * 1_000;
@@ -114,18 +115,25 @@ export async function action({ request, context }: Route.ActionArgs) {
     ipHash,
   });
 
-  const sent = await sendPlainTextEmail(env.SEND_EMAIL, {
-    from: NOTIFY_FROM,
-    to: NOTIFY_TO,
-    subject: "New message from laurenherrington.com",
-    body: [
-      `From: ${name || "(no name)"} <${email}>`,
-      `Received: ${new Date(message.createdAt).toISOString()}`,
-      "",
-      body,
-    ].join("\n"),
-    replyTo: email,
-  });
+  const notifyTo = env.CONTACT_TO;
+  if (!notifyTo) {
+    console.warn("CONTACT_TO is unset; message stored without a notification");
+  }
+
+  const sent = !notifyTo
+    ? false
+    : await sendPlainTextEmail(env.SEND_EMAIL, {
+        from: NOTIFY_FROM,
+        to: notifyTo,
+        subject: "New message from laurenherrington.com",
+        body: [
+          `From: ${name || "(no name)"} <${email}>`,
+          `Received: ${new Date(message.createdAt).toISOString()}`,
+          "",
+          body,
+        ].join("\n"),
+        replyTo: email,
+      });
   if (sent) await markMessageEmailed(db, message.id);
 
   return data({ ok: true as const });

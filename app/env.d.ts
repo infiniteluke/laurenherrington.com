@@ -5,6 +5,8 @@ declare global {
     FORM_SECRET?: string;
     TURNSTILE_SITE_KEY?: string;
     TURNSTILE_SECRET_KEY?: string;
+    /** Where contact-form notifications go. Kept out of this public repo. */
+    CONTACT_TO?: string;
   }
 }
 

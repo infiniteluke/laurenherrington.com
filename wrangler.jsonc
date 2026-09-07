@@ -28,13 +28,15 @@
       "migrations_dir": "migrations",
     },
   ],
-  // Contact-form notifications. `destination_address` locks sending to this one
-  // verified Email Routing address; unavailable in local dev, which the send
+  // Contact-form notifications. Left unrestricted rather than pinned to a
+  // `destination_address`: this repo is public, and the recipient is a personal
+  // address. It lives in the CONTACT_TO secret instead. Unrestricted still only
+  // permits verified Email Routing destinations, so the blast radius is the
+  // account's own verified addresses. Unavailable in local dev, which the send
   // helper degrades around.
   "send_email": [
     {
       "name": "SEND_EMAIL",
-      "destination_address": "hello@laurenherrington.com",
     },
   ],
   /**
