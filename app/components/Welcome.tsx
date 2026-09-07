@@ -84,7 +84,10 @@ export function Welcome({
           height={64}
           fetchPriority="high"
         />
-        <h1>{shopName}</h1>
+        <div className="flex flex-col">
+          <h1>{shopName}</h1>
+          <p className="text-sm">san diego based collage artist</p>
+        </div>
       </header>
       <p className="text-sm text-center">
         {isDone ? (
