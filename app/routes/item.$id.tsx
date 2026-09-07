@@ -1,11 +1,11 @@
 import type { Route } from "./+types/item.$id";
 import { ButtonLink } from "~/components/ButtonLink";
-import { getListingCursorsById } from "~/data/listings";
+import { getEtsyListingUrl, getListingById } from "~/data/listings";
 import { isHuntPieceId } from "~/data/scavengerHunt";
 import { isAdopted } from "~/data/finds.server";
 import { trackItemVisit } from "~/middleware/trackVisit";
 import { getViewTransitionName } from "~/utils/viewTransition";
-import { findNextUnviewedStack, getStacks, isZineStack } from "~/utils/stacks";
+import { findItemPlacement, findNextUnviewedStack } from "~/utils/stacks";
 const { getVisitedIds } = await import("~/utils/progress.client");
 
 export const clientMiddleware = [trackItemVisit];
@@ -16,18 +16,12 @@ export function meta({ loaderData }: Route.MetaArgs) {
 }
 
 export async function loader({ params, context }: Route.LoaderArgs) {
-  const { listing, next, previous } = getListingCursorsById(params.id);
+  const listing = getListingById(params.id);
   if (!listing) {
     throw new Response("Not found", { status: 404 });
   }
 
-  const stack = getStacks().find(
-    (s) => !isZineStack(s) && s.listingIds.includes(params.id)
-  );
-  const isLastInStack =
-    stack &&
-    !isZineStack(stack) &&
-    stack.listingIds[stack.listingIds.length - 1] === params.id;
+  const placement = findItemPlacement(params.id);
   const isHunt = isHuntPieceId(params.id);
   const adopted = isHunt
     ? await isAdopted(context.cloudflare.env.LUEBOO_DB, params.id)
@@ -35,10 +29,13 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 
   return {
     listing,
-    next,
-    previous,
-    stack,
-    isLastInStack,
+    etsyUrl: getEtsyListingUrl(listing),
+    nextId: placement?.nextId,
+    stack: placement && {
+      id: placement.stack.id,
+      name: placement.stack.name,
+    },
+    isLastInStack: placement?.isLast ?? false,
     isHunt,
     adopted,
     nextUnviewedStack: null,
@@ -65,7 +62,8 @@ clientLoader.hydrate = true as const;
 export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
   const {
     listing,
-    next,
+    etsyUrl,
+    nextId,
     stack,
     isLastInStack,
     isHunt,
@@ -88,9 +86,9 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
         </ButtonLink>
       );
     }
-  } else if (next) {
+  } else if (nextId) {
     nextButton = (
-      <ButtonLink className="text-sm" to={`/item/${next.id}`}>
+      <ButtonLink className="text-sm" to={`/item/${nextId}`}>
         Next
       </ButtonLink>
     );
@@ -111,17 +109,20 @@ export default function ItemFullscreen({ loaderData }: Route.ComponentProps) {
           )}
         </div>
       )}
-      <p className="text-center text-sm">{listing.description}</p>
-      {isHunt ? (
+      {listing.description && (
+        <p className="text-center text-sm">{listing.description}</p>
+      )}
+      {isHunt && (
         <a
           href="/found"
           className="flex items-center justify-center gap-1.5 text-sm hover:opacity-70 transition-opacity"
         >
           <span>🔍 Find me in the wild!</span>
         </a>
-      ) : (
+      )}
+      {!isHunt && etsyUrl && (
         <a
-          href={`https://www.etsy.com/listing/${listing.listing_id}/${listing.id}`}
+          href={etsyUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-1.5 text-sm hover:opacity-70 transition-opacity"

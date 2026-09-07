@@ -36,7 +36,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     };
   }
 
-  const listings = getListingsByIds(stackData.listingIds);
+  const listings = getListingsByIds(stackData.itemIds);
   const huntIdsInStack = listings
     .map((l) => l.id)
     .filter((id) => isHuntPieceId(id));
@@ -49,7 +49,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
     stack: {
       id: stackData.id,
       name: stackData.name,
-      type: "listing" as const,
+      type: "stack" as const,
       pages: [] as string[],
       listings,
     },

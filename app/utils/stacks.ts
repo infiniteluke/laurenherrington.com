@@ -1,5 +1,10 @@
 import stacksData from "~/data/stacks.json";
-import type { StackData, StackSection, ZineStackData } from "~/types";
+import type {
+  StackData,
+  StackOfWorks,
+  StackSection,
+  ZineStackData,
+} from "~/types";
 
 /** Typed view of the raw stacks JSON. */
 export function getStacks(): StackData[] {
@@ -29,6 +34,35 @@ export function countVisitedDefaultStacks(visitedIds: Set<string>): number {
 
 export function isZineStack(stack: StackData): stack is ZineStackData {
   return stack.type === "zine";
+}
+
+export function isStackOfWorks(stack: StackData): stack is StackOfWorks {
+  return stack.type === "stack";
+}
+
+/**
+ * Locates an item inside its stack. Item-to-item navigation follows the stack's
+ * own order rather than any underlying data-source order, so an Etsy piece and
+ * a local work walk identically.
+ */
+export function findItemPlacement(itemId: string): {
+  stack: StackOfWorks;
+  nextId: string | undefined;
+  isLast: boolean;
+} | null {
+  for (const stack of getStacks()) {
+    if (!isStackOfWorks(stack)) continue;
+    const index = stack.itemIds.indexOf(itemId);
+    if (index === -1) continue;
+
+    return {
+      stack,
+      nextId: stack.itemIds[index + 1],
+      isLast: index === stack.itemIds.length - 1,
+    };
+  }
+
+  return null;
 }
 
 /**

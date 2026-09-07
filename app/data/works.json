@@ -1,0 +1,52 @@
+[
+  {
+    "id": "blue-morpho",
+    "title": "Blue Morpho",
+    "image": "/color/blue-morpho.webp"
+  },
+  {
+    "id": "disk-media-error",
+    "title": "Disk Media Error",
+    "image": "/color/disk-media-error.webp"
+  },
+  {
+    "id": "embrace-swatches",
+    "title": "Embrace Swatches",
+    "image": "/color/embrace-swatches.webp"
+  },
+  {
+    "id": "rising-sun-collage",
+    "title": "Rising Sun Collage",
+    "image": "/color/rising-sun-collage.webp"
+  },
+  {
+    "id": "plywood",
+    "title": "Plywood",
+    "image": "/mixed-media/plywood.webp"
+  },
+  {
+    "id": "blue-mixed-media",
+    "title": "Blue",
+    "image": "/mixed-media/blue.webp"
+  },
+  {
+    "id": "brutal",
+    "title": "Brutal",
+    "image": "/mixed-media/brutal.webp"
+  },
+  {
+    "id": "guitar",
+    "title": "Guitar",
+    "image": "/mixed-media/guitar.webp"
+  },
+  {
+    "id": "rips",
+    "title": "Rips",
+    "image": "/mixed-media/rips.webp"
+  },
+  {
+    "id": "shadows",
+    "title": "Shadows",
+    "image": "/mixed-media/shadows.webp"
+  }
+]

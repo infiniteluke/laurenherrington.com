@@ -2,7 +2,8 @@
   {
     "id": "nature-vibes",
     "name": "Nature Vibes",
-    "listingIds": [
+    "type": "stack",
+    "itemIds": [
       "sights",
       "in-london",
       "monkey-mind-55",
@@ -14,18 +15,19 @@
   {
     "id": "color",
     "name": "Color",
-    "type": "zine",
-    "pages": [
-      "/color/blue-morpho.webp",
-      "/color/disk-media-error.webp",
-      "/color/embrace-swatches.webp",
-      "/color/rising-sun-collage.webp"
+    "type": "stack",
+    "itemIds": [
+      "blue-morpho",
+      "disk-media-error",
+      "embrace-swatches",
+      "rising-sun-collage"
     ]
   },
   {
     "id": "space-dreams",
     "name": "Space Dreams",
-    "listingIds": [
+    "type": "stack",
+    "itemIds": [
       "space-cats",
       "blue",
       "outward-horizons",
@@ -37,7 +39,8 @@
   {
     "id": "time-capsule",
     "name": "Time Capsule",
-    "listingIds": [
+    "type": "stack",
+    "itemIds": [
       "tell-me-more-album-art-ii",
       "olivia",
       "1996",
@@ -49,12 +52,14 @@
   {
     "id": "open",
     "name": "Open",
-    "listingIds": ["recreate", "look-one-dollar", "grief"]
+    "type": "stack",
+    "itemIds": ["recreate", "look-one-dollar", "grief"]
   },
   {
     "id": "abstract-thoughts",
     "name": "Abstract Thoughts",
-    "listingIds": [
+    "type": "stack",
+    "itemIds": [
       "nonsense",
       "untitled-7",
       "howdy",
@@ -83,15 +88,15 @@
   {
     "id": "mixed-media",
     "name": "Mixed Media",
-    "type": "zine",
+    "type": "stack",
     "section": "other",
-    "pages": [
-      "/mixed-media/plywood.webp",
-      "/mixed-media/blue.webp",
-      "/mixed-media/brutal.webp",
-      "/mixed-media/guitar.webp",
-      "/mixed-media/rips.webp",
-      "/mixed-media/shadows.webp"
+    "itemIds": [
+      "plywood",
+      "blue-mixed-media",
+      "brutal",
+      "guitar",
+      "rips",
+      "shadows"
     ]
   }
 ]

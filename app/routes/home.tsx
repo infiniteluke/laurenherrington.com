@@ -26,7 +26,7 @@ function toStackPreview(stack: StackData) {
         alt: `${stack.name} page ${i + 1}`,
         viewTransitionName: getViewTransitionName(`${stack.id}-${i}`),
       }))
-    : getListingsByIds(stack.listingIds)
+    : getListingsByIds(stack.itemIds)
         .slice(0, MAX_STACK_PREVIEW_IMAGES)
         .map((listing) => ({
           key: listing.id,

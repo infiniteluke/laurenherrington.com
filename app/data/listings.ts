@@ -1,11 +1,8 @@
 import { slugify } from "util/slugs";
 import listingsCsv from "./EtsyListingsDownload.csv?raw";
 import type { Listing } from "~/types";
-import {
-  getHuntPieceAsListing,
-  getHuntPieceById,
-  getHuntPieces,
-} from "./scavengerHunt";
+import { getHuntPieceAsListing, getHuntPieceById } from "./scavengerHunt";
+import { getWorkAsListing, getWorkById } from "./works";
 
 function parseCSVLine(line: string): string[] {
   const result: string[] = [];
@@ -62,20 +59,6 @@ export function getListings(): Listing[] {
   return cached;
 }
 
-export function getListingCursorsById(id: string): {
-  listing: Listing | undefined;
-  next: Listing | undefined;
-  previous: Listing | undefined;
-} {
-  const all = getAllPieces();
-  const index = all.findIndex((l) => l.id === id);
-  return {
-    listing: all[index],
-    next: all[index + 1],
-    previous: all[index - 1],
-  };
-}
-
 export function getListingsTotal(): number {
   return getListings().length;
 }
@@ -84,19 +67,27 @@ export function getCsvListingById(id: string): Listing | undefined {
   return getListings().find((l) => l.id === id);
 }
 
+/** Resolves a piece id against every source: Etsy CSV, hunt pieces, local works. */
 export function getListingById(id: string): Listing | undefined {
   const listing = getCsvListingById(id);
   if (listing) return listing;
   const hunt = getHuntPieceById(id);
-  return hunt ? getHuntPieceAsListing(hunt) : undefined;
+  if (hunt) return getHuntPieceAsListing(hunt);
+  const work = getWorkById(id);
+  return work ? getWorkAsListing(work) : undefined;
+}
+
+/**
+ * The Etsy shop link for a piece, or null when it isn't for sale there. Hunt
+ * pieces and local works carry no listing id, which is what distinguishes them.
+ */
+export function getEtsyListingUrl(listing: Listing): string | null {
+  if (!listing.listing_id) return null;
+  return `https://www.etsy.com/listing/${listing.listing_id}/${listing.id}`;
 }
 
 export function getListingsByIds(ids: string[]): Listing[] {
   return ids
     .map((id) => getListingById(id))
     .filter((l): l is Listing => l !== undefined);
-}
-
-export function getAllPieces(): Listing[] {
-  return [...getHuntPieces().map(getHuntPieceAsListing), ...getListings()];
 }
