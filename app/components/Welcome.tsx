@@ -74,7 +74,7 @@ export function Welcome({
 
   return (
     <main className="flex items-center justify-center flex-col lg:mx-24 gap-4 my-8">
-      <ButtonLink className=" self-center md:self-end" to="/found">
+      <ButtonLink size="xs" className=" self-center md:self-end" to="/found">
         👀 Finders Keepers
       </ButtonLink>
       <header className="flex items-center gap-4">
@@ -139,6 +139,7 @@ export function Welcome({
         />
         {firstUnviewedStackId && (
           <ButtonLink
+            size="lg"
             to={`/stack/${firstUnviewedStackId}`}
             onClick={() => {
               if (isDone) {
